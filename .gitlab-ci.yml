@@ -2,7 +2,7 @@ pages:
   stage: deploy
   script:
     - mkdir -p public
-    - cp ui/gunnerus.html public/gunnerus.html
+    - cp ui/gunnerus.html public/index.html
   artifacts:
     paths:
       - public
