@@ -144,6 +144,7 @@
     }
     .btn:hover{ border-color: var(--text-muted); background: var(--bg-inset); }
     .btn.primary{ background: var(--accent); border-color: var(--accent); color: white; }
+    .btn.active { color: var(--accent); background: var(--accent-soft); border-color: var(--accent); }
 
     /* Responsive */
     @media (max-width: 1200px){
@@ -276,7 +277,10 @@
       <aside class="panel inspector">
         <div class="panel-header">
           <h2>Data Inspector</h2>
-          <button class="btn ghost" style="padding:2px 8px; font-size:0.7rem;">JSON View</button>
+          <span>
+            <button class="btn active" style="padding:2px 8px; font-size:0.7rem;">Form View</button>
+            <button class="btn ghost" style="padding:2px 8px; font-size:0.7rem; margin-left: 5px;">JSON View</button>
+          </span>
         </div>
         <div class="panel-body" id="inspector-content">
           <div style="text-align:center; margin-top:50px; color:var(--text-faint);">
