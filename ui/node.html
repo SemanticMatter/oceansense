@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Node Registry | Fjordlab Data Portal</title>
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* =========================
+       Design tokens (Shared)
+       ========================= */
+    :root{
+      --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      /* DARK MODE (DEEP OCEAN THEME) */
+      --bg: #101419;         
+      --bg-elev: #1B222C;    
+      --bg-inset: #0b0e12;   
+      --border: #334155;
+
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-faint: #64748B;
+
+      /* Brand Colors */
+      --accent: #3B82F6;     
+      --accent-soft: rgba(59, 130, 246, 0.15);
+      
+      /* Status Colors */
+      --success: #14B8A6;    
+      --warning: #F59E0B;    
+      --danger: #F43F5E;     
+      --offline: #64748B;
+
+      --r-6: 6px; --r-10: 10px; --r-pill: 999px;
+    }
+
+    * { box-sizing: border-box; }
+    body{
+      margin:0; font-family: var(--font-sans); background: var(--bg); color: var(--text);
+      height: 100vh; overflow: hidden; font-size: 14px;
+    }
+    
+    .app{ height: 100%; display:flex; flex-direction: column; }
+
+    /* Topbar */
+    .topbar{
+      height: 60px; flex-shrink: 0; background: var(--bg); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 20px; z-index: 50;
+    }
+    .brand{ display:flex; align-items:center; gap: 12px; font-weight: 600; font-size: 1.1rem; }
+    .nav{ display:flex; gap: 8px; margin-left: 40px; }
+    .nav button{
+      background: transparent; border: none; color: var(--text-muted);
+      padding: 8px 12px; border-radius: var(--r-10); font-weight: 500; cursor: pointer; transition: 0.2s;
+    }
+    .nav button:hover { color: var(--text); background: var(--bg-elev); }
+    .nav button.active{ color: var(--accent); background: var(--accent-soft); }
+
+    /* Layouts */
+    .page{ display:flex; flex: 1; overflow: hidden; width: 100%; height:100%; }
+
+    /* Registry Grid Layout */
+    .registry-workspace{
+      display: grid; grid-template-columns: 1fr 400px; 
+      width: 100%; height: 100%;
+    }
+
+    /* Main Content Area */
+    .main-area { padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 30px; }
+    
+    /* Inspector/Detail Panel */
+    .inspector-panel { 
+      background: var(--bg-elev); border-left: 1px solid var(--border); 
+      display: flex; flex-direction: column; overflow-y: hidden;
+    }
+    .panel-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .panel-content { padding: 20px; overflow-y: auto; flex: 1; }
+    .panel-footer { padding: 20px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.1); }
+
+    /* Typography */
+    h1 { font-size: 1.8rem; margin: 0 0 10px 0; letter-spacing: -0.01em; }
+    h2 { font-size: 1.2rem; margin: 0 0 15px 0; color: var(--text); }
+    h3 { font-size: 0.9rem; text-transform: uppercase; color: var(--text-faint); margin: 20px 0 10px 0; font-weight: 700; letter-spacing: 0.05em; }
+    p { line-height: 1.5; color: var(--text-muted); max-width: 800px; margin-bottom: 0; }
+
+    /* Stats Overview */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
+    .stat-card { background: var(--bg-elev); border: 1px solid var(--border); padding: 15px; border-radius: var(--r-10); }
+    .stat-val { font-size: 1.5rem; font-weight: 700; color: var(--text); display: block; }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+    .stat-sub { font-size: 0.75rem; color: var(--text-faint); margin-top: 5px; display: block; }
+
+    /* Node Cards Grid */
+    .nodes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+    .node-card { 
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--r-10); 
+      padding: 15px; cursor: pointer; transition: all 0.2s; position: relative;
+    }
+    .node-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .node-card.active { border-color: var(--accent); background: var(--accent-soft); }
+    
+    .nc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .nc-title { font-weight: 600; font-size: 1rem; color: var(--text); }
+    .nc-sub { font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); }
+    
+    .nc-metrics { display: flex; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .metric { font-size: 0.8rem; color: var(--text-muted); }
+    .metric i { margin-right: 5px; }
+    
+    /* Status Indicators */
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px currentColor; }
+    .status-dot.online { color: var(--success); }
+    .status-dot.degraded { color: var(--warning); }
+    .status-dot.offline { color: var(--danger); box-shadow: none; opacity: 0.6; }
+
+    /* Components */
+    .btn { 
+      padding: 8px 16px; border-radius: var(--r-6); border: 1px solid var(--border); 
+      background: var(--bg-elev); color: var(--text); cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn:hover { background: var(--bg-inset); border-color: var(--text-muted); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .btn.danger { background: rgba(244, 63, 94, 0.1); border-color: var(--danger); color: var(--danger); }
+    .btn-sm { padding: 4px 8px; font-size: 0.75rem; }
+
+    .tag { padding: 2px 8px; border-radius: var(--r-pill); font-size: 0.7rem; background: var(--bg-inset); border: 1px solid var(--border); color: var(--text-muted); text-transform: uppercase; }
+
+    /* Forms & Inputs */
+    .form-group { margin-bottom: 15px; }
+    .form-label { display: block; font-size: 0.75rem; color: var(--text-faint); margin-bottom: 5px; text-transform: uppercase; }
+    .input { 
+      width: 100%; background: var(--bg-inset); border: 1px solid var(--border); color: var(--text); 
+      padding: 10px; border-radius: var(--r-6); outline: none; font-family: var(--font-mono); font-size: 0.85rem; 
+    }
+    .input:focus { border-color: var(--accent); }
+
+    /* Logs/Diagnostics */
+    .log-terminal { 
+      background: #000; padding: 15px; border-radius: var(--r-6); border: 1px solid var(--border); 
+      font-family: var(--font-mono); font-size: 0.75rem; color: #aaa; max-height: 150px; overflow-y: auto; 
+    }
+    .log-entry { margin-bottom: 4px; }
+    .log-entry.err { color: var(--danger); }
+    .log-entry.ok { color: var(--success); }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 5px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .tab { padding: 8px 12px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; }
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  </style>
+</head>
+
+<body>
+<div class="app">
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand">
+      <i class="fa-solid fa-circle-nodes" style="color:var(--accent)"></i>
+      <span>FJORDLAB DATA PORTAL</span>
+    </div>
+    <nav class="nav">
+      <button onclick="window.location.href='index.html'">Explorer</button>
+      <button class="active">Node Registry</button>
+      <button onclick="window.location.href='api_view.html'">Data Access & API</button>
+    </nav>
+  </header>
+
+  <div class="page">
+    <div class="registry-workspace">
+      
+      <!-- MAIN AREA: Overview & Grid -->
+      <main class="main-area">
+        
+        <!-- Header & Stats -->
+        <div>
+            <h1>Node Registry</h1>
+            <p>
+                Configure the federated data layer. Each "Node" represents an external OGC SensorThings endpoint. 
+                The orchestrator queries these nodes in parallel to fulfill user requests.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-val">5</span>
+                    <span class="stat-label">Total Nodes</span>
+                    <span class="stat-sub">Registered Endpoints</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val" style="color:var(--success)">3</span>
+                    <span class="stat-label">Online</span>
+                    <span class="stat-sub">100% Availability</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val" style="color:var(--warning)">1</span>
+                    <span class="stat-label">Degraded</span>
+                    <span class="stat-sub">High Latency (>500ms)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val">MQTT</span>
+                    <span class="stat-label">Primary Protocol</span>
+                    <span class="stat-sub">3 Nodes Streaming</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="position:relative; width: 300px;">
+                <i class="fa-solid fa-search" style="position:absolute; left:10px; top:10px; color:var(--text-muted)"></i>
+                <input class="input" style="padding-left:35px;" placeholder="Search nodes...">
+            </div>
+            <button class="btn primary" onclick="showAddNode()"><i class="fa-solid fa-plus"></i> Register Node</button>
+        </div>
+
+        <!-- Node Grid -->
+        <div class="nodes-grid">
+            
+            <!-- Node 1: Aalesund -->
+            <div class="node-card active" onclick="loadNode('aalesund')">
+                <div class="nc-header">
+                    <div>
+                        <div class="nc-title">fjordlab_data@aalesund</div>
+                        <div class="nc-sub">Aalesund, NO</div>
+                    </div>
+                    <div class="status-dot online" title="Online"></div>
+                </div>
+                <div style="display:flex; gap:5px; margin-bottom:10px;">
+                    <span class="tag">HTTP</span>
+                    <span class="tag">MQTT</span>
+                </div>
+                <div class="nc-sub">https://fjordlab.aalesund.example/api/v1</div>
+                <div class="nc-metrics">
+                    <span class="metric" style="color:var(--success)"><i class="fa-solid fa-heart-pulse"></i> 24ms</span>
+                    <span class="metric"><i class="fa-solid fa-database"></i> 142k Obs</span>
+                    <span class="metric"><i class="fa-solid fa-clock"></i> 2s ago</span>
+                </div>
+            </div>
+
+            <!-- Node 2: Sintef -->
+            <div class="node-card" onclick="loadNode('sintef')">
+                <div class="nc-header">
+                    <div>
+                        <div class="nc-title">data@sintef</div>
+                        <div class="nc-sub">Trondheim, NO</div>
+                    </div>
+                    <div class="status-dot online" title="Online"></div>
+                </div>
+                <div style="display:flex; gap:5px; margin-bottom:10px;">
+                    <span class="tag">HTTP</span>
+                </div>
+                <div class="nc-sub">https://data.sintef.no/api/</div>
+                <div class="nc-metrics">
+                    <span class="metric" style="color:var(--success)"><i class="fa-solid fa-heart-pulse"></i> 45ms</span>
+                    <span class="metric"><i class="fa-solid fa-database"></i> 8.2M Obs</span>
+                    <span class="metric"><i class="fa-solid fa-clock"></i> 1m ago</span>
+                </div>
+            </div>
+
+            <!-- Node 3: Remote -->
+            <div class="node-card" onclick="loadNode('remote03')">
+                <div class="nc-header">
+                    <div>
+                        <div class="nc-title">remote-node-03</div>
+                        <div class="nc-sub">Svalbard, NO</div>
+                    </div>
+                    <div class="status-dot degraded" title="Degraded - High Latency"></div>
+                </div>
+                <div style="display:flex; gap:5px; margin-bottom:10px;">
+                    <span class="tag">HTTP</span>
+                    <span class="tag">MQTT</span>
+                </div>
+                <div class="nc-sub">https://satlink.svalbard.example/st</div>
+                <div class="nc-metrics">
+                    <span class="metric" style="color:var(--warning)"><i class="fa-solid fa-heart-pulse"></i> 850ms</span>
+                    <span class="metric"><i class="fa-solid fa-database"></i> 12k Obs</span>
+                    <span class="metric"><i class="fa-solid fa-clock"></i> 15m ago</span>
+                </div>
+            </div>
+
+            <!-- Node 4: Offline -->
+            <div class="node-card" style="opacity:0.7;">
+                <div class="nc-header">
+                    <div>
+                        <div class="nc-title">dev-test-node-01</div>
+                        <div class="nc-sub">Localhost</div>
+                    </div>
+                    <div class="status-dot offline" title="Offline"></div>
+                </div>
+                <div style="display:flex; gap:5px; margin-bottom:10px;">
+                    <span class="tag">HTTP</span>
+                </div>
+                <div class="nc-sub">http://localhost:8080/v1.1</div>
+                <div class="nc-metrics">
+                    <span class="metric" style="color:var(--danger)"><i class="fa-solid fa-triangle-exclamation"></i> Timeout</span>
+                    <span class="metric"><i class="fa-solid fa-clock"></i> 4h ago</span>
+                </div>
+            </div>
+
+        </div>
+      </main>
+
+      <!-- RIGHT SIDEBAR: Inspector Panel -->
+      <aside class="inspector-panel" id="inspector">
+        
+        <!-- Header -->
+        <div class="panel-header">
+            <div>
+                <h2 style="margin:0; font-size:1.1rem;">fjordlab_data@aalesund</h2>
+                <span style="font-size:0.8rem; color:var(--success);"><i class="fa-solid fa-circle"></i> Operational</span>
+            </div>
+            <div style="display:flex; gap:5px;">
+                <button class="btn btn-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
+                <button class="btn btn-sm"><i class="fa-solid fa-up-right-from-square"></i></button>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="panel-content">
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('config')">Configuration</div>
+                <div class="tab" onclick="switchTab('health')">Health & Logs</div>
+            </div>
+
+            <!-- Tab: Config -->
+            <div id="tab-config">
+                <div class="form-group">
+                    <label class="form-label">Display Name</label>
+                    <input class="input" value="fjordlab_data@aalesund">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Base HTTP URL</label>
+                    <input class="input" value="https://fjordlab.aalesund.example/api/v1">
+                    <div style="margin-top:5px; font-size:0.7rem; color:var(--success);"><i class="fa-solid fa-check"></i> Valid OGC Endpoint</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">MQTT Broker URL</label>
+                    <input class="input" value="mqtt://fjordlab.aalesund.example:1883">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Authentication</label>
+                    <select class="input">
+                        <option>API Key</option>
+                        <option>Bearer Token</option>
+                        <option>None (Public)</option>
+                    </select>
+                </div>
+
+                <h3>Routing Settings</h3>
+                <div class="form-group" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-inset); padding:10px; border-radius:var(--r-6);">
+                    <label class="form-label" style="margin:0">Enabled for Global Query</label>
+                    <input type="checkbox" checked style="accent-color:var(--accent); transform:scale(1.2);">
+                </div>
+            </div>
+
+            <!-- Tab: Health (Hidden by default) -->
+            <div id="tab-health" style="display:none;">
+                <div style="background:var(--bg-inset); padding:15px; border-radius:var(--r-6); margin-bottom:20px;">
+                    <label class="form-label">Capabilities Detected</label>
+                    <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:5px;">
+                        <span class="tag">Things</span>
+                        <span class="tag">Datastreams</span>
+                        <span class="tag">PSQL-API</span>
+                        <span class="tag">TimescaleDB-API</span>
+                        <span class="tag">MultiDatastream</span>
+                        <span class="tag">MQTT</span>
+                    </div>
+                </div>
+
+                <label class="form-label">Connection Log</label>
+                <div class="log-terminal">
+<div class="log-entry ok">[10:02:44] Heartbeat OK (24ms)</div>
+<div class="log-entry ok">[10:02:14] Heartbeat OK (28ms)</div>
+<div class="log-entry">[10:01:44] Syncing Metadata...</div>
+<div class="log-entry ok">[10:01:45] Sync Complete. 4 New Datastreams.</div>
+<div class="log-entry ok">[10:01:14] Heartbeat OK (22ms)</div>
+<div class="log-entry err">[09:55:00] Timeout (5000ms) - Retrying...</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer" style="display:flex; justify-content:space-between;">
+            <button class="btn danger">Remove Node</button>
+            <button class="btn primary">Save Changes</button>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<script>
+    // Simple UI Logic for Prototype
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        document.getElementById('tab-config').style.display = tabName === 'config' ? 'block' : 'none';
+        document.getElementById('tab-health').style.display = tabName === 'health' ? 'block' : 'none';
+    }
+
+    function loadNode(id) {
+        // Visual toggle for prototype
+        document.querySelectorAll('.node-card').forEach(c => c.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        
+        // In a real app, this would fetch data. Here we just update the title for context.
+        const titleMap = {
+            'aalesund': 'fjordlab_data@aalesund',
+            'sintef': 'data@sintef',
+            'remote03': 'remote-node-03'
+        };
+        document.querySelector('.inspector-panel h2').innerText = titleMap[id] || 'Node Details';
+    }
+
+    function showAddNode() {
+        // Reset panel for "New" state
+        document.querySelector('.inspector-panel h2').innerText = 'Register New Node';
+        document.querySelectorAll('.input').forEach(i => i.value = '');
+    }
+</script>
+
+</body>
+</html>
