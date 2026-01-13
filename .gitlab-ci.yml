@@ -2,9 +2,7 @@ pages:
   stage: deploy
   script:
     - mkdir -p public
-    - cp ui/index.html public/index.html
-    - cp ui/api_view.html public/
-    - cp ui/node.html public/
+    - cp ui/*.html public/.
   artifacts:
     paths:
       - public
