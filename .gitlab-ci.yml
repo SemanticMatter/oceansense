@@ -1,8 +1,17 @@
 pages:
   stage: deploy
+  image: node:18
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
   script:
-    - mkdir -p public
-    - cp ui/*.html public/.
+    - npm ci --cache .npm --prefer-offline
+    - npm run build
+    - rm -rf public
+    - cp -r dist public
   artifacts:
     paths:
       - public

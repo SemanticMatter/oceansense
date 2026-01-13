@@ -1,0 +1,135 @@
+.page-api .page{ display: flex; flex: 1; overflow: hidden; width: 100%; height: 100%; padding: 0; }
+
+.page-api .doc-workspace{
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.page-api .sidebar{
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+}
+
+.page-api .main-content{
+  background: var(--bg);
+  overflow-y: auto;
+  padding: 40px 60px;
+  scroll-behavior: smooth;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-api h1{ font-size: 2.2rem; margin: 0 0 15px 0; color: var(--text); letter-spacing: -0.02em; }
+.page-api h2{ font-size: 1.5rem; margin: 50px 0 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; color: var(--text); }
+.page-api h3{ font-size: 1.1rem; margin: 30px 0 15px 0; color: var(--accent); font-weight: 600; }
+.page-api p{ line-height: 1.7; color: var(--text-muted); margin-bottom: 15px; max-width: 800px; }
+.page-api ul{ color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+.page-api li{ margin-bottom: 8px; }
+
+.page-api .api-nav-group{ padding: 20px 20px 5px; }
+.page-api .api-nav-header{ font-size: 0.75rem; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; font-weight: 700; letter-spacing: 0.05em; }
+.page-api .api-link{
+  display: block;
+  padding: 8px 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: var(--r-6);
+  margin-bottom: 2px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.page-api .api-link:hover{ background: var(--bg-elev); color: var(--text); }
+.page-api .api-link.active{ background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+
+.page-api .info-box{
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-10);
+  padding: 20px;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.page-api .ib-item label{
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 5px;
+}
+
+.page-api .ib-item span{ font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); }
+
+.page-api .code-block{
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--r-6);
+  padding: 15px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #E2E8F0;
+  overflow-x: auto;
+  margin: 15px 0;
+  border-left: 3px solid var(--accent);
+}
+
+.page-api .code-method{ color: var(--post); font-weight: 700; margin-right: 10px; }
+.page-api .code-url{ color: var(--text); }
+.page-api .code-comment{ color: var(--text-faint); display: block; margin-bottom: 5px; }
+
+.page-api table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.9rem;
+  background: var(--bg-elev);
+  border-radius: var(--r-6);
+  overflow: hidden;
+}
+
+.page-api th{
+  background: rgba(0, 0, 0, 0.2);
+  text-align: left;
+  padding: 12px 15px;
+  color: var(--text-faint);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.page-api td{
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: top;
+}
+
+.page-api tr:last-child td{ border-bottom: none; }
+
+.page-api td code{
+  font-family: var(--font-mono);
+  background: var(--bg-inset);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+.page-api .conf-table ul{ margin: 0; padding-left: 15px; list-style-type: disc; }
+.page-api .conf-table li{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--text); margin-bottom: 4px; }
+.page-api .conf-id{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-faint); }
+
+.page-api ::-webkit-scrollbar{ width: 8px; height: 8px; }
+.page-api ::-webkit-scrollbar-track{ background: var(--bg); }
+.page-api ::-webkit-scrollbar-thumb{ background: var(--border); border-radius: 4px; }
