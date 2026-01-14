@@ -4,29 +4,67 @@
       <div class="doc-workspace">
         <nav class="sidebar">
           <div class="api-nav-group">
-            <div class="api-nav-header">Getting Started</div>
-            <a href="#overview" class="api-link active">Overview</a>
-            <a href="#auth" class="api-link">Base URL & Auth</a>
-            <a href="#quickstart" class="api-link">Quickstart Examples</a>
+            <div class="api-nav-header">
+              Getting Started
+            </div>
+            <a
+              href="#overview"
+              class="api-link active"
+            >Overview</a>
+            <a
+              href="#auth"
+              class="api-link"
+            >Base URL & Auth</a>
+            <a
+              href="#quickstart"
+              class="api-link"
+            >Quickstart Examples</a>
           </div>
 
           <div class="api-nav-group">
-            <div class="api-nav-header">Data Model</div>
-            <a href="#entities" class="api-link">Core Entities</a>
-            <a href="#query" class="api-link">Query Options</a>
-            <a href="#cud" class="api-link">Create / Update / Delete</a>
+            <div class="api-nav-header">
+              Data Model
+            </div>
+            <a
+              href="#entities"
+              class="api-link"
+            >Core Entities</a>
+            <a
+              href="#query"
+              class="api-link"
+            >Query Options</a>
+            <a
+              href="#cud"
+              class="api-link"
+            >Create / Update / Delete</a>
           </div>
 
           <div class="api-nav-group">
-            <div class="api-nav-header">Advanced</div>
-            <a href="#batch" class="api-link">Batch Requests</a>
-            <a href="#encoding" class="api-link">Efficient Encodings</a>
-            <a href="#mqtt" class="api-link">MQTT & Real-time</a>
+            <div class="api-nav-header">
+              Advanced
+            </div>
+            <a
+              href="#batch"
+              class="api-link"
+            >Batch Requests</a>
+            <a
+              href="#encoding"
+              class="api-link"
+            >Efficient Encodings</a>
+            <a
+              href="#mqtt"
+              class="api-link"
+            >MQTT & Real-time</a>
           </div>
 
           <div class="api-nav-group">
-            <div class="api-nav-header">Standards</div>
-            <a href="#conformance" class="api-link">OGC Conformance</a>
+            <div class="api-nav-header">
+              Standards
+            </div>
+            <a
+              href="#conformance"
+              class="api-link"
+            >OGC Conformance</a>
           </div>
         </nav>
 
@@ -68,16 +106,16 @@
               specific regional gateway or the central orchestrator.
             </p>
             <div class="code-block">
-https://federation.fjordlab.no/api/v1/
+              https://federation.fjordlab.no/api/v1/
             </div>
 
             <p>
               Requests must include the <code>Authorization</code> header using a valid API Key or OAuth2 Bearer token.
             </p>
             <div class="code-block">
-<span class="code-comment">// Header Example</span>
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Accept: application/json
+              <span class="code-comment">// Header Example</span>
+              Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+              Accept: application/json
             </div>
           </section>
 
@@ -86,43 +124,43 @@ Accept: application/json
 
             <h3>1. List Things</h3>
             <div class="code-block">
-<span class="code-method">GET</span> <span class="code-url">/Things</span>
-<span class="code-comment">// 200 OK - Returns list of registered things (vessels, buoys, sites)</span>
+              <span class="code-method">GET</span> <span class="code-url">/Things</span>
+              <span class="code-comment">// 200 OK - Returns list of registered things (vessels, buoys, sites)</span>
             </div>
 
             <h3>2. Filter Observations by Time</h3>
             <div class="code-block">
-<span class="code-method">GET</span> <span class="code-url">/Observations?$filter=phenomenonTime gt 2025-01-01T00:00:00Z</span>
-<span class="code-comment">// 200 OK - Returns observations after Jan 1st, 2025</span>
+              <span class="code-method">GET</span> <span class="code-url">/Observations?$filter=phenomenonTime gt 2025-01-01T00:00:00Z</span>
+              <span class="code-comment">// 200 OK - Returns observations after Jan 1st, 2025</span>
             </div>
 
             <h3>3. Expand Relations</h3>
             <div class="code-block">
-<span class="code-method">GET</span> <span class="code-url">/Datastreams(1)?$expand=Observations</span>
-<span class="code-comment">// 200 OK - Returns Datastream 1 and its nested Observations</span>
+              <span class="code-method">GET</span> <span class="code-url">/Datastreams(1)?$expand=Observations</span>
+              <span class="code-comment">// 200 OK - Returns Datastream 1 and its nested Observations</span>
             </div>
 
             <h3>4. Select Specific Fields</h3>
             <div class="code-block">
-<span class="code-method">GET</span> <span class="code-url">/Things?$select=name,description,properties</span>
-<span class="code-comment">// 200 OK - Returns only requested fields to reduce payload size</span>
+              <span class="code-method">GET</span> <span class="code-url">/Things?$select=name,description,properties</span>
+              <span class="code-comment">// 200 OK - Returns only requested fields to reduce payload size</span>
             </div>
 
             <h3>5. Pagination</h3>
             <div class="code-block">
-<span class="code-method">GET</span> <span class="code-url">/Observations?$top=50&$skip=100</span>
-<span class="code-comment">// 200 OK - Skips first 100, returns next 50 records</span>
+              <span class="code-method">GET</span> <span class="code-url">/Observations?$top=50&$skip=100</span>
+              <span class="code-comment">// 200 OK - Skips first 100, returns next 50 records</span>
             </div>
 
             <h3>6. Create Observation</h3>
             <div class="code-block">
-<span class="code-method">POST</span> <span class="code-url">/Observations</span>
-{
-  "phenomenonTime": "2025-12-15T10:00:00Z",
-  "result": 12.5,
-  "Datastream": { "@iot.id": 1 }
-}
-<span class="code-comment">// 201 Created</span>
+              <span class="code-method">POST</span> <span class="code-url">/Observations</span>
+              {
+              "phenomenonTime": "2025-12-15T10:00:00Z",
+              "result": 12.5,
+              "Datastream": { "@iot.id": 1 }
+              }
+              <span class="code-comment">// 201 Created</span>
             </div>
           </section>
 
@@ -182,17 +220,29 @@ Accept: application/json
             <p>The API supports powerful system query options to refine results.</p>
 
             <div class="info-box">
-              <div class="ib-item"><label>$filter</label><span>Expression to filter results</span></div>
-              <div class="ib-item"><label>$expand</label><span>Inline related entities</span></div>
-              <div class="ib-item"><label>$select</label><span>Limit fields returned</span></div>
-              <div class="ib-item"><label>$orderby</label><span>Sort results</span></div>
-              <div class="ib-item"><label>$top / $skip</label><span>Pagination control</span></div>
-              <div class="ib-item"><label>$count</label><span>Return total count</span></div>
+              <div class="ib-item">
+                <label>$filter</label><span>Expression to filter results</span>
+              </div>
+              <div class="ib-item">
+                <label>$expand</label><span>Inline related entities</span>
+              </div>
+              <div class="ib-item">
+                <label>$select</label><span>Limit fields returned</span>
+              </div>
+              <div class="ib-item">
+                <label>$orderby</label><span>Sort results</span>
+              </div>
+              <div class="ib-item">
+                <label>$top / $skip</label><span>Pagination control</span>
+              </div>
+              <div class="ib-item">
+                <label>$count</label><span>Return total count</span>
+              </div>
             </div>
 
             <div class="code-block">
-<span class="code-comment">// Complex Query Example</span>
-GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$orderby=phenomenonTime desc)
+              <span class="code-comment">// Complex Query Example</span>
+              GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$orderby=phenomenonTime desc)
             </div>
           </section>
 
@@ -211,15 +261,15 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
               Use <code>PATCH</code> to partially update an entity (preferred). Use <code>PUT</code> for full replacement.
             </p>
             <div class="code-block">
-<span class="code-method">PATCH</span> <span class="code-url">/Things(1)</span>
-{ "description": "Updated description for R/V Gunnerus" }
-<span class="code-comment">// 200 OK</span>
+              <span class="code-method">PATCH</span> <span class="code-url">/Things(1)</span>
+              { "description": "Updated description for R/V Gunnerus" }
+              <span class="code-comment">// 200 OK</span>
             </div>
 
             <h3>Delete</h3>
             <div class="code-block">
-<span class="code-method">DELETE</span> <span class="code-url">/Observations(999)</span>
-<span class="code-comment">// 204 No Content</span>
+              <span class="code-method">DELETE</span> <span class="code-url">/Observations(999)</span>
+              <span class="code-comment">// 204 No Content</span>
             </div>
           </section>
 
@@ -230,13 +280,13 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
               <code>$batch</code> endpoint.
             </p>
             <div class="code-block">
-<span class="code-method">POST</span> <span class="code-url">/api/v1/$batch</span>
-{
-  "requests": [
-    { "method": "POST", "url": "Observations", "body": { ... } },
-    { "method": "GET", "url": "Things(1)" }
-  ]
-}
+              <span class="code-method">POST</span> <span class="code-url">/api/v1/$batch</span>
+              {
+              "requests": [
+              { "method": "POST", "url": "Observations", "body": { ... } },
+              { "method": "GET", "url": "Things(1)" }
+              ]
+              }
             </div>
           </section>
 
@@ -246,15 +296,15 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
               For large datasets, use the Data Array format to reduce JSON verbosity by separating keys from values.
             </p>
             <div class="code-block">
-<span class="code-comment">// Response Format</span>
-{
-  "Datastream": { "@iot.id": 1 },
-  "components": ["phenomenonTime", "result"],
-  "dataArray": [
-    ["2025-01-01T10:00:00Z", 12.4],
-    ["2025-01-01T10:01:00Z", 12.6]
-  ]
-}
+              <span class="code-comment">// Response Format</span>
+              {
+              "Datastream": { "@iot.id": 1 },
+              "components": ["phenomenonTime", "result"],
+              "dataArray": [
+              ["2025-01-01T10:00:00Z", 12.4],
+              ["2025-01-01T10:01:00Z", 12.6]
+              ]
+              }
             </div>
           </section>
 
@@ -264,14 +314,14 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
             <h3>Creating Observations</h3>
             <p>Publish JSON payloads to the following topic structure to ingest data.</p>
             <div class="code-block">
-<span class="code-comment">Topic:</span> api/v1/Datastreams({id})/Observations
-<span class="code-comment">Payload:</span> { "result": 15.5, "phenomenonTime": "..." }
+              <span class="code-comment">Topic:</span> api/v1/Datastreams({id})/Observations
+              <span class="code-comment">Payload:</span> { "result": 15.5, "phenomenonTime": "..." }
             </div>
 
             <h3>Receiving Updates</h3>
             <p>Subscribe to receive push updates when new data arrives.</p>
             <div class="code-block">
-<span class="code-comment">Subscribe:</span> api/v1/Datastreams(1)/Observations
+              <span class="code-comment">Subscribe:</span> api/v1/Datastreams(1)/Observations
             </div>
           </section>
 
@@ -282,14 +332,22 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
             <table class="conf-table">
               <thead>
                 <tr>
-                  <th style="width: 25%;">Requirements class id</th>
-                  <th style="width: 45%;">Requirements</th>
-                  <th style="width: 30%;">Description</th>
+                  <th style="width: 25%;">
+                    Requirements class id
+                  </th>
+                  <th style="width: 45%;">
+                    Requirements
+                  </th>
+                  <th style="width: 30%;">
+                    Description
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td class="conf-id">req/datamodel/thing</td>
+                  <td class="conf-id">
+                    req/datamodel/thing
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/thing/properties</li>
@@ -299,7 +357,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Thing entity</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/datamodel/location</td>
+                  <td class="conf-id">
+                    req/datamodel/location
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/location/properties</li>
@@ -309,7 +369,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Location entity</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/datamodel/historical-location</td>
+                  <td class="conf-id">
+                    req/datamodel/historical-location
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/historical-location/properties</li>
@@ -319,7 +381,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>HistoricalLocation entity</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/datamodel/datastream</td>
+                  <td class="conf-id">
+                    req/datamodel/datastream
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/datastream/properties</li>
@@ -329,7 +393,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Datastream entity</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/datamodel/sensor</td>
+                  <td class="conf-id">
+                    req/datamodel/sensor
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/sensor/properties</li>
@@ -339,7 +405,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Sensor entity</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/datamodel/observed-property</td>
+                  <td class="conf-id">
+                    req/datamodel/observed-property
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/observed-property/properties</li>
@@ -349,7 +417,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>ObservedProperty entity</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/datamodel/observation</td>
+                  <td class="conf-id">
+                    req/datamodel/observation
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/observation/properties</li>
@@ -359,7 +429,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Observation entity</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/datamodel/feature-of-interest</td>
+                  <td class="conf-id">
+                    req/datamodel/feature-of-interest
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/feature-of-interest/properties</li>
@@ -369,7 +441,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>FeatureOfInterest entity</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/datamodel/entity-control-information</td>
+                  <td class="conf-id">
+                    req/datamodel/entity-control-information
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/datamodel/entity-control-information/common-control-information</li>
@@ -378,7 +452,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Entities’ common control information</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/resource-path</td>
+                  <td class="conf-id">
+                    req/resource-path
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/resource-path/resource-path-to-entities</li>
@@ -387,7 +463,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Addressing to the entities of the SensorThings API service</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/request-data</td>
+                  <td class="conf-id">
+                    req/request-data
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/request-data/order</li>
@@ -408,7 +486,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Requesting data with system query options</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/create-update-delete</td>
+                  <td class="conf-id">
+                    req/create-update-delete
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/create-update-delete/create-entity</li>
@@ -425,7 +505,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Creating, updating, and deleting entities</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/batch-request</td>
+                  <td class="conf-id">
+                    req/batch-request
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/batch-request/batch-request</li>
@@ -434,7 +516,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Processing multiple requests with a single request</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/multi-datastream</td>
+                  <td class="conf-id">
+                    req/multi-datastream
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/multi-datastream/properties</li>
@@ -445,7 +529,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Handling complex observations with complex results (especially arrays)</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/data-array</td>
+                  <td class="conf-id">
+                    req/data-array
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/data-array/data-array</li>
@@ -454,7 +540,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Serving Observations with the efficient data array encoding</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/create-observations-via-mqtt</td>
+                  <td class="conf-id">
+                    req/create-observations-via-mqtt
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/create-observations-via-mqtt/observations-creation</li>
@@ -463,7 +551,9 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
                   <td>Creating observations through MQTT</td>
                 </tr>
                 <tr>
-                  <td class="conf-id">req/receive-updates-via-mqtt</td>
+                  <td class="conf-id">
+                    req/receive-updates-via-mqtt
+                  </td>
                   <td>
                     <ul>
                       <li>api/v1/receive-updates-via-mqtt/receive-updates</li>

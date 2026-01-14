@@ -1,57 +1,129 @@
 <template>
   <header class="topbar">
     <div class="brand">
-      <i class="fa-solid fa-circle-nodes" style="color:var(--accent)"></i>
+      <i
+        class="fa-solid fa-circle-nodes"
+        style="color:var(--accent)"
+      ></i>
       <span>FJORDLAB DATA PORTAL</span>
     </div>
     <nav class="nav">
-      <RouterLink to="/" custom v-slot="{ navigate, isActive }">
-        <button :class="{ active: isActive }" @click="navigate">
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/"
+        custom
+      >
+        <button
+          :class="{ active: isActive }"
+          @click="navigate"
+        >
           <i class="fa-solid fa-compass"></i> Explorer
         </button>
       </RouterLink>
-      <RouterLink to="/datadoc" custom v-slot="{ navigate, isActive }">
-        <button :class="{ active: isActive }" @click="navigate">
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/datadoc"
+        custom
+      >
+        <button
+          :class="{ active: isActive }"
+          @click="navigate"
+        >
           <i class="fa-solid fa-file-alt"></i> Data Documentation
         </button>
       </RouterLink>
-      <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
-        <button :class="{ active: isActive }" @click="navigate">
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/node"
+        custom
+      >
+        <button
+          :class="{ active: isActive }"
+          @click="navigate"
+        >
           <i class="fa-solid fa-network-wired"></i> Node Registry
         </button>
       </RouterLink>
-      <RouterLink to="/api_view" custom v-slot="{ navigate, isActive }">
-        <button :class="{ active: isActive }" @click="navigate">
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/api_view"
+        custom
+      >
+        <button
+          :class="{ active: isActive }"
+          @click="navigate"
+        >
           <i class="fa-solid fa-code"></i> Data Access & API
         </button>
       </RouterLink>
-      <RouterLink to="/guidelines" custom v-slot="{ navigate, isActive }">
-        <button :class="{ active: isActive }" @click="navigate">
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/guidelines"
+        custom
+      >
+        <button
+          :class="{ active: isActive }"
+          @click="navigate"
+        >
           <i class="fa-solid fa-compass-drafting"></i> Guidelines
         </button>
       </RouterLink>
     </nav>
 
     <div class="topbar-right">
-      <span v-if="rightBadge" class="pill" :class="rightBadge.tone">
-        <i v-if="rightBadge.icon" class="fa-solid" :class="rightBadge.icon"></i>
+      <span
+        v-if="rightBadge"
+        class="pill"
+        :class="rightBadge.tone"
+      >
+        <i
+          v-if="rightBadge.icon"
+          class="fa-solid"
+          :class="rightBadge.icon"
+        ></i>
         {{ rightBadge.label }}
       </span>
 
-      <div class="auth-area" ref="menuRef">
-        <button v-if="!isAuthenticated" class="btn" @click="login">Login</button>
+      <div
+        ref="menuRef"
+        class="auth-area"
+      >
+        <button
+          v-if="!isAuthenticated"
+          class="btn"
+          @click="login"
+        >
+          Login
+        </button>
 
-        <button v-else class="btn auth-button" @click="toggleMenu">
+        <button
+          v-else
+          class="btn auth-button"
+          @click="toggleMenu"
+        >
           <span class="avatar">
-            <img v-if="user?.avatarUrl" :src="user.avatarUrl" alt="" />
-            <i v-else class="fa-solid fa-user"></i>
+            <img
+              v-if="user?.avatarUrl"
+              :src="user.avatarUrl"
+              alt=""
+            />
+            <i
+              v-else
+              class="fa-solid fa-user"
+            ></i>
           </span>
           <span class="auth-name">{{ user?.name }}</span>
           <i class="fa-solid fa-chevron-down"></i>
         </button>
 
-        <div v-if="menuOpen" class="auth-menu">
-          <button class="auth-menu-item" @click="handleLogout">
+        <div
+          v-if="menuOpen"
+          class="auth-menu"
+        >
+          <button
+            class="auth-menu-item"
+            @click="handleLogout"
+          >
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
             Logout
           </button>
