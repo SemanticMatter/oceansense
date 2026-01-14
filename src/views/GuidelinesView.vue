@@ -10,13 +10,22 @@
             federated layer with metadata, ontologies, notes, and associations.
           </p>
           <div class="hero-actions">
-            <button class="btn primary" @click="goTo('node')">
+            <button
+              class="btn primary"
+              @click="goTo('node')"
+            >
               <i class="fa-solid fa-network-wired"></i> Open Node Registry
             </button>
-            <button class="btn" @click="goTo('datadoc')">
+            <button
+              class="btn"
+              @click="goTo('datadoc')"
+            >
               <i class="fa-solid fa-file-alt"></i> Data Documentation
             </button>
-            <a class="btn ghost" href="#ingestion-scenarios">
+            <a
+              class="btn ghost"
+              href="#ingestion-scenarios"
+            >
               <i class="fa-solid fa-list-check"></i> Jump to scenarios
             </a>
           </div>
@@ -33,125 +42,234 @@
               <li>Document and enrich the dataset in the federated layer.</li>
             </ol>
             <div class="hero-panel-actions">
-              <button class="btn" @click="goTo('index')"><i class="fa-solid fa-compass"></i> Explore catalog</button>
-              <button class="btn" @click="goTo('api_view')"><i class="fa-solid fa-code"></i> API reference</button>
+              <button
+                class="btn"
+                @click="goTo('index')"
+              >
+                <i class="fa-solid fa-compass"></i> Explore catalog
+              </button>
+              <button
+                class="btn"
+                @click="goTo('api_view')"
+              >
+                <i class="fa-solid fa-code"></i> API reference
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="ingestion-scenarios" class="section">
+      <section
+        id="ingestion-scenarios"
+        class="section"
+      >
         <div class="section-head">
           <h2>Choose your ingestion scenario</h2>
           <p>Pick the flow that matches your pilot’s data capture pattern and jump into step-by-step guidance.</p>
         </div>
 
         <div class="card-grid">
-          <article class="scenario-card" id="card-telemetry">
+          <article
+            id="card-telemetry"
+            class="scenario-card"
+          >
             <div class="scenario-title">
               <h3>Live telemetry</h3>
               <span class="pill info">MQTT / AMQP</span>
             </div>
-            <p class="muted">For high-frequency streams, sensors, and continuous monitoring.</p>
+            <p class="muted">
+              For high-frequency streams, sensors, and continuous monitoring.
+            </p>
             <div class="card-meta">
               <div>
                 <strong>When to use</strong>
-                <p class="muted">Real-time signals, operational dashboards, alerting.</p>
+                <p class="muted">
+                  Real-time signals, operational dashboards, alerting.
+                </p>
               </div>
               <div>
                 <strong>What you need</strong>
-                <p class="muted">Broker URL, topics/queues, auth token or client certs.</p>
+                <p class="muted">
+                  Broker URL, topics/queues, auth token or client certs.
+                </p>
               </div>
               <div>
                 <strong>Steps overview</strong>
-                <p class="muted">Configure node → publish payload → validate stream → document dataset.</p>
+                <p class="muted">
+                  Configure node → publish payload → validate stream → document dataset.
+                </p>
               </div>
             </div>
             <div class="card-actions">
-              <a class="btn primary" href="#scenario-telemetry">View steps</a>
-              <button class="btn" @click="goTo('node')">Node Registry</button>
-              <button class="btn ghost" @click="goTo('datadoc')">Documentation</button>
+              <a
+                class="btn primary"
+                href="#scenario-telemetry"
+              >View steps</a>
+              <button
+                class="btn"
+                @click="goTo('node')"
+              >
+                Node Registry
+              </button>
+              <button
+                class="btn ghost"
+                @click="goTo('datadoc')"
+              >
+                Documentation
+              </button>
             </div>
           </article>
 
-          <article class="scenario-card" id="card-files">
+          <article
+            id="card-files"
+            class="scenario-card"
+          >
             <div class="scenario-title">
               <h3>File uploads</h3>
               <span class="pill">Batch / S3</span>
             </div>
-            <p class="muted">For periodic files, lab exports, or sensor drops.</p>
+            <p class="muted">
+              For periodic files, lab exports, or sensor drops.
+            </p>
             <div class="card-meta">
               <div>
                 <strong>When to use</strong>
-                <p class="muted">Daily/weekly exports, CSV/Parquet bundles, manual uploads.</p>
+                <p class="muted">
+                  Daily/weekly exports, CSV/Parquet bundles, manual uploads.
+                </p>
               </div>
               <div>
                 <strong>What you need</strong>
-                <p class="muted">Upload endpoint, bucket credentials, folder conventions.</p>
+                <p class="muted">
+                  Upload endpoint, bucket credentials, folder conventions.
+                </p>
               </div>
               <div>
                 <strong>Steps overview</strong>
-                <p class="muted">Create dataset → upload file → validate schema → enrich metadata.</p>
+                <p class="muted">
+                  Create dataset → upload file → validate schema → enrich metadata.
+                </p>
               </div>
             </div>
             <div class="card-actions">
-              <a class="btn primary" href="#scenario-files">View steps</a>
-              <button class="btn" @click="goTo('index')">Discovery</button>
-              <button class="btn ghost" @click="goTo('datadoc')">Documentation</button>
+              <a
+                class="btn primary"
+                href="#scenario-files"
+              >View steps</a>
+              <button
+                class="btn"
+                @click="goTo('index')"
+              >
+                Discovery
+              </button>
+              <button
+                class="btn ghost"
+                @click="goTo('datadoc')"
+              >
+                Documentation
+              </button>
             </div>
           </article>
 
-          <article class="scenario-card" id="card-workflow">
+          <article
+            id="card-workflow"
+            class="scenario-card"
+          >
             <div class="scenario-title">
               <h3>Workflow-triggered ingestion</h3>
               <span class="pill warn">Webhooks</span>
             </div>
-            <p class="muted">For pipeline events, scheduled pulls, or ETL flows.</p>
+            <p class="muted">
+              For pipeline events, scheduled pulls, or ETL flows.
+            </p>
             <div class="card-meta">
               <div>
                 <strong>When to use</strong>
-                <p class="muted">Processing pipelines, event-driven datasets, scheduled pulls.</p>
+                <p class="muted">
+                  Processing pipelines, event-driven datasets, scheduled pulls.
+                </p>
               </div>
               <div>
                 <strong>What you need</strong>
-                <p class="muted">Webhook URL, scheduler, pipeline outputs.</p>
+                <p class="muted">
+                  Webhook URL, scheduler, pipeline outputs.
+                </p>
               </div>
               <div>
                 <strong>Steps overview</strong>
-                <p class="muted">Trigger pipeline → push output → register dataset → document lineage.</p>
+                <p class="muted">
+                  Trigger pipeline → push output → register dataset → document lineage.
+                </p>
               </div>
             </div>
             <div class="card-actions">
-              <a class="btn primary" href="#scenario-workflow">View steps</a>
-              <button class="btn" @click="goTo('api_view')">API</button>
-              <button class="btn ghost" @click="goTo('datadoc')">Documentation</button>
+              <a
+                class="btn primary"
+                href="#scenario-workflow"
+              >View steps</a>
+              <button
+                class="btn"
+                @click="goTo('api_view')"
+              >
+                API
+              </button>
+              <button
+                class="btn ghost"
+                @click="goTo('datadoc')"
+              >
+                Documentation
+              </button>
             </div>
           </article>
 
-          <article class="scenario-card" id="card-edge">
+          <article
+            id="card-edge"
+            class="scenario-card"
+          >
             <div class="scenario-title">
               <h3>Edge processing</h3>
               <span class="pill status">Optional</span>
             </div>
-            <p class="muted">For intermittent connectivity and local preprocessing.</p>
+            <p class="muted">
+              For intermittent connectivity and local preprocessing.
+            </p>
             <div class="card-meta">
               <div>
                 <strong>When to use</strong>
-                <p class="muted">Remote deployments, cache-first workflows, offline sensors.</p>
+                <p class="muted">
+                  Remote deployments, cache-first workflows, offline sensors.
+                </p>
               </div>
               <div>
                 <strong>What you need</strong>
-                <p class="muted">Edge agent, local storage, retry and sync policy.</p>
+                <p class="muted">
+                  Edge agent, local storage, retry and sync policy.
+                </p>
               </div>
               <div>
                 <strong>Steps overview</strong>
-                <p class="muted">Process at edge → batch forward → verify → document.</p>
+                <p class="muted">
+                  Process at edge → batch forward → verify → document.
+                </p>
               </div>
             </div>
             <div class="card-actions">
-              <a class="btn primary" href="#scenario-edge">View steps</a>
-              <button class="btn" @click="goTo('node')">Node Registry</button>
-              <button class="btn ghost" @click="goTo('datadoc')">Documentation</button>
+              <a
+                class="btn primary"
+                href="#scenario-edge"
+              >View steps</a>
+              <button
+                class="btn"
+                @click="goTo('node')"
+              >
+                Node Registry
+              </button>
+              <button
+                class="btn ghost"
+                @click="goTo('datadoc')"
+              >
+                Documentation
+              </button>
             </div>
           </article>
         </div>
@@ -164,7 +282,10 @@
         </div>
 
         <div class="accordion">
-          <details open id="scenario-telemetry">
+          <details
+            id="scenario-telemetry"
+            open
+          >
             <summary>
               <div>
                 <h3>Live telemetry</h3>
@@ -193,14 +314,24 @@
               </div>
 
               <div class="steps">
-                <div class="step">1. Register your Data Node and verify broker connectivity.</div>
-                <div class="step">2. Publish a sample message and validate the schema.</div>
-                <div class="step">3. Monitor ingestion health (latency, dropout, retries).</div>
-                <div class="step">4. Document dataset metadata and map semantic fields.</div>
+                <div class="step">
+                  1. Register your Data Node and verify broker connectivity.
+                </div>
+                <div class="step">
+                  2. Publish a sample message and validate the schema.
+                </div>
+                <div class="step">
+                  3. Monitor ingestion health (latency, dropout, retries).
+                </div>
+                <div class="step">
+                  4. Document dataset metadata and map semantic fields.
+                </div>
               </div>
 
               <div class="snippet">
-                <div class="snippet-title">Example payload</div>
+                <div class="snippet-title">
+                  Example payload
+                </div>
                 <pre>{
   "timestamp": "2025-01-18T14:22:04Z",
   "device_id": "buoy-014",
@@ -214,11 +345,23 @@
               <div class="note-row">
                 <div>
                   <h4>Security notes</h4>
-                  <p class="muted">Use TLS, rotate credentials, and grant least-privilege publish scopes.</p>
+                  <p class="muted">
+                    Use TLS, rotate credentials, and grant least-privilege publish scopes.
+                  </p>
                 </div>
                 <div class="button-row">
-                  <button class="btn" @click="goTo('node')">Open Node Registry</button>
-                  <button class="btn ghost" @click="goToDocumentation('wizard')">Document dataset</button>
+                  <button
+                    class="btn"
+                    @click="goTo('node')"
+                  >
+                    Open Node Registry
+                  </button>
+                  <button
+                    class="btn ghost"
+                    @click="goToDocumentation('wizard')"
+                  >
+                    Document dataset
+                  </button>
                 </div>
               </div>
             </div>
@@ -253,14 +396,24 @@
               </div>
 
               <div class="steps">
-                <div class="step">1. Create or pick a dataset container in the catalog.</div>
-                <div class="step">2. Upload files following the naming convention.</div>
-                <div class="step">3. Validate schema and completeness.</div>
-                <div class="step">4. Attach metadata, units, and location coverage.</div>
+                <div class="step">
+                  1. Create or pick a dataset container in the catalog.
+                </div>
+                <div class="step">
+                  2. Upload files following the naming convention.
+                </div>
+                <div class="step">
+                  3. Validate schema and completeness.
+                </div>
+                <div class="step">
+                  4. Attach metadata, units, and location coverage.
+                </div>
               </div>
 
               <div class="snippet">
-                <div class="snippet-title">Example folder structure</div>
+                <div class="snippet-title">
+                  Example folder structure
+                </div>
                 <pre>pilot-oslofjord/
   2025-01-18/
     station-01.csv
@@ -272,11 +425,23 @@
               <div class="note-row">
                 <div>
                   <h4>Security notes</h4>
-                  <p class="muted">Prefer short-lived upload credentials and checksum validation.</p>
+                  <p class="muted">
+                    Prefer short-lived upload credentials and checksum validation.
+                  </p>
                 </div>
                 <div class="button-row">
-                  <button class="btn" @click="goTo('index')">Open Discovery</button>
-                  <button class="btn ghost" @click="goToDocumentation('wizard')">Document dataset</button>
+                  <button
+                    class="btn"
+                    @click="goTo('index')"
+                  >
+                    Open Discovery
+                  </button>
+                  <button
+                    class="btn ghost"
+                    @click="goToDocumentation('wizard')"
+                  >
+                    Document dataset
+                  </button>
                 </div>
               </div>
             </div>
@@ -311,14 +476,24 @@
               </div>
 
               <div class="steps">
-                <div class="step">1. Register the pipeline output as a dataset.</div>
-                <div class="step">2. Trigger ingestion upon workflow completion.</div>
-                <div class="step">3. Attach lineage, processing, and QC notes.</div>
-                <div class="step">4. Validate dataset associations to the pilot.</div>
+                <div class="step">
+                  1. Register the pipeline output as a dataset.
+                </div>
+                <div class="step">
+                  2. Trigger ingestion upon workflow completion.
+                </div>
+                <div class="step">
+                  3. Attach lineage, processing, and QC notes.
+                </div>
+                <div class="step">
+                  4. Validate dataset associations to the pilot.
+                </div>
               </div>
 
               <div class="snippet">
-                <div class="snippet-title">Example webhook payload</div>
+                <div class="snippet-title">
+                  Example webhook payload
+                </div>
                 <pre>{
   "event": "pipeline.completed",
   "dataset": "pilot-stationm",
@@ -329,11 +504,23 @@
               <div class="note-row">
                 <div>
                   <h4>Security notes</h4>
-                  <p class="muted">Protect webhooks with signed payloads and restrict egress IPs.</p>
+                  <p class="muted">
+                    Protect webhooks with signed payloads and restrict egress IPs.
+                  </p>
                 </div>
                 <div class="button-row">
-                  <button class="btn" @click="goTo('api_view')">API Reference</button>
-                  <button class="btn ghost" @click="goToDocumentation('wizard')">Document dataset</button>
+                  <button
+                    class="btn"
+                    @click="goTo('api_view')"
+                  >
+                    API Reference
+                  </button>
+                  <button
+                    class="btn ghost"
+                    @click="goToDocumentation('wizard')"
+                  >
+                    Document dataset
+                  </button>
                 </div>
               </div>
             </div>
@@ -368,14 +555,24 @@
               </div>
 
               <div class="steps">
-                <div class="step">1. Preprocess data at the edge (filter, aggregate).</div>
-                <div class="step">2. Buffer to local storage with retry logic.</div>
-                <div class="step">3. Forward to Data Node when online.</div>
-                <div class="step">4. Document provenance and transformations.</div>
+                <div class="step">
+                  1. Preprocess data at the edge (filter, aggregate).
+                </div>
+                <div class="step">
+                  2. Buffer to local storage with retry logic.
+                </div>
+                <div class="step">
+                  3. Forward to Data Node when online.
+                </div>
+                <div class="step">
+                  4. Document provenance and transformations.
+                </div>
               </div>
 
               <div class="snippet">
-                <div class="snippet-title">Example sync policy</div>
+                <div class="snippet-title">
+                  Example sync policy
+                </div>
                 <pre>cache.maxSize = "20GB"
 retry.backoff = "exponential"
 flush.onConnection = true</pre>
@@ -384,11 +581,23 @@ flush.onConnection = true</pre>
               <div class="note-row">
                 <div>
                   <h4>Security notes</h4>
-                  <p class="muted">Encrypt data at rest and rotate edge credentials regularly.</p>
+                  <p class="muted">
+                    Encrypt data at rest and rotate edge credentials regularly.
+                  </p>
                 </div>
                 <div class="button-row">
-                  <button class="btn" @click="goTo('node')">Node Registry</button>
-                  <button class="btn ghost" @click="goToDocumentation('wizard')">Document dataset</button>
+                  <button
+                    class="btn"
+                    @click="goTo('node')"
+                  >
+                    Node Registry
+                  </button>
+                  <button
+                    class="btn ghost"
+                    @click="goToDocumentation('wizard')"
+                  >
+                    Document dataset
+                  </button>
                 </div>
               </div>
             </div>
@@ -409,25 +618,45 @@ flush.onConnection = true</pre>
           <div class="doc-selector">
             <div>
               <h3>Pick a dataset</h3>
-              <p class="muted">Choose a dataset to jump directly into the documentation flow.</p>
+              <p class="muted">
+                Choose a dataset to jump directly into the documentation flow.
+              </p>
             </div>
             <div class="selector-controls">
-              <select v-model="selectedDatasetId" class="input">
-                <option value="">Select dataset</option>
-                <option v-for="dataset in datasets" :key="dataset.id" :value="dataset.id">
+              <select
+                v-model="selectedDatasetId"
+                class="input"
+              >
+                <option value="">
+                  Select dataset
+                </option>
+                <option
+                  v-for="dataset in datasets"
+                  :key="dataset.id"
+                  :value="dataset.id"
+                >
                   {{ dataset.title }}
                 </option>
               </select>
-              <button class="btn" :disabled="!selectedDatasetId" @click="goToDocumentation('explorer')">
+              <button
+                class="btn"
+                :disabled="!selectedDatasetId"
+                @click="goToDocumentation('explorer')"
+              >
                 Open documentation
               </button>
             </div>
           </div>
 
-          <div class="doc-summary" v-if="selectedDataset">
+          <div
+            v-if="selectedDataset"
+            class="doc-summary"
+          >
             <div>
               <h4>{{ selectedDataset.title }}</h4>
-              <p class="muted">{{ selectedDataset.description }}</p>
+              <p class="muted">
+                {{ selectedDataset.description }}
+              </p>
             </div>
             <div class="pill-row">
               <span class="pill info">{{ selectedDataset.status }}</span>
@@ -440,44 +669,91 @@ flush.onConnection = true</pre>
             <div class="check-item">
               <div>
                 <h4>Discover dataset</h4>
-                <p class="muted">Locate your dataset in the catalog or discovery view.</p>
+                <p class="muted">
+                  Locate your dataset in the catalog or discovery view.
+                </p>
               </div>
-              <button class="btn" @click="goTo('index')">Discovery</button>
+              <button
+                class="btn"
+                @click="goTo('index')"
+              >
+                Discovery
+              </button>
             </div>
             <div class="check-item">
               <div>
                 <h4>Attach metadata</h4>
-                <p class="muted">Add schema, units, sampling rate, location, and device details.</p>
+                <p class="muted">
+                  Add schema, units, sampling rate, location, and device details.
+                </p>
               </div>
-              <button class="btn" :disabled="!selectedDatasetId" @click="goToDocumentation('wizard')">Metadata</button>
+              <button
+                class="btn"
+                :disabled="!selectedDatasetId"
+                @click="goToDocumentation('wizard')"
+              >
+                Metadata
+              </button>
             </div>
             <div class="check-item">
               <div>
                 <h4>Map ontology concepts</h4>
-                <p class="muted">Link fields to controlled vocabularies and ontologies.</p>
+                <p class="muted">
+                  Link fields to controlled vocabularies and ontologies.
+                </p>
               </div>
-              <button class="btn" :disabled="!selectedDatasetId" @click="goToDocumentation('wizard')">Ontologies</button>
+              <button
+                class="btn"
+                :disabled="!selectedDatasetId"
+                @click="goToDocumentation('wizard')"
+              >
+                Ontologies
+              </button>
             </div>
             <div class="check-item">
               <div>
                 <h4>Add notes & documents</h4>
-                <p class="muted">Capture runbooks, quality notes, and related files.</p>
+                <p class="muted">
+                  Capture runbooks, quality notes, and related files.
+                </p>
               </div>
-              <button class="btn" :disabled="!selectedDatasetId" @click="goToDocumentation('wizard')">Notes</button>
+              <button
+                class="btn"
+                :disabled="!selectedDatasetId"
+                @click="goToDocumentation('wizard')"
+              >
+                Notes
+              </button>
             </div>
             <div class="check-item">
               <div>
                 <h4>Associate with pilots</h4>
-                <p class="muted">Connect datasets to observatories, pilots, or projects.</p>
+                <p class="muted">
+                  Connect datasets to observatories, pilots, or projects.
+                </p>
               </div>
-              <button class="btn" :disabled="!selectedDatasetId" @click="goToDocumentation('review')">Associations</button>
+              <button
+                class="btn"
+                :disabled="!selectedDatasetId"
+                @click="goToDocumentation('review')"
+              >
+                Associations
+              </button>
             </div>
             <div class="check-item">
               <div>
                 <h4>Versioning & lineage</h4>
-                <p class="muted">Record processing levels and provenance notes.</p>
+                <p class="muted">
+                  Record processing levels and provenance notes.
+                </p>
               </div>
-              <button class="btn" :disabled="!selectedDatasetId" @click="goToDocumentation('review')">Lineage</button>
+              <button
+                class="btn"
+                :disabled="!selectedDatasetId"
+                @click="goToDocumentation('review')"
+              >
+                Lineage
+              </button>
             </div>
           </div>
         </div>
@@ -491,7 +767,9 @@ flush.onConnection = true</pre>
         <div class="template-grid">
           <article class="template-card">
             <h3>Industrial sensors (PLC + MQTT gateway)</h3>
-            <p class="muted">Use live telemetry with topic-based streams and edge buffering for resilience.</p>
+            <p class="muted">
+              Use live telemetry with topic-based streams and edge buffering for resilience.
+            </p>
             <div class="pill-row">
               <span class="pill">Telemetry</span>
               <span class="pill">Edge</span>
@@ -499,7 +777,9 @@ flush.onConnection = true</pre>
           </article>
           <article class="template-card">
             <h3>Environmental monitoring station (batch uploads)</h3>
-            <p class="muted">File uploads with daily CSV drops and schema validation.</p>
+            <p class="muted">
+              File uploads with daily CSV drops and schema validation.
+            </p>
             <div class="pill-row">
               <span class="pill">Batch</span>
               <span class="pill">Metadata</span>
@@ -507,7 +787,9 @@ flush.onConnection = true</pre>
           </article>
           <article class="template-card">
             <h3>Research vessel operations (workflow ingestion)</h3>
-            <p class="muted">Pipeline-triggered ingestion for processing outputs and enriched lineage notes.</p>
+            <p class="muted">
+              Pipeline-triggered ingestion for processing outputs and enriched lineage notes.
+            </p>
             <div class="pill-row">
               <span class="pill warn">Pipeline</span>
               <span class="pill">Lineage</span>

@@ -1,3 +1,4 @@
+/* global L */
 import { datasets, items, connections } from '../data/fjordlab-datasets';
 
 export function initDatadoc() {
@@ -965,17 +966,6 @@ export function initDatadoc() {
           el.setAttribute('y', y + 4);
           el.setAttribute('class', 'edge-label');
           el.textContent = label;
-          svg.appendChild(el);
-        }
-
-        function drawCircle(svg, cx, cy, r, style, onClick) {
-          const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          el.setAttribute('cx', cx); el.setAttribute('cy', cy);
-          el.setAttribute('r', r);
-          el.setAttribute('class', 'node-circle');
-          el.style.stroke = style.stroke;
-          el.style.fill = style.fill;
-          if (onClick) el.addEventListener('click', (e) => { e.stopPropagation(); onClick(); });
           svg.appendChild(el);
         }
 

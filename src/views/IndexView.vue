@@ -1,13 +1,19 @@
 <template>
   <div class="page-index">
-    <main id="page-discover" class="page active">
+    <main
+      id="page-discover"
+      class="page active"
+    >
       <div class="workspace">
         <div class="ws-search">
           <div class="searchbar">
-            <i class="fa-solid fa-magnifying-glass" style="color:var(--text-muted); margin-right:10px;"></i>
+            <i
+              class="fa-solid fa-magnifying-glass"
+              style="color:var(--text-muted); margin-right:10px;"
+            ></i>
             <input
-              placeholder='Filter: "Gunnerus" AND "Engine" AND "Motion"...'
-              value='R/V Gunnerus Data Streams'
+              placeholder="Filter: &quot;Gunnerus&quot; AND &quot;Engine&quot; AND &quot;Motion&quot;..."
+              value="R/V Gunnerus Data Streams"
             />
           </div>
           <div style="display:flex; gap:8px;">
@@ -18,11 +24,16 @@
 
         <aside class="panel">
           <div class="panel-header">
-            <h2 id="datasets-title">Datasets</h2>
+            <h2 id="datasets-title">
+              Datasets
+            </h2>
             <span class="pill status">Node Online</span>
           </div>
           <div class="panel-body">
-            <article class="dataset-card" onclick="selectDataset(this, 'wind')">
+            <article
+              class="dataset-card"
+              onclick="selectDataset(this, 'wind')"
+            >
               <div class="dataset-title">
                 <div style="display:flex; justify-content:space-between;">
                   <h3>Gunnerus_MetStation_Wind</h3>
@@ -33,10 +44,15 @@
                 <span class="pill">Type: <strong>Time Series</strong></span>
                 <span class="pill">Sensor: <strong>Gill WindObserver</strong></span>
               </div>
-              <p class="desc">Real-time wind speed and direction (True/Apparent) corrected for vessel motion.</p>
+              <p class="desc">
+                Real-time wind speed and direction (True/Apparent) corrected for vessel motion.
+              </p>
             </article>
 
-            <article class="dataset-card" onclick="selectDataset(this, 'engine')">
+            <article
+              class="dataset-card"
+              onclick="selectDataset(this, 'engine')"
+            >
               <div class="dataset-title">
                 <div style="display:flex; justify-content:space-between;">
                   <h3>Gunnerus_Propulsion_Telemetry</h3>
@@ -47,10 +63,15 @@
                 <span class="pill">Type: <strong>Engineering</strong></span>
                 <span class="pill">Source: <strong>ECU/Modbus</strong></span>
               </div>
-              <p class="desc">Telemetry from 3x Main Scania DI16 engines. RPM, Oil Temp, Exhaust Temp, Fuel Rate.</p>
+              <p class="desc">
+                Telemetry from 3x Main Scania DI16 engines. RPM, Oil Temp, Exhaust Temp, Fuel Rate.
+              </p>
             </article>
 
-            <article class="dataset-card" onclick="selectDataset(this, 'motion')">
+            <article
+              class="dataset-card"
+              onclick="selectDataset(this, 'motion')"
+            >
               <div class="dataset-title">
                 <div style="display:flex; justify-content:space-between;">
                   <h3>Gunnerus_MRU_Motion</h3>
@@ -61,10 +82,15 @@
                 <span class="pill">Type: <strong>High-Freq</strong></span>
                 <span class="pill">Sensor: <strong>Seapath 380</strong></span>
               </div>
-              <p class="desc">Precision positioning (Lat/Lon), Heave, Pitch, Roll, Velocity, and Acceleration vectors.</p>
+              <p class="desc">
+                Precision positioning (Lat/Lon), Heave, Pitch, Roll, Velocity, and Acceleration vectors.
+              </p>
             </article>
 
-            <article class="dataset-card" onclick="selectDataset(this, 'media')">
+            <article
+              class="dataset-card"
+              onclick="selectDataset(this, 'media')"
+            >
               <div class="dataset-title">
                 <div style="display:flex; justify-content:space-between;">
                   <h3>Gunnerus_Campaign_Media_2025</h3>
@@ -75,7 +101,9 @@
                 <span class="pill">Type: <strong>Image/Video</strong></span>
                 <span class="pill">Source: <strong>CCTV/Deck</strong></span>
               </div>
-              <p class="desc">Synchronized imagery from deck cameras, ROV feeds, and event logs.</p>
+              <p class="desc">
+                Synchronized imagery from deck cameras, ROV feeds, and event logs.
+              </p>
             </article>
           </div>
         </aside>
@@ -86,7 +114,10 @@
           <div
             style="position:absolute; bottom:20px; left:20px; right:20px; z-index:500; background:rgba(27,34,44,0.9); padding:10px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; gap:15px; backdrop-filter:blur(5px);"
           >
-            <i class="fa-solid fa-play" style="color:var(--text-muted);"></i>
+            <i
+              class="fa-solid fa-play"
+              style="color:var(--text-muted);"
+            ></i>
             <div style="flex:1; height:4px; background:var(--border); position:relative;">
               <div style="position:absolute; left:20%; width:30%; height:100%; background:var(--accent);"></div>
               <div style="position:absolute; left:20%; top:-4px; width:12px; height:12px; background:white; border-radius:50%;"></div>
@@ -118,9 +149,15 @@
               </button>
             </span>
           </div>
-          <div class="panel-body" id="inspector-content">
+          <div
+            id="inspector-content"
+            class="panel-body"
+          >
             <div style="text-align:center; margin-top:50px; color:var(--text-faint);">
-              <i class="fa-solid fa-arrow-pointer" style="margin-bottom:10px;"></i><br />
+              <i
+                class="fa-solid fa-arrow-pointer"
+                style="margin-bottom:10px;"
+              ></i><br />
               Select a dataset to view<br />telemetry details
             </div>
           </div>

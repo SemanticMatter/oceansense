@@ -1,13 +1,39 @@
 <template>
-  <footer class="app-footer" role="contentinfo">
+  <footer
+    class="app-footer"
+    role="contentinfo"
+  >
     <div class="footer-left">
-      <div class="footer-logos" aria-label="Partners">
-        <a class="logo-chip" href="#" aria-label="SINTEF (partner)" @click.prevent>
-          <img src="/logos/sintef.png" alt="SINTEF" loading="lazy" decoding="async" />
+      <div
+        class="footer-logos"
+        aria-label="Partners"
+      >
+        <a
+          class="logo-chip"
+          href="#"
+          aria-label="SINTEF (partner)"
+          @click.prevent
+        >
+          <img
+            src="/logos/sintef.png"
+            alt="SINTEF"
+            loading="lazy"
+            decoding="async"
+          />
         </a>
 
-        <a class="logo-chip" href="#" aria-label="NTNU (partner)" @click.prevent>
-          <img src="/logos/ntnu.png" alt="NTNU" loading="lazy" decoding="async" />
+        <a
+          class="logo-chip"
+          href="#"
+          aria-label="NTNU (partner)"
+          @click.prevent
+        >
+          <img
+            src="/logos/ntnu.png"
+            alt="NTNU"
+            loading="lazy"
+            decoding="async"
+          />
         </a>
       </div>
 
@@ -19,17 +45,35 @@
 
     <div class="footer-right">
       <div class="meta">
-        <span class="dot" aria-hidden="true"></span>
+        <span
+          class="dot"
+          aria-hidden="true"
+        ></span>
         <span>{{ year }}</span>
-        <span class="sep" aria-hidden="true">•</span>
+        <span
+          class="sep"
+          aria-hidden="true"
+        >•</span>
         <span class="tag">Prototype</span>
       </div>
 
       <!-- Optional: keep or remove -->
-      <nav class="links" aria-label="Footer">
-        <a href="#" @click.prevent>About</a>
-        <a href="#" @click.prevent>Privacy</a>
-        <a href="#" @click.prevent>Contact</a>
+      <nav
+        class="links"
+        aria-label="Footer"
+      >
+        <a
+          href="#"
+          @click.prevent
+        >About</a>
+        <a
+          href="#"
+          @click.prevent
+        >Privacy</a>
+        <a
+          href="#"
+          @click.prevent
+        >Contact</a>
       </nav>
     </div>
   </footer>
