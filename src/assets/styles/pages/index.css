@@ -89,6 +89,19 @@
   font-weight: 900;
 }
 
+.page-index .json-view{
+  margin: 0;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--r-6);
+  padding: 12px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
 .page-index .pill{ font-weight: 600; text-transform: uppercase; }
 
 @media (max-width: 1200px){

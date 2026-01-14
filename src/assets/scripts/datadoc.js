@@ -547,9 +547,10 @@ export function initDatadoc() {
               const y = cy + orbitR * Math.sin(angle);
   
               drawLine(svg, cx, cy, x, y);
-  
+              drawEdgeLabel(svg, (cx + x) / 2, (cy + y) / 2, link.type);
+
               const stroke = typeColor(item.type);
-              drawCircle(svg, x, y, 18, { stroke, fill: 'rgba(255,255,255,0.95)' }, () => ui.flashInspectorForItem(item, link.type));
+              drawNode(svg, x, y, 18, { stroke, fill: 'rgba(255,255,255,0.95)' }, item.type, () => ui.flashInspectorForItem(item, link.type));
               drawText(svg, x, y + 34, truncate(item.name, 14), { opacity: 0.9 });
             });
           },
@@ -994,7 +995,29 @@ export function initDatadoc() {
           el.setAttribute('class', 'link-line');
           svg.appendChild(el);
         }
-  
+
+        function drawEdgeLabel(svg, x, y, text) {
+          const label = String(text || '').replace(/_/g, ' ');
+          const padding = 6;
+          const width = Math.max(32, label.length * 6 + padding * 2);
+          const height = 18;
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', x - width / 2);
+          rect.setAttribute('y', y - height / 2);
+          rect.setAttribute('width', width);
+          rect.setAttribute('height', height);
+          rect.setAttribute('rx', 6);
+          rect.setAttribute('class', 'edge-label-bg');
+          svg.appendChild(rect);
+
+          const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          el.setAttribute('x', x);
+          el.setAttribute('y', y + 4);
+          el.setAttribute('class', 'edge-label');
+          el.textContent = label;
+          svg.appendChild(el);
+        }
+
         function drawCircle(svg, cx, cy, r, style, onClick) {
           const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           el.setAttribute('cx', cx); el.setAttribute('cy', cy);
@@ -1005,7 +1028,54 @@ export function initDatadoc() {
           if (onClick) el.addEventListener('click', (e) => { e.stopPropagation(); onClick(); });
           svg.appendChild(el);
         }
-  
+
+        function drawNode(svg, cx, cy, r, style, type, onClick) {
+          const shape = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          shape.setAttribute('class', 'node-shape');
+          let base;
+
+          if (type === 'file') {
+            base = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            base.setAttribute('x', cx - r);
+            base.setAttribute('y', cy - r);
+            base.setAttribute('width', r * 2);
+            base.setAttribute('height', r * 2);
+            base.setAttribute('rx', 4);
+          } else if (type === 'doc') {
+            base = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            base.setAttribute('points', `${cx},${cy - r} ${cx + r},${cy} ${cx},${cy + r} ${cx - r},${cy}`);
+          } else if (type === 'platform') {
+            base = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            base.setAttribute('points', `${cx},${cy - r} ${cx + r},${cy + r} ${cx - r},${cy + r}`);
+          } else if (type === 'instrument') {
+            base = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            base.setAttribute('points', `${cx - r},${cy} ${cx - r / 2},${cy - r} ${cx + r / 2},${cy - r} ${cx + r},${cy} ${cx + r / 2},${cy + r} ${cx - r / 2},${cy + r}`);
+          } else {
+            base = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            base.setAttribute('cx', cx);
+            base.setAttribute('cy', cy);
+            base.setAttribute('r', r);
+          }
+
+          base.style.stroke = style.stroke;
+          base.style.fill = style.fill;
+          base.setAttribute('class', 'node-base');
+          shape.appendChild(base);
+
+          const icon = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          icon.setAttribute('x', cx);
+          icon.setAttribute('y', cy + 4);
+          icon.setAttribute('class', 'node-icon');
+          icon.textContent = type === 'file' ? 'F' : type === 'doc' ? 'D' : type === 'platform' ? 'P' : type === 'instrument' ? 'I' : type === 'service' ? 'S' : 'L';
+          shape.appendChild(icon);
+
+          if (onClick) {
+            shape.addEventListener('click', (e) => { e.stopPropagation(); onClick(); });
+            shape.style.cursor = 'pointer';
+          }
+          svg.appendChild(shape);
+        }
+
         function drawText(svg, x, y, text, opts = {}) {
           const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
           el.setAttribute('x', x); el.setAttribute('y', y);

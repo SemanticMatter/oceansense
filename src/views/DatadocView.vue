@@ -93,9 +93,9 @@
         </section>
 
         <aside class="panel inspector" aria-label="Inspector">
-          <div class="panel-header">
+          <div class="panel-header inspector-header">
             <h2>Data Documentation Overview</h2>
-            <span>
+            <span class="inspector-actions">
               <button
                 id="btn-inspector-form"
                 class="btn active"

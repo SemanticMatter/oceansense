@@ -121,8 +121,22 @@
           <div class="panel-header">
             <h2>Data Inspector</h2>
             <span>
-              <button class="btn active" style="padding:2px 8px; font-size:0.7rem;">Form View</button>
-              <button class="btn ghost" style="padding:2px 8px; font-size:0.7rem; margin-left: 5px;">JSON View</button>
+              <button
+                id="btn-inspector-form"
+                class="btn active"
+                style="padding:2px 8px; font-size:0.7rem;"
+                onclick="setInspectorMode('form')"
+              >
+                Form View
+              </button>
+              <button
+                id="btn-inspector-json"
+                class="btn ghost"
+                style="padding:2px 8px; font-size:0.7rem; margin-left: 5px;"
+                onclick="setInspectorMode('json')"
+              >
+                JSON View
+              </button>
             </span>
           </div>
           <div class="panel-body" id="inspector-content">
@@ -176,13 +190,100 @@ onMounted(() => {
   const ship = L.marker([63.52, 10.15], { icon: shipIcon }).addTo(map);
   ship.bindPopup('<b>R/V Gunnerus</b><br>Speed: 12.4 kn<br>Heading: 310°');
 
-  window.selectDataset = (el, type) => {
-    document.querySelectorAll('.dataset-card').forEach((card) => card.classList.remove('active'));
-    el.classList.add('active');
+  const datasetJson = {
+    wind: {
+      dataset: 'Gunnerus_MetStation_Wind',
+      node_origin: 'data@sintef / Mast Top',
+      frequency_hz: '1 Hz',
+      live_values: {
+        wind_speed_true: '8.2 m/s',
+        wind_dir_true: '245°',
+        air_temp: '4.1°C',
+        pressure: '1012 hPa'
+      },
+      chart: 'Sparkline Chart',
+      actions: ['Download', 'Subscribe']
+    },
+    engine: {
+      dataset: 'Gunnerus_Propulsion',
+      frequency_hz: '10 Hz',
+      engines: [
+        {
+          name: 'Main Engine 1 (Scania DI16)',
+          rpm: '1,520',
+          load: '78%',
+          oil_temp: '92°C',
+          exhaust_temp: '410°C',
+          fuel_rate: '194 g/kWh'
+        },
+        {
+          name: 'Main Engine 2 (Scania DI16)',
+          rpm: '1,515',
+          load: '77%',
+          oil_temp: '91°C',
+          exhaust_temp: '390°C',
+          fuel_rate: '191 g/kWh'
+        },
+        {
+          name: 'Main Engine 3 (Scania DI16)',
+          rpm: '1,490',
+          load: '75%',
+          oil_temp: '89°C',
+          exhaust_temp: '406°C',
+          fuel_rate: '203 g/kWh'
+        }
+      ],
+      actions: ['Download', 'Subscribe']
+    },
+    motion: {
+      dataset: 'Gunnerus_MRU_Motion',
+      sensor: 'Seapath 380',
+      frequency_hz: '100 Hz',
+      position_attitude: {
+        lat: '63.5201 N',
+        lon: '10.1504 E',
+        heading: '310.5°',
+        roll: '1.2°',
+        pitch: '0.4°',
+        heave: '0.15 m'
+      },
+      dynamics: {
+        sog: '12.4 kn',
+        accel_z: '9.81 m/s²'
+      },
+      actions: ['Download', 'Subscribe']
+    },
+    media: {
+      dataset: 'Gunnerus_Campaign_Media',
+      items: '142 Images, 12 Videos',
+      latest_captures: ['Deck Cam 1', 'Aft CCTV', 'ROV Feed', 'Nav Screen'],
+      actions: ['Open Media Gallery', 'Download', 'Subscribe']
+    }
+  };
 
+  let inspectorMode = 'form';
+  let selectedType = null;
+
+  const escapeHtml = (value) =>
+    String(value)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+
+  const renderInspector = (type) => {
     const container = document.getElementById('inspector-content');
-    let content = '';
+    if (!container) {
+      return;
+    }
 
+    if (inspectorMode === 'json') {
+      const payload = datasetJson[type] || {};
+      const json = escapeHtml(JSON.stringify(payload, null, 2));
+      container.innerHTML = `<pre class="json-view">${json}</pre>`;
+      return;
+    }
+
+    let content = '';
     if (type === 'wind') {
       content = `
             <div class="kv"><span class="k">Dataset</span><span class="v">Gunnerus_MetStation_Wind</span></div>
@@ -277,6 +378,24 @@ onMounted(() => {
     `;
 
     container.innerHTML = content;
+  };
+
+  window.setInspectorMode = (mode) => {
+    inspectorMode = mode;
+    document.getElementById('btn-inspector-form').classList.toggle('active', mode === 'form');
+    document.getElementById('btn-inspector-json').classList.toggle('active', mode === 'json');
+    document.getElementById('btn-inspector-json').classList.toggle('ghost', mode !== 'json');
+    document.getElementById('btn-inspector-form').classList.toggle('ghost', mode !== 'form');
+    if (selectedType) {
+      renderInspector(selectedType);
+    }
+  };
+
+  window.selectDataset = (el, type) => {
+    document.querySelectorAll('.dataset-card').forEach((card) => card.classList.remove('active'));
+    el.classList.add('active');
+    selectedType = type;
+    renderInspector(type);
   };
 });
 </script>
