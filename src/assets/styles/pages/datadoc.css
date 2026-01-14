@@ -105,6 +105,15 @@
 }
 
 .page-datadoc .panel-header h2{ margin: 0; font-size: 0.95rem; letter-spacing: 0.2px; }
+.page-datadoc .inspector-header{ flex-wrap: nowrap; gap: 10px; }
+.page-datadoc .inspector-header h2{
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.page-datadoc .inspector-actions{ display: inline-flex; gap: 5px; flex-shrink: 0; }
 
 .page-datadoc .dataset-card{
   background: var(--bg-inset);
@@ -157,6 +166,11 @@
 .page-datadoc .node-circle{ fill: rgba(255, 255, 255, 0.95); stroke-width: 2px; cursor: pointer; transition: var(--trans-fast); }
 .page-datadoc .node-circle:hover{ filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.35)); }
 .page-datadoc .node-text{ font-size: 11px; text-anchor: middle; fill: var(--text); font-weight: 700; opacity: 0.9; }
+.page-datadoc .node-base{ stroke-width: 2px; transition: var(--trans-fast); }
+.page-datadoc .node-shape:hover .node-base{ filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.35)); }
+.page-datadoc .node-icon{ font-size: 10px; text-anchor: middle; fill: #0b0e12; font-weight: 900; letter-spacing: 0.4px; }
+.page-datadoc .edge-label-bg{ fill: rgba(11, 14, 18, 0.85); stroke: var(--border); stroke-width: 1px; }
+.page-datadoc .edge-label{ font-size: 10px; text-anchor: middle; fill: var(--text-muted); font-weight: 800; letter-spacing: 0.3px; }
 
 .page-datadoc .inspector.panel{ grid-column: 3; grid-row: 2; }
 .page-datadoc .kv{
