@@ -12,6 +12,11 @@
             <i class="fa-solid fa-compass"></i> Explorer
           </button>
         </RouterLink>
+        <RouterLink to="/datadoc" custom v-slot="{ navigate, isActive }">
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-file-alt"></i> Data Documentation
+          </button>
+        </RouterLink>
         <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
           <button :class="{ active: isActive }" @click="navigate">
             <i class="fa-solid fa-network-wired"></i> Node Registry
@@ -22,9 +27,13 @@
             <i class="fa-solid fa-code"></i> Data Access & API
           </button>
         </RouterLink>
-        <button id="nav-explorer" class="active" onclick="ui.navigate('explorer')">
-          <i class="fa-solid fa-file-alt"></i> Data Documentation
-        </button>
+        <RouterLink to="/guidelines" custom v-slot="{ navigate, isActive }">
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-compass-drafting"></i> Guidelines
+          </button>
+        </RouterLink>
+        
+        
       </nav>
 
       <div class="topbar-right">

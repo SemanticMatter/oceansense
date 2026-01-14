@@ -1,0 +1,90 @@
+export const datasets = [
+  {
+    id: 'ds1',
+    title: 'Coastal Water Quality Sensors: Oslofjord (2023)',
+    description: 'High-frequency coastal measurements (pH, turbidity, temperature, salinity) from fixed stations in the Oslofjord.',
+    organization: 'Coastal Observatory',
+    license: 'CC-BY-4.0',
+    access: 'https://example.org/opendap/oslofjord/wq_2023.nc',
+    status: 'Published',
+    topics: ['coastal', 'water-quality', 'time-series', 'netcdf'],
+    completeness: 0.86,
+    spatial: { type: 'bbox', placeName: 'Oslofjord', bbox: [10.3, 59.5, 10.9, 59.95], crs: 'EPSG:4326', depth_m: { min: 0, max: 50 } },
+    temporal: { start: '2023-01-01', end: '2023-12-31', resolution: '10min' },
+    platform: { type: 'fixed_station', name: 'Oslofjord Pier Stations', identifier: 'STN-OSFJ-SET-01' },
+    sensors: [{ role: 'CTD', make: 'Sea-Bird', model: 'SBE 37', parameters: ['temperature', 'salinity', 'pressure'] }],
+    provenance: { processing_level: 'L2', qc: { protocol: 'QARTOD', summary: 'Automated tests + manual review for flagged intervals.' } }
+  },
+  {
+    id: 'ds2',
+    title: 'OceanSITES Mooring: Station M (Norwegian Sea, 2018–2024)',
+    description: 'Moored time series (SST, salinity, currents, wind, air temperature) for upper ocean and surface meteorology.',
+    organization: 'Ocean Observing Program',
+    license: 'CC-BY-4.0',
+    access: 'https://example.org/opendap/oceansites/stationm_2018_2024.nc',
+    status: 'Published',
+    topics: ['oceansites', 'mooring', 'currents', 'air-sea-flux'],
+    completeness: 0.90,
+    spatial: { type: 'point', placeName: 'Station M', point: { lon: 2.0, lat: 66.5 }, crs: 'EPSG:4326', depth_m: { min: 0, max: 2000 } },
+    temporal: { start: '2018-06-01', end: '2024-09-30', resolution: 'hourly' },
+    platform: { type: 'mooring', name: 'Station M Mooring', identifier: 'MOOR-STM-001' },
+    sensors: [{ role: 'Current', make: 'Teledyne RDI', model: 'ADCP 75kHz', parameters: ['u', 'v'] }],
+    provenance: { processing_level: 'L2', qc: { protocol: 'QARTOD', summary: 'Sensor-dependent tests; knockdown periods flagged.' } }
+  },
+  {
+    id: 'ds3',
+    title: 'Argo Float Profiles: Nordic Seas (2010–2025)',
+    description: 'Temperature/salinity profiles from Argo floats in the Nordic Seas with delayed-mode adjustments.',
+    organization: 'Argo Assembly Center',
+    license: 'CC-BY-4.0',
+    access: 'https://example.org/erddap/tabledap/argo_nordic_seas.html',
+    status: 'Published',
+    topics: ['argo', 'profiles', 'temperature', 'salinity'],
+    completeness: 0.92,
+    spatial: { type: 'bbox', placeName: 'Nordic Seas', bbox: [-20, 60, 20, 80], crs: 'EPSG:4326', depth_m: { min: 0, max: 2000 } },
+    temporal: { start: '2010-01-01', end: '2025-11-30', resolution: '10day' },
+    platform: { type: 'profiling_float', name: 'Argo Floats (multiple)', identifier: 'ARGO-NORDIC-SET' },
+    sensors: [{ role: 'CTD', make: 'Sea-Bird', model: 'SBE 41CP', parameters: ['temperature', 'salinity', 'pressure'] }],
+    provenance: { processing_level: 'L2', qc: { protocol: 'Argo QC + delayed-mode', summary: 'Real-time tests + delayed-mode adjustments where available.' } }
+  },
+  {
+    id: 'ds4',
+    title: 'Sea Ice Concentration: Barents Sea (1979–2025, daily)',
+    description: 'Daily sea ice concentration derived from passive microwave observations for Barents Sea region.',
+    organization: 'Sea Ice Data Center',
+    license: 'CC-BY-4.0',
+    access: 'https://example.org/opendap/seaice/barents_1979_2025.nc',
+    status: 'Published',
+    topics: ['sea-ice', 'passive-microwave', 'arctic', 'climate'],
+    completeness: 0.89,
+    spatial: { type: 'bbox', placeName: 'Barents Sea', bbox: [10, 69, 60, 82], crs: 'EPSG:4326', depth_m: { min: 0, max: 0 } },
+    temporal: { start: '1979-10-01', end: '2025-12-31', resolution: 'daily' },
+    platform: { type: 'satellite', name: 'Passive microwave missions', identifier: 'PMW-SIC-BAR' },
+    sensors: [{ role: 'Radiometer', make: 'Multi', model: 'SSM/I / SSMIS', parameters: ['ice_conc'] }],
+    provenance: { processing_level: 'L3', qc: { protocol: 'Product QC', summary: 'Weather filter + land spillover mitigation.' } }
+  }
+];
+
+export const items = [
+  { id: 'f1', type: 'file', name: 'oslofjord_wq_2023.nc' },
+  { id: 'd1', type: 'doc', name: 'oslofjord_station_metadata.md' },
+  { id: 'pl1', type: 'platform', name: 'Oslofjord Pier Stations' },
+  { id: 'inst1', type: 'instrument', name: 'SBE 37 MicroCAT' },
+  { id: 'f2', type: 'file', name: 'stationm_2018_2024.nc' },
+  { id: 'pl2', type: 'platform', name: 'Station M Mooring' },
+  { id: 'inst2', type: 'instrument', name: 'ADCP 75kHz' },
+  { id: 'svc1', type: 'service', name: 'ERDDAP (mock)' },
+  { id: 'f4', type: 'file', name: 'barents_sic_1979_2025.nc' }
+];
+
+export const connections = [
+  { source: 'ds1', target: 'f1', type: 'part_of' },
+  { source: 'ds1', target: 'd1', type: 'documented_by' },
+  { source: 'ds1', target: 'pl1', type: 'observed_at' },
+  { source: 'ds1', target: 'inst1', type: 'measured_by' },
+  { source: 'ds2', target: 'f2', type: 'part_of' },
+  { source: 'ds2', target: 'pl2', type: 'observed_at' },
+  { source: 'ds2', target: 'inst2', type: 'measured_by' },
+  { source: 'ds3', target: 'svc1', type: 'served_by' },
+  { source: 'ds4', target: 'f4', type: 'part_of' }
+];

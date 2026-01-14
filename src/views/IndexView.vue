@@ -5,18 +5,31 @@
         <i class="fa-solid fa-circle-nodes" style="color:var(--accent)"></i>
         <span>FJORDLAB DATA PORTAL</span>
       </div>
-      <nav class="nav">
+      <nav class="nav"  aria-label="Primary">
         <RouterLink to="/" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">Explorer</button>
-        </RouterLink>
-        <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">Node Registry</button>
-        </RouterLink>
-        <RouterLink to="/api_view" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">Data Access & API</button>
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-compass"></i> Explorer
+          </button>
         </RouterLink>
         <RouterLink to="/datadoc" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">Data Documentation</button>
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-file-alt"></i> Data Documentation
+          </button>
+        </RouterLink>
+        <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-network-wired"></i> Node Registry
+          </button>
+        </RouterLink>
+        <RouterLink to="/api_view" custom v-slot="{ navigate, isActive }">
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-code"></i> Data Access & API
+          </button>
+        </RouterLink>
+        <RouterLink to="/guidelines" custom v-slot="{ navigate, isActive }">
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-compass-drafting"></i> Guidelines
+          </button>
         </RouterLink>
       </nav>
     </header>
@@ -202,7 +215,6 @@ onMounted(() => {
         pressure: '1012 hPa'
       },
       chart: 'Sparkline Chart',
-      actions: ['Download', 'Subscribe']
     },
     engine: {
       dataset: 'Gunnerus_Propulsion',
@@ -233,7 +245,7 @@ onMounted(() => {
           fuel_rate: '203 g/kWh'
         }
       ],
-      actions: ['Download', 'Subscribe']
+
     },
     motion: {
       dataset: 'Gunnerus_MRU_Motion',
@@ -251,13 +263,12 @@ onMounted(() => {
         sog: '12.4 kn',
         accel_z: '9.81 m/s²'
       },
-      actions: ['Download', 'Subscribe']
     },
     media: {
       dataset: 'Gunnerus_Campaign_Media',
       items: '142 Images, 12 Videos',
       latest_captures: ['Deck Cam 1', 'Aft CCTV', 'ROV Feed', 'Nav Screen'],
-      actions: ['Open Media Gallery', 'Download', 'Subscribe']
+      actions: ['Open Media Gallery']
     }
   };
 
@@ -279,7 +290,12 @@ onMounted(() => {
     if (inspectorMode === 'json') {
       const payload = datasetJson[type] || {};
       const json = escapeHtml(JSON.stringify(payload, null, 2));
-      container.innerHTML = `<pre class="json-view">${json}</pre>`;
+      container.innerHTML = `<pre class="json-view">${json}</pre>
+                      <div style="margin-top:20px; padding-top:15px; border-top:1px solid var(--border); display:flex; gap:10px;">
+                  <button class="btn primary" style="flex:1; justify-content:center;"><i class="fa-solid fa-download"></i> Download</button>
+                  <button class="btn" style="flex:1; justify-content:center;"><i class="fa-solid fa-bell"></i> Subscribe</button>
+                </div>`;
+      
       return;
     }
 

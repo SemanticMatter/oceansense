@@ -7,16 +7,29 @@
       </div>
       <nav class="nav">
         <RouterLink to="/" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">Explorer</button>
-        </RouterLink>
-        <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">Node Registry</button>
-        </RouterLink>
-        <RouterLink to="/api_view" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">Data Access & API</button>
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-compass"></i> Explorer
+          </button>
         </RouterLink>
         <RouterLink to="/datadoc" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">Data Documentation</button>
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-file-alt"></i> Data Documentation
+          </button>
+        </RouterLink>
+        <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-network-wired"></i> Node Registry
+          </button>
+        </RouterLink>
+        <RouterLink to="/api_view" custom v-slot="{ navigate, isActive }">
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-code"></i> Data Access & API
+          </button>
+        </RouterLink>
+        <RouterLink to="/guidelines" custom v-slot="{ navigate, isActive }">
+          <button :class="{ active: isActive }" @click="navigate">
+            <i class="fa-solid fa-compass-drafting"></i> Guidelines
+          </button>
         </RouterLink>
       </nav>
     </header>

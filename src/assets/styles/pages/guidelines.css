@@ -1,0 +1,311 @@
+.page-guidelines .guidelines-main{
+  padding: 24px;
+  overflow: auto;
+}
+
+.page-guidelines .hero{
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 24px;
+  align-items: stretch;
+  margin-bottom: 32px;
+}
+
+.page-guidelines .hero-content h1{
+  font-size: 2.4rem;
+  margin: 12px 0 10px;
+}
+
+.page-guidelines .hero-content p{
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.page-guidelines .hero-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.page-guidelines .hero-panel-card{
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-10);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-guidelines .hero-panel-card ol{
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.page-guidelines .hero-panel-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-guidelines .hero-panel-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.page-guidelines .section{
+  margin-bottom: 36px;
+}
+
+.page-guidelines .section-head h2{
+  margin: 0 0 8px;
+  font-size: 1.6rem;
+}
+
+.page-guidelines .section-head p{
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.page-guidelines .card-grid{
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.page-guidelines .scenario-card{
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-10);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-guidelines .scenario-title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-guidelines .scenario-card h3{
+  margin: 0;
+}
+
+.page-guidelines .card-meta{
+  display: grid;
+  gap: 10px;
+}
+
+.page-guidelines .card-meta strong{
+  display: block;
+  margin-bottom: 4px;
+}
+
+.page-guidelines .card-actions{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.page-guidelines .accordion{
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.page-guidelines details{
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-10);
+  padding: 0;
+}
+
+.page-guidelines summary{
+  list-style: none;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.page-guidelines summary::-webkit-details-marker{ display: none; }
+
+.page-guidelines summary h3{
+  margin: 0 0 4px;
+}
+
+.page-guidelines .accordion-body{
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.page-guidelines .grid-2{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.page-guidelines .grid-2 ul{
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.page-guidelines .steps{
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.page-guidelines .step{
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--r-6);
+  padding: 10px 12px;
+}
+
+.page-guidelines .snippet{
+  margin-top: 16px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--r-6);
+  padding: 12px;
+}
+
+.page-guidelines .snippet-title{
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.page-guidelines .snippet pre{
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+.page-guidelines .note-row{
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-guidelines .button-row{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.page-guidelines .doc-panel{
+  margin-top: 16px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-10);
+  padding: 16px;
+  display: grid;
+  gap: 16px;
+}
+
+.page-guidelines .doc-selector{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-guidelines .selector-controls{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.page-guidelines .doc-summary{
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--r-6);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-guidelines .doc-summary h4{
+  margin: 0 0 6px;
+}
+
+.page-guidelines .checklist{
+  display: grid;
+  gap: 10px;
+}
+
+.page-guidelines .check-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-6);
+  padding: 12px;
+  background: var(--bg-inset);
+  flex-wrap: wrap;
+}
+
+.page-guidelines .check-item h4{
+  margin: 0 0 4px;
+}
+
+.page-guidelines .template-grid{
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.page-guidelines .template-card{
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-10);
+  padding: 16px;
+}
+
+.page-guidelines .template-card h3{
+  margin: 0 0 8px;
+}
+
+.page-guidelines .pill-row{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.page-guidelines .muted{ color: var(--text-muted); }
+.page-guidelines .input{\n  background: var(--bg-inset);\n  border: 1px solid var(--border);\n  color: var(--text);\n  padding: 10px;\n  border-radius: var(--r-6);\n  outline: none;\n  font-family: var(--font-mono);\n  font-size: 0.85rem;\n  min-width: 240px;\n}\n+.page-guidelines .input:focus{ border-color: var(--accent); }
+
+@media (max-width: 960px){
+  .page-guidelines .hero{ grid-template-columns: 1fr; }
+  .page-guidelines .hero-content h1{ font-size: 2rem; }
+}
