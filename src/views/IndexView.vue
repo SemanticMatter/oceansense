@@ -18,7 +18,7 @@
 
         <aside class="panel">
           <div class="panel-header">
-            <h2>Datasets (5 Found)</h2>
+            <h2 id="datasets-title">Datasets</h2>
             <span class="pill status">Node Online</span>
           </div>
           <div class="panel-body">
@@ -379,4 +379,7 @@ onMounted(() => {
     renderInspector(type);
   };
 });
+
+
+
 </script>

@@ -37,7 +37,15 @@
         <aside class="panel" aria-label="Datasets">
           <div class="panel-header">
             <h2 id="datasets-title">Datasets</h2>
-            <span class="pill info"><i class="fa-solid fa-database"></i> Catalog</span>
+            <span style="display:flex; gap:6px; align-items:center;">
+              <button id="dataset-prev" class="btn ghost" style="padding:2px 8px; font-size:0.7rem;" onclick="ui.prevDatasetPage()">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button id="dataset-next" class="btn ghost" style="padding:2px 8px; font-size:0.7rem;" onclick="ui.nextDatasetPage()">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+              <!-- <span class="pill info"><i class="fa-solid fa-database"></i> Catalog</span> -->
+            </span>
           </div>
           <div class="panel-body" id="dataset-list"></div>
         </aside>

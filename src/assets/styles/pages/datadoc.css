@@ -1,5 +1,23 @@
 .page-datadoc .hidden{ display: none !important; }
 
+.page-datadoc{
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.page-datadoc .page{ min-height: 0; }
+.page-datadoc #page-explorer{ min-height: 0; }
+.page-datadoc #page-explorer.active{ display: flex; flex-direction: column; flex: 1; }
+.page-datadoc .workspace{ height: 100%; min-height: 0; }
+.page-datadoc .workspace{ grid-template-rows: auto minmax(0, 1fr); }
+.page-datadoc .workspace > *{ min-height: 0; }
+.page-datadoc .panel{ min-height: 0; }
+.page-datadoc .panel-body{ min-height: 0; }
+.page-datadoc .panel-body{ overflow-y: auto; }
+.page-datadoc #dataset-list{ min-height: 0; }
+
 .page-datadoc .doc-nav{
   display: flex;
   gap: 8px;

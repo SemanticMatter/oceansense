@@ -303,7 +303,18 @@
 }
 
 .page-guidelines .muted{ color: var(--text-muted); }
-.page-guidelines .input{\n  background: var(--bg-inset);\n  border: 1px solid var(--border);\n  color: var(--text);\n  padding: 10px;\n  border-radius: var(--r-6);\n  outline: none;\n  font-family: var(--font-mono);\n  font-size: 0.85rem;\n  min-width: 240px;\n}\n+.page-guidelines .input:focus{ border-color: var(--accent); }
+.page-guidelines .input{
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px;
+  border-radius: var(--r-6);
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  min-width: 240px;
+}
+.page-guidelines .input:focus{ border-color: var(--accent); }
 
 @media (max-width: 960px){
   .page-guidelines .hero{ grid-template-columns: 1fr; }

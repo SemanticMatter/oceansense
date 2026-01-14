@@ -6,15 +6,16 @@ export function initDatadoc() {
          * Deep Ocean prototype with a working FAIR wizard.
          */
   
-        const state = {
-          view: 'explorer',
-          centerView: 'map',      // 'map' | 'graph'
-          inspectorMode: 'form',  // 'form' | 'json'
-          selectedDatasetId: null,
-          query: '',
-          datasets: datasets.map((ds) => ({ ...ds })),
-          items: items.map((item) => ({ ...item })),
-          connections: connections.map((link) => ({ ...link })),
+      const state = {
+        view: 'explorer',
+        centerView: 'map',      // 'map' | 'graph'
+        inspectorMode: 'form',  // 'form' | 'json'
+        selectedDatasetId: null,
+        query: '',
+        datasetPage: 0,
+        datasets: datasets.map((ds) => ({ ...ds })),
+        items: items.map((item) => ({ ...item })),
+        connections: connections.map((link) => ({ ...link })),
           wizard: {
           datasetId: null,
           stepIndex: 0,
@@ -133,7 +134,11 @@ export function initDatadoc() {
         /* =========
            Leaflet map
            ========= */
-        let map, layerGroup;
+      let map, layerGroup;
+      let graphNodes = [];
+      let graphLinks = [];
+      let graphDimensions = { width: 0, height: 0 };
+      let graphRenderTarget = null;
   
         function ensureMap() {
           if (map) return;
@@ -306,10 +311,22 @@ export function initDatadoc() {
               const hay = `${ds.title} ${ds.description} ${(ds.topics||[]).join(' ')}`.toLowerCase();
               return hay.includes(q);
             });
-  
-            document.getElementById('datasets-title').textContent = `Datasets (${filtered.length} Found)`;
-  
-            container.innerHTML = filtered.map(ds => {
+
+            const pageSize = 4;
+            const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+            const page = Math.min(state.datasetPage, totalPages - 1);
+            state.datasetPage = page;
+
+            const start = page * pageSize;
+            const visible = filtered.slice(start, start + pageSize);
+
+            const countLabel = filtered.length
+              ? `Datasets (${start + 1}-${Math.min(start + pageSize, filtered.length)} of ${filtered.length})`
+              : 'Datasets (0 Found)';
+
+            document.getElementById('datasets-title').textContent = countLabel;
+
+            container.innerHTML = visible.map(ds => {
               const freqPill = ds.temporal?.resolution ? `<span class="pill hz">${escapeHtml(ds.temporal.resolution)}</span>` : `<span class="pill">Unspecified</span>`;
               const comp = formatCompleteness(ds);
               const compPill = `<span class="pill ${comp.cls}">${escapeHtml(comp.label)} Complete</span>`;
@@ -335,6 +352,11 @@ export function initDatadoc() {
                 </article>
               `;
             }).join('');
+
+            const prevBtn = document.getElementById('dataset-prev');
+            const nextBtn = document.getElementById('dataset-next');
+            if (prevBtn) prevBtn.disabled = page === 0;
+            if (nextBtn) nextBtn.disabled = page >= totalPages - 1;
           },
   
           selectDataset(id) {
@@ -362,6 +384,16 @@ export function initDatadoc() {
             renderSpatialOnMap(ds);
   
             if (state.view === 'wizard') ui.renderWizard();
+          },
+
+          nextDatasetPage() {
+            state.datasetPage += 1;
+            ui.renderDatasetList();
+          },
+
+          prevDatasetPage() {
+            state.datasetPage = Math.max(0, state.datasetPage - 1);
+            ui.renderDatasetList();
           },
   
           renderInspector() {
@@ -420,7 +452,7 @@ export function initDatadoc() {
             const svg = document.getElementById('graph-svg');
             if (!svg) return;
             svg.innerHTML = '';
-  
+
             const dsId = state.selectedDatasetId;
             if (!dsId) {
               svg.innerHTML = `
@@ -431,41 +463,46 @@ export function initDatadoc() {
               return;
             }
   
-            const rect = svg.getBoundingClientRect();
-            const width = Math.max(300, rect.width);
-            const height = Math.max(260, rect.height);
+            const wrap = document.getElementById('graph-wrap');
+            const rect = wrap ? wrap.getBoundingClientRect() : svg.getBoundingClientRect();
+            const width = Math.max(300, rect.width || 0);
+            const height = Math.max(260, rect.height || 0);
             svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-  
+
             const cx = width / 2;
-            const cy = height / 2;
+            const cy = height * 0.35;
             const links = state.connections.filter(c => c.source === dsId || c.target === dsId);
-  
-            drawCircle(svg, cx, cy, 26, { stroke: 'var(--accent)', fill: 'rgba(59,130,246,0.18)' }, () => ui.setInspectorMode(state.inspectorMode));
-            drawText(svg, cx, cy + 48, 'Dataset');
-  
-            if (!links.length) {
-              drawText(svg, cx, cy + 76, 'No linked items', { opacity: 0.7, fontSize: 10 });
-              return;
-            }
-  
-            const orbitR = Math.min(width, height) * 0.32;
-  
-            links.forEach((link, i) => {
+
+            graphDimensions = { width, height };
+            graphLinks = links.map((link, i) => {
               const otherId = link.source === dsId ? link.target : link.source;
               const item = state.items.find(x => x.id === otherId);
-              if (!item) return;
-  
-              const angle = (i / links.length) * 2 * Math.PI - Math.PI / 2;
+              return { ...link, otherId, item, index: i };
+            }).filter((link) => link.item);
+
+            const orbitR = Math.min(width, height) * 0.32;
+            const nodeCount = graphLinks.length;
+
+            graphNodes = [
+              { id: dsId, x: cx, y: cy, type: 'dataset', label: 'Dataset' }
+            ];
+
+            graphLinks.forEach((link, i) => {
+              const angle = (i / Math.max(1, nodeCount)) * 2 * Math.PI - Math.PI / 2;
               const x = cx + orbitR * Math.cos(angle);
               const y = cy + orbitR * Math.sin(angle);
-  
-              drawLine(svg, cx, cy, x, y);
-              drawEdgeLabel(svg, (cx + x) / 2, (cy + y) / 2, link.type);
-
-              const stroke = typeColor(item.type);
-              drawNode(svg, x, y, 18, { stroke, fill: 'rgba(255,255,255,0.95)' }, item.type, () => ui.flashInspectorForItem(item, link.type));
-              drawText(svg, x, y + 34, truncate(item.name, 14), { opacity: 0.9 });
+              graphNodes.push({
+                id: link.otherId,
+                x,
+                y,
+                type: link.item.type,
+                label: link.item.name,
+                linkType: link.type
+              });
             });
+
+            graphRenderTarget = svg;
+            renderGraphScene();
           },
   
           flashInspectorForItem(item, relType) {
@@ -945,6 +982,7 @@ export function initDatadoc() {
         function drawNode(svg, cx, cy, r, style, type, onClick) {
           const shape = document.createElementNS('http://www.w3.org/2000/svg', 'g');
           shape.setAttribute('class', 'node-shape');
+          shape.dataset.nodeId = type === 'dataset' ? 'dataset' : '';
           let base;
 
           if (type === 'file') {
@@ -963,6 +1001,11 @@ export function initDatadoc() {
           } else if (type === 'instrument') {
             base = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
             base.setAttribute('points', `${cx - r},${cy} ${cx - r / 2},${cy - r} ${cx + r / 2},${cy - r} ${cx + r},${cy} ${cx + r / 2},${cy + r} ${cx - r / 2},${cy + r}`);
+          } else if (type === 'dataset') {
+            base = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            base.setAttribute('cx', cx);
+            base.setAttribute('cy', cy);
+            base.setAttribute('r', r);
           } else {
             base = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             base.setAttribute('cx', cx);
@@ -979,7 +1022,19 @@ export function initDatadoc() {
           icon.setAttribute('x', cx);
           icon.setAttribute('y', cy + 4);
           icon.setAttribute('class', 'node-icon');
-          icon.textContent = type === 'file' ? 'F' : type === 'doc' ? 'D' : type === 'platform' ? 'P' : type === 'instrument' ? 'I' : type === 'service' ? 'S' : 'L';
+          icon.textContent = type === 'dataset'
+            ? 'DS'
+            : type === 'file'
+              ? 'F'
+              : type === 'doc'
+                ? 'D'
+                : type === 'platform'
+                  ? 'P'
+                  : type === 'instrument'
+                    ? 'I'
+                    : type === 'service'
+                      ? 'S'
+                      : 'L';
           shape.appendChild(icon);
 
           if (onClick) {
@@ -1002,6 +1057,91 @@ export function initDatadoc() {
         function truncate(s, max) {
           s = (s ?? '').toString();
           return s.length > max ? s.slice(0, max - 1) + '…' : s;
+        }
+
+        function renderGraphScene() {
+          const svg = graphRenderTarget;
+          if (!svg) return;
+          svg.innerHTML = '';
+
+          const datasetNode = graphNodes.find((node) => node.type === 'dataset');
+          if (!datasetNode) return;
+
+          if (!graphLinks.length) {
+            drawNode(svg, datasetNode.x, datasetNode.y, 26, { stroke: 'var(--accent)', fill: 'rgba(59,130,246,0.18)' }, 'dataset', () => ui.setInspectorMode(state.inspectorMode));
+            drawText(svg, datasetNode.x, datasetNode.y + 48, 'Dataset');
+            drawText(svg, datasetNode.x, datasetNode.y + 76, 'No linked items', { opacity: 0.7, fontSize: 10 });
+            return;
+          }
+
+          graphLinks.forEach((link) => {
+            const targetNode = graphNodes.find((node) => node.id === link.otherId);
+            if (!targetNode) return;
+
+            drawLine(svg, datasetNode.x, datasetNode.y, targetNode.x, targetNode.y);
+            drawEdgeLabel(svg, (datasetNode.x + targetNode.x) / 2, (datasetNode.y + targetNode.y) / 2, link.type);
+
+            const stroke = typeColor(targetNode.type);
+            drawNode(svg, targetNode.x, targetNode.y, 18, { stroke, fill: 'rgba(255,255,255,0.95)' }, targetNode.type, () => ui.flashInspectorForItem(link.item, link.type));
+            drawText(svg, targetNode.x, targetNode.y + 34, truncate(targetNode.label, 14), { opacity: 0.9 });
+          });
+
+          drawNode(svg, datasetNode.x, datasetNode.y, 26, { stroke: 'var(--accent)', fill: 'rgba(59,130,246,0.18)' }, 'dataset', () => ui.setInspectorMode(state.inspectorMode));
+          drawText(svg, datasetNode.x, datasetNode.y + 48, 'Dataset');
+        }
+
+        function getNodeAtPosition(x, y) {
+          return graphNodes.find((node) => {
+            const r = node.type === 'dataset' ? 28 : 20;
+            const dx = x - node.x;
+            const dy = y - node.y;
+            return Math.sqrt(dx * dx + dy * dy) <= r;
+          });
+        }
+
+        function clamp(value, min, max) {
+          return Math.max(min, Math.min(max, value));
+        }
+
+        function enableGraphDrag() {
+          const svg = graphRenderTarget;
+          if (!svg) return;
+
+          let activeNode = null;
+          let dragOffset = { x: 0, y: 0 };
+
+          const onDown = (event) => {
+            const rect = svg.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const node = getNodeAtPosition(x, y);
+            if (!node || node.type === 'dataset') {
+              return;
+            }
+            activeNode = node;
+            dragOffset = { x: x - node.x, y: y - node.y };
+            svg.style.cursor = 'grabbing';
+          };
+
+          const onMove = (event) => {
+            if (!activeNode) return;
+            const rect = svg.getBoundingClientRect();
+            const x = event.clientX - rect.left - dragOffset.x;
+            const y = event.clientY - rect.top - dragOffset.y;
+            activeNode.x = clamp(x, 24, graphDimensions.width - 24);
+            activeNode.y = clamp(y, 24, graphDimensions.height - 24);
+            renderGraphScene();
+          };
+
+          const onUp = () => {
+            if (!activeNode) return;
+            activeNode = null;
+            svg.style.cursor = 'default';
+          };
+
+          svg.addEventListener('mousedown', onDown);
+          window.addEventListener('mousemove', onMove);
+          window.addEventListener('mouseup', onUp);
         }
   
         function typeColor(type) {
@@ -1028,6 +1168,7 @@ export function initDatadoc() {
                 const search = document.getElementById('search');
           search.addEventListener('input', (e) => {
             state.query = e.target.value;
+            state.datasetPage = 0;
             ui.renderDatasetList();
           });
   
@@ -1046,6 +1187,7 @@ export function initDatadoc() {
 
           ui.renderReview();
           ui.renderGraph();
+          enableGraphDrag();
   
           window.addEventListener('resize', () => {
             if (map) map.invalidateSize();

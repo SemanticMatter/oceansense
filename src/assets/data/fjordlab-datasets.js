@@ -62,6 +62,70 @@ export const datasets = [
     platform: { type: 'satellite', name: 'Passive microwave missions', identifier: 'PMW-SIC-BAR' },
     sensors: [{ role: 'Radiometer', make: 'Multi', model: 'SSM/I / SSMIS', parameters: ['ice_conc'] }],
     provenance: { processing_level: 'L3', qc: { protocol: 'Product QC', summary: 'Weather filter + land spillover mitigation.' } }
+  },
+  {
+    id: 'ds5',
+    title: 'Gunnerus_MetStation_Wind',
+    description: 'Real-time wind speed and direction (True/Apparent) corrected for vessel motion.',
+    organization: 'R/V Gunnerus',
+    license: 'CC-BY-4.0',
+    access: 'https://example.org/gunnerus/metstation/wind',
+    status: 'Live',
+    topics: ['wind', 'metstation', 'time-series'],
+    completeness: 0.81,
+    spatial: { type: 'point', placeName: 'Trondheim Fjord', point: { lon: 10.4, lat: 63.45 }, crs: 'EPSG:4326', depth_m: { min: 0, max: 0 } },
+    temporal: { start: '2024-01-01', end: '2025-01-18', resolution: '1 Hz' },
+    platform: { type: 'vessel', name: 'R/V Gunnerus', identifier: 'GUNNERUS-RV-01' },
+    sensors: [{ role: 'Wind', make: 'Gill', model: 'WindObserver', parameters: ['wind_speed', 'wind_dir'] }],
+    provenance: { processing_level: 'L1', qc: { protocol: 'Sensor QC', summary: 'Automated range checks for live telemetry.' } }
+  },
+  {
+    id: 'ds6',
+    title: 'Gunnerus_Propulsion_Telemetry',
+    description: 'Telemetry from 3x Main Scania DI16 engines. RPM, Oil Temp, Exhaust Temp, Fuel Rate.',
+    organization: 'R/V Gunnerus',
+    license: 'CC-BY-4.0',
+    access: 'https://example.org/gunnerus/propulsion/telemetry',
+    status: 'Live',
+    topics: ['propulsion', 'engineering', 'time-series'],
+    completeness: 0.76,
+    spatial: { type: 'point', placeName: 'Trondheim Fjord', point: { lon: 10.4, lat: 63.45 }, crs: 'EPSG:4326', depth_m: { min: 0, max: 0 } },
+    temporal: { start: '2024-01-01', end: '2025-01-18', resolution: '10 Hz' },
+    platform: { type: 'vessel', name: 'R/V Gunnerus', identifier: 'GUNNERUS-RV-01' },
+    sensors: [{ role: 'Engine', make: 'Scania', model: 'DI16', parameters: ['rpm', 'oil_temp', 'exhaust_temp', 'fuel_rate'] }],
+    provenance: { processing_level: 'L1', qc: { protocol: 'Engineering QC', summary: 'Outlier and dropout checks per engine.' } }
+  },
+  {
+    id: 'ds7',
+    title: 'Gunnerus_MRU_Motion',
+    description: 'Precision positioning (Lat/Lon), Heave, Pitch, Roll, Velocity, and Acceleration vectors.',
+    organization: 'R/V Gunnerus',
+    license: 'CC-BY-4.0',
+    access: 'https://example.org/gunnerus/mru/motion',
+    status: 'Live',
+    topics: ['motion', 'navigation', 'high-frequency'],
+    completeness: 0.79,
+    spatial: { type: 'point', placeName: 'Trondheim Fjord', point: { lon: 10.4, lat: 63.45 }, crs: 'EPSG:4326', depth_m: { min: 0, max: 0 } },
+    temporal: { start: '2024-01-01', end: '2025-01-18', resolution: '100 Hz' },
+    platform: { type: 'vessel', name: 'R/V Gunnerus', identifier: 'GUNNERUS-RV-01' },
+    sensors: [{ role: 'MRU', make: 'Kongsberg', model: 'Seapath 380', parameters: ['lat', 'lon', 'heave', 'pitch', 'roll'] }],
+    provenance: { processing_level: 'L1', qc: { protocol: 'Nav QC', summary: 'Real-time validity checks for attitude and position.' } }
+  },
+  {
+    id: 'ds8',
+    title: 'Gunnerus_Campaign_Media_2025',
+    description: 'Synchronized imagery from deck cameras, ROV feeds, and event logs.',
+    organization: 'R/V Gunnerus',
+    license: 'CC-BY-4.0',
+    access: 'https://example.org/gunnerus/media/2025',
+    status: 'Published',
+    topics: ['media', 'image', 'video', 'campaign'],
+    completeness: 0.68,
+    spatial: { type: 'point', placeName: 'Trondheim Fjord', point: { lon: 10.4, lat: 63.45 }, crs: 'EPSG:4326', depth_m: { min: 0, max: 0 } },
+    temporal: { start: '2025-01-01', end: '2025-01-18', resolution: 'event' },
+    platform: { type: 'vessel', name: 'R/V Gunnerus', identifier: 'GUNNERUS-RV-01' },
+    sensors: [{ role: 'Camera', make: 'Deck CCTV', model: 'Multi', parameters: ['image', 'video'] }],
+    provenance: { processing_level: 'L0', qc: { protocol: 'Media QC', summary: 'Capture sync validation with event logs.' } }
   }
 ];
 
@@ -74,7 +138,18 @@ export const items = [
   { id: 'pl2', type: 'platform', name: 'Station M Mooring' },
   { id: 'inst2', type: 'instrument', name: 'ADCP 75kHz' },
   { id: 'svc1', type: 'service', name: 'ERDDAP (mock)' },
-  { id: 'f4', type: 'file', name: 'barents_sic_1979_2025.nc' }
+  { id: 'f4', type: 'file', name: 'barents_sic_1979_2025.nc' },
+  { id: 'd2', type: 'doc', name: 'gunnerus_streams_metadata.md' },
+  { id: 'pl3', type: 'platform', name: 'R/V Gunnerus' },
+  { id: 'inst3', type: 'instrument', name: 'Gill WindObserver' },
+  { id: 'inst4', type: 'instrument', name: 'Scania DI16' },
+  { id: 'inst5', type: 'instrument', name: 'Seapath 380' },
+  { id: 'inst6', type: 'instrument', name: 'Deck CCTV' },
+  { id: 'svc2', type: 'service', name: 'Gunnerus Data Node' },
+  { id: 'f5', type: 'file', name: 'gunnerus_wind_stream.parquet' },
+  { id: 'f6', type: 'file', name: 'gunnerus_propulsion_stream.parquet' },
+  { id: 'f7', type: 'file', name: 'gunnerus_mru_motion_stream.parquet' },
+  { id: 'f8', type: 'file', name: 'gunnerus_campaign_media_2025.zip' }
 ];
 
 export const connections = [
@@ -86,5 +161,23 @@ export const connections = [
   { source: 'ds2', target: 'pl2', type: 'observed_at' },
   { source: 'ds2', target: 'inst2', type: 'measured_by' },
   { source: 'ds3', target: 'svc1', type: 'served_by' },
-  { source: 'ds4', target: 'f4', type: 'part_of' }
+  { source: 'ds4', target: 'f4', type: 'part_of' },
+  { source: 'ds5', target: 'f5', type: 'part_of' },
+  { source: 'ds5', target: 'pl3', type: 'observed_at' },
+  { source: 'ds5', target: 'inst3', type: 'measured_by' },
+  { source: 'ds5', target: 'd2', type: 'documented_by' },
+  { source: 'ds5', target: 'svc2', type: 'served_by' },
+  { source: 'ds6', target: 'f6', type: 'part_of' },
+  { source: 'ds6', target: 'pl3', type: 'observed_at' },
+  { source: 'ds6', target: 'inst4', type: 'measured_by' },
+  { source: 'ds6', target: 'svc2', type: 'served_by' },
+  { source: 'ds7', target: 'f7', type: 'part_of' },
+  { source: 'ds7', target: 'pl3', type: 'observed_at' },
+  { source: 'ds7', target: 'inst5', type: 'measured_by' },
+  { source: 'ds7', target: 'svc2', type: 'served_by' },
+  { source: 'ds8', target: 'f8', type: 'part_of' },
+  { source: 'ds8', target: 'pl3', type: 'observed_at' },
+  { source: 'ds8', target: 'inst6', type: 'measured_by' },
+  { source: 'ds8', target: 'd2', type: 'documented_by' },
+  { source: 'ds8', target: 'svc2', type: 'served_by' }
 ];
