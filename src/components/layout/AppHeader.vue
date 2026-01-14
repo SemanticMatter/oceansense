@@ -1,15 +1,36 @@
 <template>
-  <header class="topbar" role="banner">
-    <div class="brand" aria-label="Fjordlab">
-      <img class="brand-logo" src="/logos/fjordlab.png" alt="Fjordlab" />
+  <header
+    class="topbar"
+    role="banner"
+  >
+    <div
+      class="brand"
+      aria-label="Fjordlab"
+    >
+      <img
+        class="brand-logo"
+        src="/logos/fjordlab.png"
+        alt="Fjordlab"
+      />
       <div class="brand-text">
-        <div class="brand-title">Fjordlab</div>
-        <div class="brand-subtitle">Data Portal</div>
+        <div class="brand-title">
+          Fjordlab
+        </div>
+        <div class="brand-subtitle">
+          Data Portal
+        </div>
       </div>
     </div>
 
-    <nav class="nav" aria-label="Primary">
-      <RouterLink v-slot="{ navigate, isActive }" to="/" custom>
+    <nav
+      class="nav"
+      aria-label="Primary"
+    >
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/"
+        custom
+      >
         <button
           type="button"
           class="nav-btn"
@@ -22,7 +43,11 @@
         </button>
       </RouterLink>
 
-      <RouterLink v-slot="{ navigate, isActive }" to="/datadoc" custom>
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/datadoc"
+        custom
+      >
         <button
           type="button"
           class="nav-btn"
@@ -35,7 +60,11 @@
         </button>
       </RouterLink>
 
-      <RouterLink v-slot="{ navigate, isActive }" to="/node" custom>
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/node"
+        custom
+      >
         <button
           type="button"
           class="nav-btn"
@@ -48,7 +77,11 @@
         </button>
       </RouterLink>
 
-      <RouterLink v-slot="{ navigate, isActive }" to="/api_view" custom>
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/api_view"
+        custom
+      >
         <button
           type="button"
           class="nav-btn"
@@ -61,7 +94,11 @@
         </button>
       </RouterLink>
 
-      <RouterLink v-slot="{ navigate, isActive }" to="/guidelines" custom>
+      <RouterLink
+        v-slot="{ navigate, isActive }"
+        to="/guidelines"
+        custom
+      >
         <button
           type="button"
           class="nav-btn"
@@ -76,13 +113,29 @@
     </nav>
 
     <div class="topbar-right">
-      <span v-if="rightBadge" class="pill" :class="rightBadge.tone">
-        <i v-if="rightBadge.icon" class="fa-solid" :class="rightBadge.icon"></i>
+      <span
+        v-if="rightBadge"
+        class="pill"
+        :class="rightBadge.tone"
+      >
+        <i
+          v-if="rightBadge.icon"
+          class="fa-solid"
+          :class="rightBadge.icon"
+        ></i>
         {{ rightBadge.label }}
       </span>
 
-      <div ref="menuRef" class="auth-area">
-        <button v-if="!isAuthenticated" type="button" class="btn login-btn" @click="login">
+      <div
+        ref="menuRef"
+        class="auth-area"
+      >
+        <button
+          v-if="!isAuthenticated"
+          type="button"
+          class="btn login-btn"
+          @click="login"
+        >
           <i class="fa-solid fa-right-to-bracket"></i>
           Login
         </button>
@@ -95,8 +148,15 @@
           @click="toggleMenu"
         >
           <span class="avatar">
-            <img v-if="user?.avatarUrl" :src="user.avatarUrl" alt="" />
-            <i v-else class="fa-solid fa-user"></i>
+            <img
+              v-if="user?.avatarUrl"
+              :src="user.avatarUrl"
+              alt=""
+            />
+            <i
+              v-else
+              class="fa-solid fa-user"
+            ></i>
           </span>
 
           <span class="auth-name">{{ user?.name }}</span>
@@ -104,8 +164,17 @@
         </button>
 
         <Transition name="fade-pop">
-          <div v-if="menuOpen" class="auth-menu" role="menu">
-            <button class="auth-menu-item" type="button" role="menuitem" @click="handleLogout">
+          <div
+            v-if="menuOpen"
+            class="auth-menu"
+            role="menu"
+          >
+            <button
+              class="auth-menu-item"
+              type="button"
+              role="menuitem"
+              @click="handleLogout"
+            >
               <i class="fa-solid fa-arrow-right-from-bracket"></i>
               Logout
             </button>
