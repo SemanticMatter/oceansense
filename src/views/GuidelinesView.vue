@@ -1,39 +1,5 @@
 <template>
-  <div class="app page-guidelines">
-    <header class="topbar">
-      <div class="brand">
-        <i class="fa-solid fa-circle-nodes" style="color:var(--accent)"></i>
-        <span>FJORDLAB DATA PORTAL</span>
-      </div>
-      <nav class="nav">
-        <RouterLink to="/" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-compass"></i> Explorer
-          </button>
-        </RouterLink>
-        <RouterLink to="/datadoc" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-file-alt"></i> Data Documentation
-          </button>
-        </RouterLink>
-        <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-network-wired"></i> Node Registry
-          </button>
-        </RouterLink>
-        <RouterLink to="/api_view" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-code"></i> Data Access & API
-          </button>
-        </RouterLink>
-        <RouterLink to="/guidelines" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-compass-drafting"></i> Guidelines
-          </button>
-        </RouterLink>
-      </nav>
-    </header>
-
+  <div class="page-guidelines">
     <main class="guidelines-main">
       <section class="hero">
         <div class="hero-content">
@@ -556,7 +522,6 @@ flush.onConnection = true</pre>
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { RouterLink } from 'vue-router';
 import '../assets/styles/pages/guidelines.css';
 import { datasets } from '../assets/data/fjordlab-datasets';
 

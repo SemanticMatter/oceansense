@@ -221,20 +221,20 @@ export function initDatadoc() {
            Rendering
            ========= */
         const ui = {
-          navigate(view) {
-          state.view = view;
-  
-          // pages
-          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-          document.getElementById(`page-${view}`)?.classList.add('active');
-  
-          // nav (safe even if nav-wizard/nav-review buttons don't exist)
-          document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-          const navId = view === 'explorer'
-              ? 'nav-explorer'
-              : (view === 'wizard' ? 'nav-wizard' : 'nav-review');
-  
-          const navBtn = document.getElementById(navId);
+        navigate(view) {
+        state.view = view;
+
+        // pages
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`page-${view}`)?.classList.add('active');
+
+        // nav
+        document.querySelectorAll('.doc-nav button').forEach(b => b.classList.remove('active'));
+        const navId = view === 'explorer'
+            ? 'nav-explorer'
+            : (view === 'wizard' ? 'nav-wizard' : 'nav-review');
+
+        const navBtn = document.getElementById(navId);
           if (navBtn) navBtn.classList.add('active');
   
           if (view === 'wizard') ui.renderWizard();

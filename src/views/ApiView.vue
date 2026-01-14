@@ -1,39 +1,5 @@
 <template>
-  <div class="app page-api">
-    <header class="topbar">
-      <div class="brand">
-        <i class="fa-solid fa-circle-nodes" style="color:var(--accent)"></i>
-        <span>FJORDLAB DATA PORTAL</span>
-      </div>
-      <nav class="nav">
-        <RouterLink to="/" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-compass"></i> Explorer
-          </button>
-        </RouterLink>
-        <RouterLink to="/datadoc" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-file-alt"></i> Data Documentation
-          </button>
-        </RouterLink>
-        <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-network-wired"></i> Node Registry
-          </button>
-        </RouterLink>
-        <RouterLink to="/api_view" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-code"></i> Data Access & API
-          </button>
-        </RouterLink>
-        <RouterLink to="/guidelines" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-compass-drafting"></i> Guidelines
-          </button>
-        </RouterLink>
-      </nav>
-    </header>
-
+  <div class="page-api">
     <div class="page">
       <div class="doc-workspace">
         <nav class="sidebar">
@@ -516,7 +482,6 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
 
 <script setup>
 import { onMounted, onBeforeUnmount } from 'vue';
-import { RouterLink } from 'vue-router';
 import '../assets/styles/pages/api_view.css';
 
 onMounted(() => {

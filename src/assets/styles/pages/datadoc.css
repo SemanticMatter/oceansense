@@ -1,5 +1,16 @@
 .page-datadoc .hidden{ display: none !important; }
 
+.page-datadoc .doc-nav{
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 0;
+  flex-wrap: wrap;
+}
+
+.page-datadoc .doc-nav .btn{
+  padding: 6px 12px;
+}
+
 .page-datadoc .nav button{
   display: flex;
   align-items: center;

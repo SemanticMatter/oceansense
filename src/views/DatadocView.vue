@@ -1,45 +1,18 @@
 <template>
-  <div class="app page-datadoc">
-    <header class="topbar">
-      <div class="brand">
-        <i class="fa-solid fa-circle-nodes" style="color:var(--accent)"></i>
-        <span>FJORDLAB DATA PORTAL</span>
-      </div>
-
-      <nav class="nav" aria-label="Primary">
-        <RouterLink to="/" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-compass"></i> Explorer
-          </button>
-        </RouterLink>
-        <RouterLink to="/datadoc" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-file-alt"></i> Data Documentation
-          </button>
-        </RouterLink>
-        <RouterLink to="/node" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-network-wired"></i> Node Registry
-          </button>
-        </RouterLink>
-        <RouterLink to="/api_view" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-code"></i> Data Access & API
-          </button>
-        </RouterLink>
-        <RouterLink to="/guidelines" custom v-slot="{ navigate, isActive }">
-          <button :class="{ active: isActive }" @click="navigate">
-            <i class="fa-solid fa-compass-drafting"></i> Guidelines
-          </button>
-        </RouterLink>
-        
-        
-      </nav>
-
-      <div class="topbar-right">
-        <span class="pill status"><i class="fa-solid fa-signal"></i> Node Online</span>
-      </div>
-    </header>
+  <div class="page-datadoc">
+    <!--
+    <div class="doc-nav">
+      <button id="nav-explorer" class="btn active" onclick="ui.navigate('explorer')">
+        <i class="fa-solid fa-compass"></i> Explorer
+      </button>
+      <button id="nav-wizard" class="btn" onclick="ui.navigate('wizard')">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Wizard
+      </button>
+      <button id="nav-review" class="btn" onclick="ui.navigate('review')">
+        <i class="fa-solid fa-chart-simple"></i> Review
+      </button>
+    </div>
+    -->
 
     <main id="page-explorer" class="page active">
       <div class="workspace">
@@ -260,12 +233,19 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { RouterLink } from 'vue-router';
+import { onBeforeUnmount, onMounted } from 'vue';
 import '../assets/styles/pages/datadoc.css';
 import { initDatadoc } from '../assets/scripts/datadoc';
+import { useHeaderMeta } from '../composables/useHeaderMeta';
+
+const { setRightBadge, clearRightBadge } = useHeaderMeta();
 
 onMounted(() => {
+  setRightBadge({ label: 'Node Online', icon: 'fa-signal', tone: 'status' });
   initDatadoc();
+});
+
+onBeforeUnmount(() => {
+  clearRightBadge();
 });
 </script>
