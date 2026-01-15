@@ -87,6 +87,10 @@ body[data-theme="sunlit-lagoon"] #graph-wrap{
   background: #e9eef6;
 }
 
+body[data-theme="sunlit-lagoon"] .searchbar input{
+  color: var(--text);
+}
+
 body[data-theme="sunlit-lagoon"] .edge-label-bg{
   fill: rgba(255, 255, 255, 0.92);
   stroke: #cbd5e1;
