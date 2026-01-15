@@ -216,10 +216,6 @@
   display: block;
 }
 
-.page-datadoc .center-stage.is-graph #graph-svg{
-  height: calc(100% - 12px);
-  margin-top: 12px;
-}
 
 .page-datadoc .center-stage.is-graph .map-overlay{
   display: none;

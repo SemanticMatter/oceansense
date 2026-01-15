@@ -472,10 +472,11 @@ export function initDatadoc() {
             const rect = svg.getBoundingClientRect();
             const width = Math.max(300, rect.width || 0);
             const height = Math.max(260, rect.height || 0);
+            const padTop = 12;
             svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
             const cx = width / 2;
-            const cy = height * 0.35;
+            const cy = padTop + (height - padTop) * 0.35;
             const links = state.connections.filter(c => c.source === dsId || c.target === dsId);
 
             graphDimensions = { width, height };
@@ -485,7 +486,7 @@ export function initDatadoc() {
               return { ...link, otherId, item, index: i };
             }).filter((link) => link.item);
 
-            const orbitR = Math.min(width, height) * 0.32;
+            const orbitR = Math.min(width, height - padTop) * 0.32;
             const nodeCount = graphLinks.length;
 
             graphNodes = [
