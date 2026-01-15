@@ -58,7 +58,7 @@ describe('AppHeader', () => {
     expect(wrapper.find('.auth-menu').exists()).toBe(false);
   });
 
-  it('renders a right-side badge when provided', async () => {
+  it('toggles the theme from the header', async () => {
     const router = buildRouter();
     await router.push('/');
     await router.isReady();
@@ -70,16 +70,12 @@ describe('AppHeader', () => {
       }
     });
 
-    const { useHeaderMeta } = await import('../src/composables/useHeaderMeta.js');
-    const { setRightBadge, clearRightBadge } = useHeaderMeta();
+    const toggle = wrapper.find('.theme-toggle');
+    expect(toggle.exists()).toBe(true);
 
-    setRightBadge({ label: 'Node Online', icon: 'fa-signal', tone: 'status' });
+    const before = document.body.dataset.theme || 'deep-ocean';
+    await toggle.trigger('click');
     await nextTick();
-
-    const badge = wrapper.find('.pill.status');
-    expect(badge.exists()).toBe(true);
-    expect(badge.text()).toContain('Node Online');
-
-    clearRightBadge();
+    expect(document.body.dataset.theme).not.toBe(before);
   });
 });
