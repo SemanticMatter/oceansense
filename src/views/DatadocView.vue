@@ -46,13 +46,6 @@
                 onclick="ui.clearSelection()"
               ><i class="fa-solid fa-xmark"></i></button>
             </span>
-
-            <span
-              class="chip"
-              title="Theme"
-            >
-              Deep Ocean <i class="fa-solid fa-moon"></i>
-            </span>
           </div>
         </div>
 

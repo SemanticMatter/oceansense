@@ -53,6 +53,36 @@ body.scrollable{
   overflow: auto;
 }
 
+body[data-theme="sunlit-lagoon"]{
+  --bg: #f5f7fb;
+  --bg-elev: #ffffff;
+  --bg-inset: #edf1f7;
+
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-faint: #64748b;
+
+  --border: #cbd5e1;
+
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.14);
+
+  --success: #0f766e;
+  --warning: #b45309;
+  --danger: #b91c1c;
+  --info: #7c3aed;
+  --freq: #db2777;
+  --offline: #64748b;
+}
+
+body[data-theme="sunlit-lagoon"] #map{
+  background: #dbe4ef;
+}
+
+body[data-theme="sunlit-lagoon"] .leaflet-layer{
+  filter: none;
+}
+
 a{ color: inherit; }
 
 .app{
