@@ -387,19 +387,10 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import '../assets/styles/pages/datadoc.css';
 import { initDatadoc } from '../assets/scripts/datadoc';
-import { useHeaderMeta } from '../composables/useHeaderMeta';
-
-const { setRightBadge, clearRightBadge } = useHeaderMeta();
-
 onMounted(() => {
-  setRightBadge({ label: 'Node Online', icon: 'fa-signal', tone: 'status' });
   initDatadoc();
-});
-
-onBeforeUnmount(() => {
-  clearRightBadge();
 });
 </script>

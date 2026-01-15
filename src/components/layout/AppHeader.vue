@@ -125,19 +125,6 @@
         <span>{{ theme.label }}</span>
       </button>
 
-      <span
-        v-if="rightBadge"
-        class="pill"
-        :class="rightBadge.tone"
-      >
-        <i
-          v-if="rightBadge.icon"
-          class="fa-solid"
-          :class="rightBadge.icon"
-        ></i>
-        {{ rightBadge.label }}
-      </span>
-
       <div
         ref="menuRef"
         class="auth-area"
@@ -201,11 +188,9 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useAuth } from '../../composables/useAuth';
-import { useHeaderMeta } from '../../composables/useHeaderMeta';
 import { useTheme } from '../../composables/useTheme';
 
 const { isAuthenticated, user, login, logout } = useAuth();
-const { rightBadge } = useHeaderMeta();
 const { theme, toggleTheme } = useTheme();
 
 const menuOpen = ref(false);
