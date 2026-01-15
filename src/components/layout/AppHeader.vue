@@ -9,7 +9,7 @@
     >
       <img
         class="brand-logo"
-        src="/logos/fjordlab.png"
+        src="/logos/fjordlab_small.png"
         alt="Fjordlab"
       />
       <div class="brand-text">
