@@ -256,15 +256,20 @@ export function initDatadoc() {
   
           setCenterView(mode) {
             state.centerView = mode;
-  
+
             document.getElementById('btn-view-map').classList.toggle('active', mode === 'map');
             document.getElementById('btn-view-graph').classList.toggle('active', mode === 'graph');
-  
+
             document.getElementById('map').classList.toggle('hidden', mode !== 'map');
             document.getElementById('graph-wrap').classList.toggle('hidden', mode !== 'graph');
-  
+
             document.getElementById('center-title').textContent = mode === 'map' ? 'Geographic Preview' : 'Connections Map';
-  
+
+            const centerStage = document.querySelector('.center-stage');
+            if (centerStage) {
+              centerStage.classList.toggle('is-graph', mode === 'graph');
+            }
+
             if (mode === 'map') setTimeout(() => { if (map) map.invalidateSize(); }, 60);
             if (mode === 'graph') ui.renderGraph();
           },
