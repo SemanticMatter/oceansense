@@ -1,10 +1,11 @@
 stages:
   - test
+  - build
   - deploy
 
 unit_tests:
   stage: test
-  image: node:18
+  image: node:22-alpine
   cache:
     key:
       files:
@@ -19,11 +20,46 @@ unit_tests:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
+docker_image:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  variables:
+    # Optional but recommended: makes Kaniko store layers remotely to speed up rebuilds
+    # (you can remove these two lines if you want simplest possible)
+    IMAGE: "$CI_REGISTRY_IMAGE"
+    KANIKO_CACHE: "true"
+    KANIKO_CACHE_REPO: "$CI_REGISTRY_IMAGE/kaniko-cache"
+  script:
+    # Auth for GitLab Container Registry
+    - mkdir -p /kaniko/.docker
+    - |
+      cat > /kaniko/.docker/config.json <<EOF
+      {"auths":{"$CI_REGISTRY":{"username":"$CI_REGISTRY_USER","password":"$CI_REGISTRY_PASSWORD"}}}
+      EOF
+
+    # Build once, push multiple tags
+    - >
+      /kaniko/executor
+      --context "$CI_PROJECT_DIR"
+      --dockerfile "$CI_PROJECT_DIR/Dockerfile"
+      --label "git-commit-sha=$CI_COMMIT_SHA"
+      --label "git-commit-branch=$CI_COMMIT_BRANCH"
+      --label "git-commit-timestamp=$CI_COMMIT_TIMESTAMP"
+      --label "git-commit-title=$CI_COMMIT_TITLE"
+      --destination "$IMAGE:$CI_COMMIT_SHORT_SHA"
+      --destination "$IMAGE:latest"
+      --cache="$KANIKO_CACHE"
+      --cache-repo="$KANIKO_CACHE_REPO"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 pages:
   stage: deploy
-  image: node:18
+  image: node:22-alpine
   needs:
     - unit_tests
+    - docker_image
   cache:
     key:
       files:

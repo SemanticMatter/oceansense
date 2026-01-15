@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+.DS_Store
+dist
+coverage
+.git
+.gitlab
+.gitlab-ci.yml
+.vscode
+.env
+.env.*
