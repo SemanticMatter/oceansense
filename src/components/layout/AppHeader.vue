@@ -113,6 +113,18 @@
     </nav>
 
     <div class="topbar-right">
+      <button
+        type="button"
+        class="btn ghost theme-toggle"
+        @click="toggleTheme"
+      >
+        <i
+          class="fa-solid"
+          :class="theme.icon"
+        ></i>
+        <span>{{ theme.label }}</span>
+      </button>
+
       <span
         v-if="rightBadge"
         class="pill"
@@ -190,9 +202,11 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useAuth } from '../../composables/useAuth';
 import { useHeaderMeta } from '../../composables/useHeaderMeta';
+import { useTheme } from '../../composables/useTheme';
 
 const { isAuthenticated, user, login, logout } = useAuth();
 const { rightBadge } = useHeaderMeta();
+const { theme, toggleTheme } = useTheme();
 
 const menuOpen = ref(false);
 const menuRef = ref(null);
@@ -360,6 +374,14 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
+}
+
+.theme-toggle{
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-size: 0.72rem;
+  padding: 6px 10px;
 }
 
 .auth-area{
