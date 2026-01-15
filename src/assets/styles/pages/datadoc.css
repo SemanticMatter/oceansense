@@ -174,7 +174,6 @@
 }
 
 .page-datadoc .center-stage.is-graph{
-  padding-top: 16px;
 }
 
 .page-datadoc .map-overlay{
@@ -209,14 +208,17 @@
 }
 
 .page-datadoc .center-stage.is-graph #graph-wrap{
-  padding-top: 12px;
-  box-sizing: border-box;
 }
 
 .page-datadoc #graph-svg{
   width: 100%;
   height: 100%;
   display: block;
+}
+
+.page-datadoc .center-stage.is-graph #graph-svg{
+  height: calc(100% - 12px);
+  margin-top: 12px;
 }
 
 .page-datadoc .center-stage.is-graph .map-overlay{

@@ -469,8 +469,7 @@ export function initDatadoc() {
               return;
             }
   
-            const wrap = document.getElementById('graph-wrap');
-            const rect = wrap ? wrap.getBoundingClientRect() : svg.getBoundingClientRect();
+            const rect = svg.getBoundingClientRect();
             const width = Math.max(300, rect.width || 0);
             const height = Math.max(260, rect.height || 0);
             svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
