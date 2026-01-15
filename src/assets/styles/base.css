@@ -83,6 +83,19 @@ body[data-theme="sunlit-lagoon"] .leaflet-layer{
   filter: none;
 }
 
+body[data-theme="sunlit-lagoon"] #graph-wrap{
+  background: #e9eef6;
+}
+
+body[data-theme="sunlit-lagoon"] .edge-label-bg{
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: #cbd5e1;
+}
+
+body[data-theme="sunlit-lagoon"] .edge-label{
+  fill: #1e293b;
+}
+
 a{ color: inherit; }
 
 .app{
