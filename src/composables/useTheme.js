@@ -1,8 +1,18 @@
 import { computed, reactive } from 'vue';
 
-const STORAGE_KEY = 'fjordlab.theme';
+const STORAGE_KEY = 'OceanSense.theme';
 
 const themes = {
+  sahel: {
+    id: 'sahel',
+    label: 'Sahel',
+    icon: 'fa-sun'
+  },
+  'sahel-dark': {
+    id: 'sahel-dark',
+    label: 'Sahel Dark',
+    icon: 'fa-moon'
+  },
   'deep-ocean': {
     id: 'deep-ocean',
     label: 'Deep Ocean',
@@ -16,7 +26,7 @@ const themes = {
 };
 
 const state = reactive({
-  current: themes['deep-ocean']
+  current: themes.sahel
 });
 
 const applyTheme = (themeId) => {
@@ -27,9 +37,15 @@ const applyTheme = (themeId) => {
 };
 
 const loadTheme = () => {
-  const stored = typeof localStorage !== 'undefined'
+  const storedRaw = typeof localStorage !== 'undefined'
     ? localStorage.getItem(STORAGE_KEY)
     : null;
+  const stored = storedRaw === 'sunlit-lagoon'
+    ? 'sahel'
+    : storedRaw === 'deep-ocean'
+      ? 'sahel-dark'
+      : storedRaw;
+
   if (stored && themes[stored]) {
     state.current = themes[stored];
   }
@@ -40,7 +56,7 @@ export const useTheme = () => {
   loadTheme();
 
   const setTheme = (themeId) => {
-    const next = themes[themeId] || themes['deep-ocean'];
+    const next = themes[themeId] || themes.sahel;
     state.current = next;
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem(STORAGE_KEY, next.id);
@@ -49,9 +65,9 @@ export const useTheme = () => {
   };
 
   const toggleTheme = () => {
-    const nextId = state.current.id === 'deep-ocean'
-      ? 'sunlit-lagoon'
-      : 'deep-ocean';
+    const nextId = state.current.id === 'sahel'
+      ? 'sahel-dark'
+      : 'sahel';
     setTheme(nextId);
   };
 

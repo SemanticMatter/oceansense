@@ -12,7 +12,7 @@
 
             <div class="stats-grid">
               <div class="stat-card">
-                <span class="stat-val">4</span>
+                <span class="stat-val">3</span>
                 <span class="stat-label">Total Nodes</span>
                 <span class="stat-sub">Registered Endpoints</span>
               </div>
@@ -20,9 +20,9 @@
                 <span
                   class="stat-val"
                   style="color:var(--success)"
-                >3</span>
+                >2</span>
                 <span class="stat-label">Online</span>
-                <span class="stat-sub">100% Availability</span>
+                <span class="stat-sub">Core Nodes Reachable</span>
               </div>
               <div class="stat-card">
                 <span
@@ -33,9 +33,9 @@
                 <span class="stat-sub">High Latency (>500ms)</span>
               </div>
               <div class="stat-card">
-                <span class="stat-val">MQTT</span>
+                <span class="stat-val">HTTP</span>
                 <span class="stat-label">Primary Protocol</span>
-                <span class="stat-sub">1 Node(s) Streaming</span>
+                <span class="stat-sub">2 Node(s) with MQTT Streams</span>
               </div>
             </div>
           </div>
@@ -63,15 +63,15 @@
           <div class="nodes-grid">
             <div
               class="node-card active"
-              onclick="loadNode('aalesund')"
+              onclick="loadNode('oceanlab_no')"
             >
               <div class="nc-header">
                 <div>
                   <div class="nc-title">
-                    fjordlab_data@aalesund
+                    oceanlab@sensor-things
                   </div>
                   <div class="nc-sub">
-                    Aalesund, NO
+                    Trondheimfjord, NO
                   </div>
                 </div>
                 <div
@@ -84,29 +84,29 @@
                 <span class="tag">MQTT</span>
               </div>
               <div class="nc-sub">
-                https://fjordlab.ntnu.no/api/v1
+                https://oceanlab.example.no/sensorthings/v1.0
               </div>
               <div class="nc-metrics">
                 <span
                   class="metric"
                   style="color:var(--success)"
-                ><i class="fa-solid fa-heart-pulse"></i> 24ms</span>
-                <span class="metric"><i class="fa-solid fa-database"></i> 142Mb</span>
-                <span class="metric"><i class="fa-solid fa-clock"></i> 2s ago</span>
+                ><i class="fa-solid fa-heart-pulse"></i> 38ms</span>
+                <span class="metric"><i class="fa-solid fa-database"></i> 5.6M obs</span>
+                <span class="metric"><i class="fa-solid fa-clock"></i> 8s ago</span>
               </div>
             </div>
 
             <div
               class="node-card"
-              onclick="loadNode('sintef')"
+              onclick="loadNode('pml_apics_uk')"
             >
               <div class="nc-header">
                 <div>
                   <div class="nc-title">
-                    data@sintef
+                    apics@pml
                   </div>
                   <div class="nc-sub">
-                    Trondheim, NO
+                    Plymouth, UK
                   </div>
                 </div>
                 <div
@@ -119,29 +119,29 @@
                 <span class="tag">MQTT</span>
               </div>
               <div class="nc-sub">
-                https://data.sintef.no/api/
+                https://apics.example.uk/sensorthings/v1.0
               </div>
               <div class="nc-metrics">
                 <span
                   class="metric"
                   style="color:var(--success)"
-                ><i class="fa-solid fa-heart-pulse"></i> 45ms</span>
-                <span class="metric"><i class="fa-solid fa-database"></i> 8.2Gb</span>
-                <span class="metric"><i class="fa-solid fa-clock"></i> 1m ago</span>
+                ><i class="fa-solid fa-heart-pulse"></i> 52ms</span>
+                <span class="metric"><i class="fa-solid fa-database"></i> 3.2M obs</span>
+                <span class="metric"><i class="fa-solid fa-clock"></i> 20s ago</span>
               </div>
             </div>
 
             <div
               class="node-card"
-              onclick="loadNode('remote03')"
+              onclick="loadNode('tara_polar')"
             >
               <div class="nc-header">
                 <div>
                   <div class="nc-title">
-                    remote-node-03
+                    tara-polar@drift
                   </div>
                   <div class="nc-sub">
-                    Svalbard, NO
+                    Arctic Drift (moving platform)
                   </div>
                 </div>
                 <div
@@ -151,51 +151,18 @@
               </div>
               <div style="display:flex; gap:5px; margin-bottom:10px;">
                 <span class="tag">HTTP</span>
-                <span class="tag">AMQP</span>
+                <span class="tag">MQTT</span>
               </div>
               <div class="nc-sub">
-                https://satlink.svalbard.ntnu.no/st
+                https://tara-polar.example.org/sensorthings/v1.0
               </div>
               <div class="nc-metrics">
                 <span
                   class="metric"
                   style="color:var(--warning)"
-                ><i class="fa-solid fa-heart-pulse"></i> 850ms</span>
-                <span class="metric"><i class="fa-solid fa-database"></i> 12k</span>
-                <span class="metric"><i class="fa-solid fa-clock"></i> 15m ago</span>
-              </div>
-            </div>
-
-            <div
-              class="node-card"
-              style="opacity:0.7;"
-            >
-              <div class="nc-header">
-                <div>
-                  <div class="nc-title">
-                    dev-test-node-01
-                  </div>
-                  <div class="nc-sub">
-                    Localhost
-                  </div>
-                </div>
-                <div
-                  class="status-dot offline"
-                  title="Offline"
-                ></div>
-              </div>
-              <div style="display:flex; gap:5px; margin-bottom:10px;">
-                <span class="tag">HTTP</span>
-              </div>
-              <div class="nc-sub">
-                http://localhost:8080/v1.1
-              </div>
-              <div class="nc-metrics">
-                <span
-                  class="metric"
-                  style="color:var(--danger)"
-                ><i class="fa-solid fa-triangle-exclamation"></i> Timeout</span>
-                <span class="metric"><i class="fa-solid fa-clock"></i> 4h ago</span>
+                ><i class="fa-solid fa-heart-pulse"></i> 640ms</span>
+                <span class="metric"><i class="fa-solid fa-database"></i> 1.1M obs</span>
+                <span class="metric"><i class="fa-solid fa-clock"></i> 6m ago</span>
               </div>
             </div>
           </div>
@@ -208,7 +175,7 @@
           <div class="panel-header">
             <div>
               <h2 style="margin:0; font-size:1.1rem;">
-                fjordlab_data@aalesund
+                oceanlab@sensor-things
               </h2>
               <span style="font-size:0.8rem; color:var(--success);"><i class="fa-solid fa-circle"></i> Operational</span>
             </div>
@@ -243,7 +210,7 @@
                 <label class="form-label">Display Name</label>
                 <input
                   class="input"
-                  value="fjordlab_data@aalesund"
+                  value="oceanlab@sensor-things"
                 />
               </div>
 
@@ -251,7 +218,7 @@
                 <label class="form-label">Base HTTP URL</label>
                 <input
                   class="input"
-                  value="https://fjordlab.ntnu.no/api/v1"
+                  value="https://oceanlab.example.no/sensorthings/v1.0"
                 />
                 <div style="margin-top:5px; font-size:0.7rem; color:var(--success);">
                   <i class="fa-solid fa-check"></i> Valid OGC Endpoint
@@ -262,7 +229,7 @@
                 <label class="form-label">MQTT Broker URL</label>
                 <input
                   class="input"
-                  value="mqtt://fjordlab.ntnu.no"
+                  value="mqtts://oceanlab.example.no:8883"
                 />
               </div>
 
@@ -299,35 +266,35 @@
               <div style="background:var(--bg-inset); padding:15px; border-radius:var(--r-6); margin-bottom:20px;">
                 <label class="form-label">Capabilities Detected</label>
                 <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:5px;">
+                  <span class="tag">SensorThings v1.0</span>
+                  <span class="tag">Things</span>
                   <span class="tag">Datastreams</span>
-                  <span class="tag">PSQL-API</span>
-                  <span class="tag">TimescaleDB-API</span>
-                  <span class="tag">S3</span>
+                  <span class="tag">Observations</span>
                   <span class="tag">MultiDatastream</span>
                   <span class="tag">MQTT</span>
-                  <span class="tag">AMQP</span>
+                  <span class="tag">O&M profile</span>
                 </div>
               </div>
 
               <label class="form-label">Connection Log</label>
               <div class="log-terminal">
                 <div class="log-entry ok">
-                  [10:02:44] Heartbeat OK (24ms)
+                  [10:02:44] Heartbeat OK (38ms)
                 </div>
                 <div class="log-entry ok">
-                  [10:02:14] Heartbeat OK (28ms)
+                  [10:02:14] Heartbeat OK (41ms)
                 </div>
                 <div class="log-entry">
                   [10:01:44] Syncing Metadata...
                 </div>
                 <div class="log-entry ok">
-                  [10:01:45] Sync Complete. 4 New Datastreams.
+                  [10:01:45] Sync Complete. 12 Updated Datastreams.
                 </div>
                 <div class="log-entry ok">
-                  [10:01:14] Heartbeat OK (22ms)
+                  [10:01:14] MQTT stream healthy (topic lag 1.4s).
                 </div>
                 <div class="log-entry err">
-                  [09:55:00] Timeout (5000ms) - Retrying...
+                  [09:55:00] Arctic node latency spike (640ms) - degraded mode.
                 </div>
               </div>
             </div>
@@ -372,9 +339,9 @@ onMounted(() => {
     }
 
     const titleMap = {
-      aalesund: 'fjordlab_data@aalesund',
-      sintef: 'data@sintef',
-      remote03: 'remote-node-03'
+      oceanlab_no: 'oceanlab@sensor-things',
+      pml_apics_uk: 'apics@pml',
+      tara_polar: 'tara-polar@drift'
     };
 
     const titleEl = document.querySelector('.inspector-panel h2');

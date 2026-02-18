@@ -11,7 +11,7 @@ describe('NodeView', () => {
 
     const titleEl = wrapper.find('.inspector-panel h2');
     expect(titleEl.exists()).toBe(true);
-    expect(titleEl.element.innerText).toContain('fjordlab_data@aalesund');
+    expect(titleEl.element.innerText).toContain('OceanSense_data@aalesund');
 
     window.loadNode('sintef');
     await nextTick();

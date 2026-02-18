@@ -8,7 +8,8 @@ describe('IndexView', () => {
     const wrapper = mount(IndexView);
 
     const cards = wrapper.findAll('.dataset-card');
-    expect(cards.length).toBe(4);
+    expect(cards.length).toBeGreaterThanOrEqual(6);
+    expect(wrapper.text()).toContain('OceanLab Norway Live Imaging and Optics');
 
     expect(wrapper.text()).toContain('Select a dataset to view');
   });

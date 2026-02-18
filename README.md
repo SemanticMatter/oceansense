@@ -1,7 +1,7 @@
-# Fjordlab Mockup SPA
+# OceanSense Mockup SPA
 
 This project is a visual and interaction prototype that presents ideas and possibilities
-for how data nodes and the federated data layer in the Fjordlab scope can be facilitated.
+for how data nodes and the federated data layer in the OceanSense scope can be facilitated.
 
 ## Current features
 - Explorer dashboard with dataset discovery and inspector modes (form + JSON).

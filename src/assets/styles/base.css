@@ -53,51 +53,144 @@ body.scrollable{
   overflow: auto;
 }
 
+body[data-theme="sahel"],
 body[data-theme="sunlit-lagoon"]{
-  --bg: #f5f7fb;
-  --bg-elev: #ffffff;
-  --bg-inset: #edf1f7;
+  --bg-page: #e5d5c5;
+  --bg-surface: #FAF6F2;
+  --bg-muted: #DED1BD;
 
-  --text: #0f172a;
-  --text-muted: #475569;
-  --text-faint: #64748b;
+  --text-primary: #683B2B;
+  --text-secondary: rgba(80, 29, 11, 0.78);
+  --text-inverse: #FAF6F2;
 
-  --border: #cbd5e1;
+  --accent-primary: #5f4908;
+  --accent-secondary: #D49E8D;
+  --accent-warm: #D49E8D;
 
-  --accent: #2563eb;
-  --accent-soft: rgba(37, 99, 235, 0.14);
+  --border-default: #d3c0a2;
+  --border-strong: #6a392a;
 
-  --success: #0f766e;
-  --warning: #b45309;
-  --danger: #b91c1c;
-  --info: #7c3aed;
-  --freq: #db2777;
-  --offline: #64748b;
+  --bg: var(--bg-page);
+  --bg-elev: var(--bg-surface);
+  --bg-inset: var(--bg-muted);
+
+  --text: var(--text-primary);
+  --text-muted: var(--text-secondary);
+  --text-faint: rgba(104, 59, 43, 0.62);
+
+  --border: var(--border-default);
+
+  --accent: var(--accent-primary);
+  --accent-soft: rgba(176, 132, 1, 0.16);
+
+  --success: #B08401;
+  --warning: #D49E8D;
+  --danger: #683B2B;
+  --info: #D49E8D;
+  --freq: #B08401;
+  --offline: #D49E8D;
+
+  --get: #B08401;
+  --post: #D49E8D;
+  --patch: #DED1BD;
+  --delete: #683B2B;
+  --mqtt: #D49E8D;
 }
 
+body[data-theme="sahel-dark"]{
+  --bg-page: #190d09;
+  --bg-surface: rgba(50, 45, 40, 0.92);
+  --bg-muted: #B08401;
+
+  --text-primary: #FAF6F2;
+  --text-secondary: rgba(250, 246, 242, 0.82);
+  --text-inverse: #683B2B;
+
+  --accent-primary: #B08401;
+  --accent-secondary: #D49E8D;
+  --accent-warm: #D49E8D;
+
+  --border-default: #B08401;
+  --border-strong: #D49E8D;
+
+  --bg: var(--bg-page);
+  --bg-elev: var(--bg-surface);
+  --bg-inset: rgba(107, 83, 62, 0.72);
+
+  --text: var(--text-primary);
+  --text-muted: var(--text-secondary);
+  --text-faint: rgba(250, 246, 242, 0.62);
+
+  --border: var(--border-default);
+
+  --accent: var(--accent-primary);
+  --accent-soft: rgba(212, 158, 141, 0.18);
+
+  --success: #B08401;
+  --warning: #D49E8D;
+  --danger: #FAF6F2;
+  --info: #D49E8D;
+  --freq: #B08401;
+  --offline: #DED1BD;
+
+  --get: #B08401;
+  --post: #D49E8D;
+  --patch: #DED1BD;
+  --delete: #FAF6F2;
+  --mqtt: #D49E8D;
+}
+
+body[data-theme="sahel"] #map,
 body[data-theme="sunlit-lagoon"] #map{
-  background: #dbe4ef;
+  background: #DED1BD;
 }
 
+body[data-theme="sahel-dark"] #map{
+  background: #683B2B;
+}
+
+body[data-theme="sahel"] .leaflet-layer,
 body[data-theme="sunlit-lagoon"] .leaflet-layer{
   filter: none;
 }
 
-body[data-theme="sunlit-lagoon"] #graph-wrap{
-  background: #e9eef6;
+body[data-theme="sahel-dark"] .leaflet-layer{
+  filter: invert(100%) hue-rotate(180deg) brightness(85%) contrast(90%);
 }
 
+body[data-theme="sahel"] #graph-wrap,
+body[data-theme="sunlit-lagoon"] #graph-wrap{
+  background: #FAF6F2;
+}
+
+body[data-theme="sahel-dark"] #graph-wrap{
+  background: #683B2B;
+}
+
+body[data-theme="sahel"] .searchbar input,
+body[data-theme="sahel-dark"] .searchbar input,
 body[data-theme="sunlit-lagoon"] .searchbar input{
   color: var(--text);
 }
 
+body[data-theme="sahel"] .edge-label-bg,
 body[data-theme="sunlit-lagoon"] .edge-label-bg{
-  fill: rgba(255, 255, 255, 0.92);
-  stroke: #cbd5e1;
+  fill: rgba(250, 246, 242, 0.92);
+  stroke: #D49E8D;
 }
 
+body[data-theme="sahel-dark"] .edge-label-bg{
+  fill: rgba(104, 59, 43, 0.92);
+  stroke: #D49E8D;
+}
+
+body[data-theme="sahel"] .edge-label,
 body[data-theme="sunlit-lagoon"] .edge-label{
-  fill: #1e293b;
+  fill: #683B2B;
+}
+
+body[data-theme="sahel-dark"] .edge-label{
+  fill: #FAF6F2;
 }
 
 a{ color: inherit; }

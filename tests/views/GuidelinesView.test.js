@@ -4,7 +4,7 @@ import { nextTick } from 'vue';
 import { createRouter, createMemoryHistory } from 'vue-router';
 
 import GuidelinesView from '../../src/views/GuidelinesView.vue';
-import { datasets } from '../../src/assets/data/fjordlab-datasets.js';
+import { datasets } from '../../src/assets/data/OceanSense-datasets.js';
 
 const buildRouter = () =>
   createRouter({

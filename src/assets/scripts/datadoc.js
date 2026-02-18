@@ -1,12 +1,12 @@
 /* global L */
-import { datasets, items, connections } from '../data/fjordlab-datasets';
+import { datasets, items, connections } from '../data/OceanSense-datasets';
 
 export function initDatadoc() {
-  
+
         /**
          * Deep Ocean prototype with a working FAIR wizard.
          */
-  
+
       const state = {
         view: 'explorer',
         centerView: 'map',      // 'map' | 'graph'
@@ -24,7 +24,7 @@ export function initDatadoc() {
           tipHidden: false
           }
         };
-  
+
         const wizardSteps = [
           {
               id: 'summary',
@@ -32,95 +32,95 @@ export function initDatadoc() {
               title: 'Data Summary',
               subtitle: 'Basics, keywords, and coverage in one place.',
               fields: [
-              { group:'Basics', key:'title', label:'Dataset title', type:'text', required:true, hint:'Keep it specific (region + variable + time span).' },
-              { group:'Basics', key:'abstract', label:'Abstract / description', type:'textarea', required:true, hint:'Aim for ~2–5 sentences. Include what/where/when/how.' },
-  
-              { group:'Keywords', key:'keywords', label:'Keywords (comma-separated)', type:'text', required:true, hint:'Example: oslofjord, water quality, netcdf, turbidity' },
-              { group:'Keywords', key:'discipline', label:'Discipline / domain', type:'text', required:false, hint:'Example: oceanography, coastal monitoring' },
-  
+              { group:'Basics', key:'title', label:'Dataset title', type:'text', required:true, hint:'Keep it specific (site + modality + time span).' },
+              { group:'Basics', key:'abstract', label:'Abstract / description', type:'textarea', required:true, hint:'Aim for ~2-5 sentences. Include platform, instruments, variables, and processing level.' },
+
+              { group:'Keywords', key:'keywords', label:'Keywords (comma-separated)', type:'text', required:true, hint:'Example: oceansense, oceanlab, ctd, silcam, sensorthings, biodiversity' },
+              { group:'Keywords', key:'discipline', label:'Discipline / domain', type:'text', required:false, hint:'Example: ocean observing, marine biodiversity, physical oceanography' },
+
               { group:'Coverage', key:'time_start', label:'Start date', type:'date', required:true },
               { group:'Coverage', key:'time_end', label:'End date', type:'date', required:true },
-              { group:'Coverage', key:'spatial_desc', label:'Spatial description', type:'text', required:false, hint:'Example: Oslofjord bbox, Station M point, Nordic Seas region' }
+              { group:'Coverage', key:'spatial_desc', label:'Spatial description', type:'text', required:false, hint:'Example: WGS84 point for fixed station, or bbox + drifting-track note for Tara Polar Station.' }
               ]
           },
-  
+
           {
               id: 'find',
               section: 'Findable',
               title: 'Findability',
-              subtitle: 'PID, metadata standard, and contact details.',
+              subtitle: 'PID, catalog metadata profile, and contact details.',
               fields: [
-              { group:'Identifier', key:'pid', label:'PID / DOI / handle', type:'text', required:true, hint:'Example: doi:10.xxxx/xxxxx (or planned PID)' },
+              { group:'Identifier', key:'pid', label:'PID / DOI / handle', type:'text', required:true, hint:'Example: doi:10.99999/oceansense.ds1 (or planned PID)' },
               { group:'Identifier', key:'version', label:'Version', type:'text', required:true, hint:'Example: 1.0.0' },
-  
-              { group:'Metadata', key:'metadata_standard', label:'Metadata standard', type:'select', required:true, options:['DCAT', 'ISO 19115', 'EML', 'CF/ACDD', 'Other'] },
-              { group:'Metadata', key:'metadata_other', label:'If “Other”, specify', type:'text', required:false },
-  
+
+              { group:'Metadata', key:'metadata_standard', label:'Metadata standard', type:'select', required:true, options:['DCAT + ISO 19115-1/19139', 'OGC SensorThings + O&M profile', 'CF/ACDD', 'Darwin Core / OBIS profile', 'Other'], hint:'Use DCAT for catalog/publisher/distribution fields and ISO 19139 packaging for geospatial records.' },
+              { group:'Metadata', key:'metadata_other', label:'If \"Other\", specify', type:'text', required:false, hint:'State profile mappings, e.g., SensorThings entities to O&M concepts.' },
+
               { group:'Contact', key:'contact_name', label:'Contact name', type:'text', required:true },
               { group:'Contact', key:'contact_email', label:'Contact email', type:'text', required:true }
               ]
           },
-  
+
           {
               id: 'access',
               section: 'Accessible',
               title: 'Access',
               subtitle: 'How users get the data and any access controls.',
               fields: [
-              { group:'Distribution', key:'access_url', label:'Access URL', type:'text', required:true, hint:'OPeNDAP, ERDDAP, HTTPS, S3, etc.' },
-              { group:'Distribution', key:'access_protocol', label:'Protocol', type:'select', required:true, options:['HTTPS', 'OPeNDAP', 'ERDDAP', 'S3', 'Other'] },
-  
+              { group:'Distribution', key:'access_url', label:'Access URL', type:'text', required:true, hint:'Prefer SensorThings /v1.0 URLs for live nodes; include file distributions (NetCDF/Zarr/Parquet) where relevant.' },
+              { group:'Distribution', key:'access_protocol', label:'Protocol', type:'select', required:true, options:['SensorThings/HTTPS', 'HTTPS File Download', 'MQTT', 'OPeNDAP', 'S3', 'Other'] },
+
               { group:'Policy', key:'auth', label:'Access control', type:'select', required:true, options:['Open', 'Registration', 'Institutional', 'Restricted'] },
-              { group:'Policy', key:'auth_notes', label:'Policy notes', type:'textarea', required:false }
+              { group:'Policy', key:'auth_notes', label:'Policy notes', type:'textarea', required:false, hint:'Document API keys/tokens, throttling, or MQTT topic constraints if any.' }
               ]
           },
-  
+
           {
               id: 'interop',
               section: 'Interoperable',
               title: 'Interoperability',
-              subtitle: 'Vocabularies, structure, and conventions.',
+              subtitle: 'Semantics, controlled terms, and exchange formats.',
               fields: [
-              { group:'Semantics', key:'vocab', label:'Vocabularies (comma-separated)', type:'text', required:true, hint:'Example: CF Standard Names, SeaDataNet P01, SOSA/SSN' },
-              { group:'Semantics', key:'units', label:'Units convention', type:'text', required:false, hint:'Example: UDUNITS / CF conventions' },
-  
-              { group:'Structure', key:'format', label:'Primary format', type:'select', required:true, options:['NetCDF', 'CSV', 'Parquet', 'GeoTIFF', 'Other'] },
-              { group:'Structure', key:'schema_notes', label:'Structure notes', type:'textarea', required:false, hint:'Variables, dimensions, conventions (CF/ACDD), etc.' }
+              { group:'Semantics', key:'vocab', label:'Vocabularies (comma-separated)', type:'text', required:true, hint:'Example: OGC SensorThings, O&M, SOSA/SSN, CF standard_name, NERC P01/P06, PROV-O, WoRMS/OBIS/Darwin Core' },
+              { group:'Semantics', key:'units', label:'Units convention', type:'text', required:false, hint:'Use UDUNITS/CF (degrees_C, umol photons m-2 s-1, m/s, dB re 1 uPa).' },
+
+              { group:'Structure', key:'format', label:'Primary format', type:'select', required:true, options:['NetCDF (CF)', 'Zarr', 'Parquet', 'CSV', 'Other'] },
+              { group:'Structure', key:'schema_notes', label:'Structure notes', type:'textarea', required:false, hint:'Include CF variable names/units, ISO 8601 UTC timestamps, and WGS84 (EPSG:4326) location encoding.' }
               ]
           },
-  
+
           {
               id: 'reuse',
               section: 'Reusable',
               title: 'Reuse & Provenance',
-              subtitle: 'License, citation, and quality signals.',
+              subtitle: 'License, citation, provenance, and quality controls.',
               fields: [
               { group:'License', key:'license', label:'License', type:'select', required:true, options:['CC-BY-4.0', 'CC0-1.0', 'ODC-BY', 'Proprietary', 'Other'] },
-              { group:'License', key:'license_other', label:'If “Other”, specify', type:'text', required:false },
-  
-              { group:'Citation', key:'citation', label:'Preferred citation', type:'textarea', required:true, hint:'Authors (Year). Title. Version. PID. Publisher.' },
+              { group:'License', key:'license_other', label:'If \"Other\", specify', type:'text', required:false },
+
+              { group:'Citation', key:'citation', label:'Preferred citation', type:'textarea', required:true, hint:'Publisher/consortium (Year). Title. Version. PID. Distribution endpoint.' },
               { group:'Citation', key:'contributors', label:'Contributors', type:'text', required:false },
-  
-              { group:'Quality', key:'processing_level', label:'Processing level', type:'text', required:true, hint:'Example: L2, L3, delayed-mode adjusted' },
-              { group:'Quality', key:'qc_protocol', label:'QC protocol', type:'text', required:true, hint:'Example: QARTOD, Argo QC, product QC' },
-              { group:'Quality', key:'provenance_notes', label:'Provenance notes', type:'textarea', required:false }
+
+              { group:'Quality', key:'processing_level', label:'Processing level', type:'text', required:true, hint:'Example: L0 raw, L1 real-time QC, L2 delayed-mode QC' },
+              { group:'Quality', key:'qc_protocol', label:'QC protocol', type:'text', required:true, hint:'Example: QARTOD + Ocean Best Practices with instrument-specific tests' },
+              { group:'Quality', key:'provenance_notes', label:'Provenance notes', type:'textarea', required:false, hint:'Use PROV-O style lineage: calibration -> processing steps -> published distribution.' }
               ]
           },
-  
+
           {
               id: 'ops',
               section: 'Operations',
               title: 'Operations & Risk',
-              subtitle: 'Preservation, retention, and ethics/security.',
+              subtitle: 'Preservation, retention, and ethics/security for observatory operations.',
               fields: [
               { group:'Preservation', key:'retention', label:'Retention period', type:'select', required:true, options:['1 year', '5 years', '10 years', 'Indefinite'] },
-              { group:'Preservation', key:'backup', label:'Backups / replication', type:'text', required:false },
-  
+              { group:'Preservation', key:'backup', label:'Backups / replication', type:'text', required:false, hint:'Document checksum policy, multi-site replication, and archive location.' },
+
               { group:'Ethics & Security', key:'sensitive', label:'Contains sensitive data?', type:'select', required:true, options:['No', 'Yes'] },
-              { group:'Ethics & Security', key:'ethics_notes', label:'Notes / mitigations', type:'textarea', required:false }
+              { group:'Ethics & Security', key:'ethics_notes', label:'Notes / mitigations', type:'textarea', required:false, hint:'For biodiversity outputs, document taxa validation and spatial generalization if required.' }
               ]
           },
-  
+
           {
               id: 'publish',
               section: 'Publish',
@@ -131,7 +131,7 @@ export function initDatadoc() {
               ]
           }
           ];
-  
+
         /* =========
            Leaflet map
            ========= */
@@ -140,31 +140,31 @@ export function initDatadoc() {
       let graphLinks = [];
       let graphDimensions = { width: 0, height: 0 };
       let graphRenderTarget = null;
-  
+
         function ensureMap() {
           if (map) return;
-  
+
           map = L.map('map', { zoomControl: true }).setView([63.45, 10.4], 5);
-  
+
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; OpenStreetMap contributors'
           }).addTo(map);
-  
+
           layerGroup = L.layerGroup().addTo(map);
         }
-  
+
         function renderSpatialOnMap(ds) {
           ensureMap();
           layerGroup.clearLayers();
-  
+
           if (!ds || !ds.spatial) {
             map.setView([63.45, 10.4], 5);
             return;
           }
-  
+
           const s = ds.spatial;
-  
+
           if (s.type === 'point' && s.point && Number.isFinite(s.point.lat) && Number.isFinite(s.point.lon)) {
             const lat = Number(s.point.lat);
             const lon = Number(s.point.lon);
@@ -173,7 +173,7 @@ export function initDatadoc() {
             map.setView([lat, lon], 6);
             return;
           }
-  
+
           if (s.type === 'bbox' && Array.isArray(s.bbox) && s.bbox.length === 4) {
             const [minLon, minLat, maxLon, maxLat] = s.bbox.map(Number);
             if ([minLon, minLat, maxLon, maxLat].every(Number.isFinite)) {
@@ -183,10 +183,10 @@ export function initDatadoc() {
               return;
             }
           }
-  
+
           map.setView([63.45, 10.4], 5);
         }
-  
+
         /* =========
            UI helpers
            ========= */
@@ -198,7 +198,7 @@ export function initDatadoc() {
             .replaceAll('"','&quot;')
             .replaceAll("'","&#039;");
         }
-  
+
         function formatTemporal(ds) {
           const t = ds?.temporal;
           if (!t?.start && !t?.end) return '—';
@@ -207,7 +207,7 @@ export function initDatadoc() {
           const res = t?.resolution ? ` (${t.resolution})` : '';
           return `${start} → ${end}${res}`;
         }
-  
+
         function formatSpatial(ds) {
           const s = ds?.spatial;
           if (!s) return '—';
@@ -215,14 +215,14 @@ export function initDatadoc() {
           if (s.type === 'bbox' && Array.isArray(s.bbox)) return `${s.placeName || 'BBox'} (BBox)`;
           return s.placeName || '—';
         }
-  
+
         function formatCompleteness(ds) {
           const pct = Math.round((ds?.completeness ?? 0) * 100);
           if (pct >= 85) return { label: `${pct}%`, cls: 'status' };
           if (pct >= 60) return { label: `${pct}%`, cls: 'warn' };
           return { label: `${pct}%`, cls: '' };
         }
-  
+
         /* =========
            Rendering
            ========= */
@@ -242,18 +242,18 @@ export function initDatadoc() {
 
         const navBtn = document.getElementById(navId);
           if (navBtn) navBtn.classList.add('active');
-  
+
           if (view === 'wizard') ui.renderWizard();
           if (view === 'review') ui.renderReview();
           if (view === 'explorer') setTimeout(() => { if (map) map.invalidateSize(); }, 60);
           },
-  
-  
+
+
           toggleWizardTip() {
               state.wizard.tipHidden = !state.wizard.tipHidden;
               ui.renderWizard();
               },
-  
+
           setCenterView(mode) {
             state.centerView = mode;
 
@@ -273,7 +273,7 @@ export function initDatadoc() {
             if (mode === 'map') setTimeout(() => { if (map) map.invalidateSize(); }, 60);
             if (mode === 'graph') ui.renderGraph();
           },
-  
+
           setInspectorMode(mode) {
             state.inspectorMode = mode;
             document.getElementById('btn-inspector-form').classList.toggle('active', mode === 'form');
@@ -282,15 +282,15 @@ export function initDatadoc() {
             document.getElementById('btn-inspector-form').classList.toggle('ghost', mode !== 'form');
             ui.renderInspector();
           },
-  
+
           clearSelection() {
             state.selectedDatasetId = null;
-  
+
             // reset wizard selection/session
             state.wizard.datasetId = null;
             state.wizard.stepIndex = 0;
             state.wizard.answers = {};
-  
+
             document.getElementById('chip-selected').style.display = 'none';
             document.getElementById('chip-selected-text').textContent = '';
             document.getElementById('inspector').innerHTML = `
@@ -301,24 +301,24 @@ export function initDatadoc() {
             `;
             document.getElementById('range-pill').textContent = '—';
             document.querySelectorAll('.dataset-card').forEach(c => c.classList.remove('active'));
-  
+
             renderSpatialOnMap(null);
             ui.renderReview();
             ui.renderGraph();
             if (state.view === 'wizard') ui.renderWizard();
           },
-  
+
           renderDatasetList() {
             const container = document.getElementById('dataset-list');
             const q = (state.query || '').trim().toLowerCase();
-  
+
             const filtered = state.datasets.filter(ds => {
               if (!q) return true;
               const hay = `${ds.title} ${ds.description} ${(ds.topics||[]).join(' ')}`.toLowerCase();
               return hay.includes(q);
             });
 
-            const pageSize = 4;
+            const pageSize = 3;
             const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
             const page = Math.min(state.datasetPage, totalPages - 1);
             state.datasetPage = page;
@@ -336,9 +336,16 @@ export function initDatadoc() {
               const freqPill = ds.temporal?.resolution ? `<span class="pill hz">${escapeHtml(ds.temporal.resolution)}</span>` : `<span class="pill">Unspecified</span>`;
               const comp = formatCompleteness(ds);
               const compPill = `<span class="pill ${comp.cls}">${escapeHtml(comp.label)} Complete</span>`;
-  
+
               return `
-                <article class="dataset-card ${state.selectedDatasetId === ds.id ? 'active' : ''}" onclick="ui.selectDataset('${ds.id}')">
+                <article
+                  class="dataset-card ${state.selectedDatasetId === ds.id ? 'active' : ''}"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Select dataset ${escapeHtml(ds.title)}"
+                  onclick="ui.selectDataset('${ds.id}')"
+                  onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();ui.selectDataset('${ds.id}')}"
+                >
                   <div class="dataset-title">
                     <div style="display:flex; justify-content:space-between; gap:10px;">
                       <h3 title="${escapeHtml(ds.title)}">${escapeHtml(ds.title)}</h3>
@@ -347,13 +354,13 @@ export function initDatadoc() {
                       </div>
                     </div>
                   </div>
-  
+
                   <div class="mini-bars">
                     <span class="pill">Org: <strong>${escapeHtml(ds.organization || '—')}</strong></span>
                     <span class="pill">Status: <strong>${escapeHtml(ds.status || '—')}</strong></span>
                     ${compPill}
                   </div>
-  
+
                   <p class="desc">${escapeHtml(ds.description || '')}</p>
                 </article>
               `;
@@ -364,31 +371,31 @@ export function initDatadoc() {
             if (prevBtn) prevBtn.disabled = page === 0;
             if (nextBtn) nextBtn.disabled = page >= totalPages - 1;
           },
-  
+
           selectDataset(id) {
             state.selectedDatasetId = id;
-  
+
             // reset wizard session when switching datasets
             if (state.wizard.datasetId !== id) {
               state.wizard.datasetId = id;
               state.wizard.stepIndex = 0;
               state.wizard.answers = {};
             }
-  
+
             const ds = state.datasets.find(d => d.id === id);
-  
+
             // chip
             document.getElementById('chip-selected').style.display = 'inline-flex';
             document.getElementById('chip-selected-text').textContent = ds ? ds.title : id;
-  
+
             ui.renderDatasetList();
             ui.renderInspector();
             ui.renderReview();
             ui.renderGraph();
-  
+
             document.getElementById('range-pill').textContent = ds ? formatTemporal(ds) : '—';
             renderSpatialOnMap(ds);
-  
+
             if (state.view === 'wizard') ui.renderWizard();
           },
 
@@ -401,13 +408,13 @@ export function initDatadoc() {
             state.datasetPage = Math.max(0, state.datasetPage - 1);
             ui.renderDatasetList();
           },
-  
+
           renderInspector() {
             const container = document.getElementById('inspector');
             const ds = state.datasets.find(d => d.id === state.selectedDatasetId);
-  
+
             if (!ds) return;
-  
+
             if (state.inspectorMode === 'json') {
               container.innerHTML = `
                 <div class="kv">
@@ -417,15 +424,15 @@ export function initDatadoc() {
               `;
               return;
             }
-  
+
             const comp = formatCompleteness(ds);
             const compPill = `<span class="pill ${comp.cls}">${escapeHtml(comp.label)} Complete</span>`;
-  
+
             container.innerHTML = `
               <div class="kv"><span class="k">Dataset</span><span class="v">${escapeHtml(ds.title)}</span></div>
               <div class="kv"><span class="k">Organization</span><span class="v">${escapeHtml(ds.organization || '—')}</span></div>
               <div class="kv"><span class="k">Access</span><span class="v">${escapeHtml(ds.access || '—')}</span></div>
-  
+
               <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">OVERVIEW</h3>
               <div class="kv">
                 <div class="kv-row"><span>Status</span> <span>${escapeHtml(ds.status || '—')}</span></div>
@@ -434,14 +441,14 @@ export function initDatadoc() {
                 <div class="kv-row"><span>Time</span> <span>${escapeHtml(formatTemporal(ds))}</span></div>
                 <div class="kv-row"><span>Geo</span> <span>${escapeHtml(formatSpatial(ds))}</span></div>
               </div>
-  
+
               <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">CONTEXT</h3>
               <div class="kv">
                 <div class="kv-row"><span>Platform</span> <span>${escapeHtml(ds.platform?.name || '—')}</span></div>
                 <div class="kv-row"><span>Processing</span> <span>${escapeHtml(ds.provenance?.processing_level || '—')}</span></div>
                 <div class="kv-row"><span>QC Protocol</span> <span>${escapeHtml(ds.provenance?.qc?.protocol || '—')}</span></div>
               </div>
-  
+
               <div style="display:flex; gap:8px; align-items:center; margin: 10px 0 4px;">
                 <span class="pill info"><i class="fa-solid fa-tags"></i> Topics</span>
                 ${compPill}
@@ -450,10 +457,10 @@ export function initDatadoc() {
                 ${(ds.topics || []).slice(0, 10).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join('')}
                 ${(ds.topics || []).length > 10 ? `<span class="pill">+${(ds.topics||[]).length - 10}</span>` : ``}
               </div>
-  
+
             `;
           },
-  
+
           renderGraph() {
             const svg = document.getElementById('graph-svg');
             if (!svg) return;
@@ -468,7 +475,7 @@ export function initDatadoc() {
               `;
               return;
             }
-  
+
             const rect = svg.getBoundingClientRect();
             const width = Math.max(300, rect.width || 0);
             const height = Math.max(260, rect.height || 0);
@@ -510,39 +517,39 @@ export function initDatadoc() {
             graphRenderTarget = svg;
             renderGraphScene();
           },
-  
+
           flashInspectorForItem(item, relType) {
             const container = document.getElementById('inspector');
             const ds = state.datasets.find(d => d.id === state.selectedDatasetId);
             if (!ds) return;
-  
+
             if (state.inspectorMode === 'json') return;
-  
+
             container.innerHTML = `
               <div class="kv"><span class="k">Linked Item</span><span class="v">${escapeHtml(item.name)}</span></div>
               <div class="kv"><span class="k">Relationship</span><span class="v">${escapeHtml(relType)}</span></div>
-  
+
               <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">IN CONTEXT</h3>
               <div class="kv">
                 <div class="kv-row"><span>Dataset</span><span>${escapeHtml(ds.title)}</span></div>
                 <div class="kv-row"><span>Type</span><span>${escapeHtml(item.type)}</span></div>
                 <div class="kv-row"><span>Hint</span><span>${escapeHtml(typeHint(item.type))}</span></div>
               </div>
-  
+
             `;
           },
-  
+
           renderReview() {
             const body = document.getElementById('review-body');
             const ds = state.datasets.find(d => d.id === state.selectedDatasetId);
-  
+
             if (!ds) {
               body.innerHTML = `<div style="text-align:center; margin: 22px 0; color: var(--text-faint);">
                 Select a dataset in Explorer to generate a review.
               </div>`;
               return;
             }
-  
+
             const checks = [
               { label: 'Has a descriptive title', pass: !!ds.title },
               { label: 'Has a detailed description', pass: (ds.description || '').length > 40 },
@@ -552,10 +559,10 @@ export function initDatadoc() {
               { label: 'Temporal coverage present', pass: !!ds.temporal?.start && !!ds.temporal?.end },
               { label: 'Spatial coverage present', pass: !!ds.spatial && (!!ds.spatial.point || !!ds.spatial.bbox) }
             ];
-  
+
             const score = Math.round((checks.filter(c => c.pass).length / checks.length) * 100);
             const ringColor = score >= 85 ? 'var(--success)' : (score >= 60 ? 'var(--warning)' : 'var(--danger)');
-  
+
             body.innerHTML = `
               <div class="kv" style="display:flex; align-items:center; justify-content:space-between; gap:14px;">
                 <div>
@@ -572,7 +579,7 @@ export function initDatadoc() {
                   ${score}%
                 </div>
               </div>
-  
+
               <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 8px 0;">CHECKLIST</h3>
               <div class="kv">
                 ${checks.map(c => `
@@ -584,7 +591,7 @@ export function initDatadoc() {
                   </div>
                 `).join('')}
               </div>
-  
+
               <div style="margin-top:16px; display:flex; gap:10px;">
                 <button class="btn" style="flex:1; justify-content:center;" onclick="ui.navigate('wizard')">
                   <i class="fa-solid fa-wand-magic-sparkles"></i> Improve via Wizard
@@ -595,11 +602,11 @@ export function initDatadoc() {
               </div>
             `;
           },
-  
+
           recomputeScore() {
             ui.renderReview();
           },
-  
+
           /* =========================
              Wizard navigation + rendering
              ========================= */
@@ -609,15 +616,15 @@ export function initDatadoc() {
             state.wizard.stepIndex = next;
             ui.renderWizard();
           },
-  
+
           nextStep() {
             ui.gotoStep(state.wizard.stepIndex + 1);
           },
-  
+
           prevStep() {
             ui.gotoStep(state.wizard.stepIndex - 1);
           },
-  
+
           renderWizard() {
             const ds = state.datasets.find(d => d.id === state.selectedDatasetId);
             const pill = document.getElementById('wizard-dataset-pill');
@@ -634,7 +641,7 @@ export function initDatadoc() {
                 : `<i class="fa-solid fa-database"></i> No dataset selected`;
                 pill.title = ds ? ds.title : 'No dataset selected';
             }
-           
+
             if (!ds) {
               document.getElementById('wizard-title').textContent = 'Select a dataset';
               document.getElementById('wizard-subtitle').textContent = 'Choose a dataset in Explorer to start the wizard';
@@ -663,34 +670,34 @@ export function initDatadoc() {
               `;
               return;
             }
-  
+
             if (state.wizard.datasetId !== ds.id) {
               state.wizard.datasetId = ds.id;
               state.wizard.stepIndex = 0;
               state.wizard.answers = {};
             }
-  
+
             ui.renderWizardStepsList(ds);
             ui.renderWizardStepContent(ds);
             ui.renderWizardChecks(ds);
-  
+
             const backBtn = document.querySelector('#page-wizard .ws-search .btn');
             const nextBtn = document.querySelector('#page-wizard .ws-search .btn.primary');
             if (backBtn) backBtn.disabled = state.wizard.stepIndex === 0;
             if (nextBtn) nextBtn.disabled = state.wizard.stepIndex >= wizardSteps.length - 1;
           },
-  
+
           renderWizardStepsList(ds) {
             const stepsEl = document.getElementById('wizard-steps');
             const progressEl = document.getElementById('wizard-progress');
-  
+
             const doneCount = wizardSteps.filter(s => ui.isStepDone(ds, s)).length;
             progressEl.textContent = `${doneCount} / ${wizardSteps.length}`;
-  
+
             stepsEl.innerHTML = wizardSteps.map((s, idx) => {
               const active = idx === state.wizard.stepIndex;
               const done = ui.isStepDone(ds, s);
-  
+
               return `
                 <button class="wizard-step-btn ${active ? 'active' : ''}" onclick="ui.gotoStep(${idx})">
                   <div style="min-width:0;">
@@ -704,20 +711,20 @@ export function initDatadoc() {
               `;
             }).join('');
           },
-  
+
           renderWizardStepContent(ds) {
             const step = wizardSteps[state.wizard.stepIndex];
             const titleEl = document.getElementById('wizard-title');
             const subEl = document.getElementById('wizard-subtitle');
             const sectionPill = document.getElementById('wizard-section-pill');
             const contentEl = document.getElementById('wizard-content');
-  
+
             titleEl.textContent = `${step.title}`;
             subEl.textContent = `${ds.title} • Step ${state.wizard.stepIndex + 1} of ${wizardSteps.length}`;
             sectionPill.textContent = step.section;
-  
+
             const formHtml = step.fields.map(f => ui.renderWizardField(ds, step, f)).join('');
-  
+
             const isLast = step.id === 'publish';
             const footer = isLast
               ? `
@@ -736,7 +743,7 @@ export function initDatadoc() {
                   <button class="btn primary" onclick="ui.nextStep()">Next <i class="fa-solid fa-arrow-right"></i></button>
                 </div>
               `;
-  
+
             const tip = state.wizard.tipHidden
               ? `
                   <div class="tip-bottom" style="margin-top:auto;">
@@ -756,31 +763,31 @@ export function initDatadoc() {
                       </button>
                   </div>
                   <div style="line-height:1.4;">
-                      Fill what you know now. You can return later—progress is tracked per step for this session.
+                      Keep timestamps in ISO 8601 UTC and coordinates in WGS84 (EPSG:4326). Use CF names/units and QARTOD-ready QC notes.
                   </div>
                   </div>
               `;
-  
+
             contentEl.innerHTML = `
               <div style="margin-top:14px;">
                   ${step.fields.length > 2 ? `<div class="wiz-grid">${formHtml}</div>` : formHtml}
               </div>
-  
+
               ${footer}
-  
+
               ${tip}
             `;
-      
-  
+
+
           },
-  
+
           renderWizardField(ds, step, field) {
             const current = ui.getWizardValue(ds, step.id, field.key);
             const id = `wiz_${step.id}_${field.key}`;
             const req = field.required ? `<span style="color:var(--warning); font-weight:900;"> *</span>` : '';
             const hint = field.hint ? `<div class="muted" style="font-size:0.85rem; margin-top:6px;">${escapeHtml(field.hint)}</div>` : '';
             const onInput = `ui.setWizardAnswer('${step.id}','${field.key}', this.value)`;
-  
+
             let inputHtml = '';
             if (field.type === 'textarea') {
               inputHtml = `<textarea id="${id}" rows="4" oninput="${onInput}">${escapeHtml(current || '')}</textarea>`;
@@ -793,7 +800,7 @@ export function initDatadoc() {
               const type = field.type === 'date' ? 'date' : 'text';
               inputHtml = `<input id="${id}" type="${type}" value="${escapeHtml(current || '')}" oninput="${onInput}" />`;
             }
-  
+
             return `
               <div class="field">
                 <label for="${id}">${escapeHtml(field.label)}${req}</label>
@@ -802,22 +809,22 @@ export function initDatadoc() {
               </div>
             `;
           },
-  
+
           setWizardAnswer(stepId, key, value) {
             state.wizard.answers[stepId] = state.wizard.answers[stepId] || {};
             state.wizard.answers[stepId][key] = value;
-  
+
             const ds = state.datasets.find(d => d.id === state.selectedDatasetId);
             if (!ds) return;
-  
+
             ui.renderWizardChecks(ds);
             ui.renderWizardStepsList(ds);
           },
-  
+
           getWizardValue(ds, stepId, key) {
             const a = state.wizard.answers?.[stepId]?.[key];
             if (a != null && String(a).trim() !== '') return a;
-  
+
             // dataset fallbacks
             if (key === 'title') return ds.title;
             if (key === 'abstract') return ds.description;
@@ -826,11 +833,75 @@ export function initDatadoc() {
             if (key === 'keywords') return (ds.topics || []).join(', ');
             if (key === 'time_start') return ds.temporal?.start || '';
             if (key === 'time_end') return ds.temporal?.end || '';
+            if (key === 'discipline') return 'Ocean observing and marine biodiversity';
+            if (key === 'spatial_desc') {
+              const s = ds.spatial || {};
+              if (s.type === 'point' && s.point) {
+                return `${s.placeName || 'Point'}; WGS84 EPSG:4326 (${s.point.lat}, ${s.point.lon})`;
+              }
+              if (s.type === 'bbox' && Array.isArray(s.bbox)) {
+                const bboxTxt = `bbox=${s.bbox.join(', ')} (WGS84 EPSG:4326)`;
+                if (ds.platform?.type === 'drifting_station') {
+                  return `${s.placeName || 'Drifting domain'}; ${bboxTxt}; geometry represented as time-varying track points in UTC.`;
+                }
+                return `${s.placeName || 'BBox'}; ${bboxTxt}`;
+              }
+              return ds.spatial?.placeName || '';
+            }
+            if (key === 'pid') return `doi:10.99999/oceansense.${ds.id}`;
+            if (key === 'version') return ds.status === 'Live' ? 'rolling-2026.02' : '1.0.0';
+            if (key === 'metadata_standard') return 'DCAT + ISO 19115-1/19139';
+            if (key === 'metadata_other') return 'OGC SensorThings API v1.0 mapped to OGC O&M concepts; SOSA/SSN terms in semantic layer.';
+            if (key === 'contact_name') {
+              if ((ds.organization || '').includes('Plymouth Marine Laboratory')) return 'APICS Data Steward';
+              if ((ds.organization || '').includes('Tara Ocean Foundation')) return 'Tara Polar Data Steward';
+              return 'OceanLab Data Steward';
+            }
+            if (key === 'contact_email') {
+              if ((ds.organization || '').includes('Plymouth Marine Laboratory')) return 'apics-data@example.uk';
+              if ((ds.organization || '').includes('Tara Ocean Foundation')) return 'tara-polar-data@example.org';
+              return 'oceanlab-data@example.no';
+            }
+            if (key === 'access_protocol') {
+              const access = String(ds.access || '').toLowerCase();
+              if (access.includes('/sensorthings/')) return 'SensorThings/HTTPS';
+              if (access.endsWith('.nc') || access.endsWith('.zarr') || access.endsWith('.parquet') || access.endsWith('.csv')) return 'HTTPS File Download';
+              return 'SensorThings/HTTPS';
+            }
+            if (key === 'auth') return 'Open';
+            if (key === 'auth_notes') return 'Public read access. Live streams may apply MQTT topic throttling and fair-use limits.';
+            if (key === 'vocab') {
+              return 'OGC SensorThings API, OGC O&M, SOSA/SSN, PROV-O, DCAT, ISO 19115-1/19139, CF standard_name, NERC P01/P06, WoRMS/OBIS/Darwin Core';
+            }
+            if (key === 'units') return 'CF/UDUNITS conventions; ISO 8601 timestamps (UTC); WGS84 coordinates (EPSG:4326).';
+            if (key === 'format') {
+              const access = String(ds.access || '').toLowerCase();
+              if (access.endsWith('.nc')) return 'NetCDF (CF)';
+              if (access.endsWith('.zarr')) return 'Zarr';
+              if (access.endsWith('.parquet')) return 'Parquet';
+              if (access.endsWith('.csv')) return 'CSV';
+              return 'Other';
+            }
+            if (key === 'schema_notes') {
+              return 'Sensor observations are exposed through SensorThings Things/Datastreams/Observations and packaged with CF names/units where file-based distributions are provided.';
+            }
+            if (key === 'citation') {
+              return `${ds.organization || 'OceanSense Consortium'} (${(ds.temporal?.end || '2026').slice(0, 4)}). ${ds.title}. ${ds.status === 'Live' ? 'rolling-2026.02' : '1.0.0'}. doi:10.99999/oceansense.${ds.id}.`;
+            }
+            if (key === 'contributors') return 'Observatory operations team, calibration leads, QA/QC lead, data steward.';
             if (key === 'processing_level') return ds.provenance?.processing_level || '';
             if (key === 'qc_protocol') return ds.provenance?.qc?.protocol || '';
+            if (key === 'provenance_notes') {
+              return `${ds.provenance?.qc?.summary || 'Instrument and workflow-specific QC applied.'} Lineage recorded using PROV-O-style activities/entities/agents.`;
+            }
+            if (key === 'retention') return 'Indefinite';
+            if (key === 'backup') return 'Primary archive + mirrored object storage with checksum audits and quarterly restore tests.';
+            if (key === 'sensitive') return 'No';
+            if (key === 'ethics_notes') return 'Taxonomy outputs should use WoRMS/OBIS mappings; apply spatial generalization when sensitive occurrences are present.';
+            if (key === 'ready') return 'Yes';
             return '';
           },
-  
+
           isStepDone(ds, step) {
             return (step.fields || []).every(f => {
               if (!f.required) return true;
@@ -838,30 +909,30 @@ export function initDatadoc() {
               return String(v || '').trim().length > 0;
             });
           },
-  
+
           renderWizardChecks(ds) {
             const el = document.getElementById('wizard-checks');
             if (!el || !ds) return;
-  
+
           const must = [
             { label:'Title present', ok: !!ui.getWizardValue(ds,'summary','title') },
             { label:'Description is detailed', ok: (ui.getWizardValue(ds,'summary','abstract') || '').length > 40 },
             { label:'Keywords provided', ok: (ui.getWizardValue(ds,'summary','keywords') || '').split(',').map(s=>s.trim()).filter(Boolean).length > 0 },
-  
+
             { label:'PID / DOI declared', ok: !!ui.getWizardValue(ds,'find','pid') },
             { label:'Version declared', ok: !!ui.getWizardValue(ds,'find','version') },
             { label:'Contact name + email', ok: !!ui.getWizardValue(ds,'find','contact_name') && !!ui.getWizardValue(ds,'find','contact_email') },
-  
+
             { label:'Access URL present', ok: !!ui.getWizardValue(ds,'access','access_url') },
             { label:'License selected', ok: !!ui.getWizardValue(ds,'reuse','license') },
-  
+
             { label:'Vocabularies named', ok: !!ui.getWizardValue(ds,'interop','vocab') },
             { label:'QC/provenance basics', ok: !!ui.getWizardValue(ds,'reuse','processing_level') && !!ui.getWizardValue(ds,'reuse','qc_protocol') }
           ];
             const okCount = must.filter(m => m.ok).length;
             const score = Math.round((okCount / must.length) * 100);
             const ringColor = score >= 85 ? 'var(--success)' : (score >= 60 ? 'var(--warning)' : 'var(--danger)');
-  
+
             el.innerHTML = `
               <div class="kv" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
                 <div>
@@ -878,7 +949,7 @@ export function initDatadoc() {
                   background: rgba(0,0,0,0.10);
                 ">${score}%</div>
               </div>
-  
+
               <div class="kv" style="margin-top:10px;">
                 ${must.map(m => `
                   <div class="kv-row">
@@ -889,25 +960,25 @@ export function initDatadoc() {
                   </div>
                 `).join('')}
               </div>
-  
+
             `;
           },
-  
+
       applyWizardToDatasetFromAnswers() {
       const id = state.selectedDatasetId;
       if (!id) return;
-  
+
       const idx = state.datasets.findIndex(d => d.id === id);
       if (idx < 0) return;
-  
+
       const ds = state.datasets[idx];
       const val = (stepId, key) => ui.getWizardValue(ds, stepId, key);
-  
+
       const topics = (val('summary', 'keywords') || '')
           .split(',')
           .map(s => s.trim())
           .filter(Boolean);
-  
+
       state.datasets[idx] = {
           ...ds,
           title: (val('summary','title') || ds.title).trim(),
@@ -930,7 +1001,7 @@ export function initDatadoc() {
               }
           }
       };
-  
+
       ui.renderDatasetList();
       ui.renderInspector();
       ui.renderReview();
@@ -938,9 +1009,9 @@ export function initDatadoc() {
       ui.navigate('review');
       },
   };
-  
+
         window.ui = ui;
-  
+
         /* =========
            SVG helpers
            ========= */
@@ -1048,7 +1119,7 @@ export function initDatadoc() {
           if (opts.fontSize != null) el.style.fontSize = `${opts.fontSize}px`;
           svg.appendChild(el);
         }
-  
+
         function truncate(s, max) {
           s = (s ?? '').toString();
           return s.length > max ? s.slice(0, max - 1) + '…' : s;
@@ -1138,7 +1209,7 @@ export function initDatadoc() {
           window.addEventListener('mousemove', onMove);
           window.addEventListener('mouseup', onUp);
         }
-  
+
         function typeColor(type) {
           if (type === 'file') return 'rgba(20,184,166,0.9)';
           if (type === 'doc') return 'rgba(245,158,11,0.9)';
@@ -1147,7 +1218,7 @@ export function initDatadoc() {
           if (type === 'service') return 'rgba(139,92,246,0.9)';
           return 'rgba(148,163,184,0.9)';
         }
-  
+
         function typeHint(type) {
           if (type === 'file') return 'Data file or bundle attached to the dataset.';
           if (type === 'doc') return 'Documentation that explains methods/structure.';
@@ -1156,7 +1227,7 @@ export function initDatadoc() {
           if (type === 'service') return 'API/service endpoint that serves the dataset.';
           return 'Linked entity.';
         }
-  
+
         /* =========
            Wire up events
            ========= */
@@ -1166,7 +1237,7 @@ export function initDatadoc() {
             state.datasetPage = 0;
             ui.renderDatasetList();
           });
-  
+
           ui.renderDatasetList();
           ensureMap();
 
@@ -1183,10 +1254,10 @@ export function initDatadoc() {
           ui.renderReview();
           ui.renderGraph();
           enableGraphDrag();
-  
+
           window.addEventListener('resize', () => {
             if (map) map.invalidateSize();
             ui.renderGraph();
           });
-        
+
 }

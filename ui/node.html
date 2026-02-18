@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Node Registry | Fjordlab Data Portal</title>
-  
+  <title>Node Registry | OceanSense Data Portal</title>
+
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
@@ -17,9 +17,9 @@
       --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
       /* DARK MODE (DEEP OCEAN THEME) */
-      --bg: #101419;         
-      --bg-elev: #1B222C;    
-      --bg-inset: #0b0e12;   
+      --bg: #101419;
+      --bg-elev: #1B222C;
+      --bg-inset: #0b0e12;
       --border: #334155;
 
       --text: #F8FAFC;
@@ -27,13 +27,13 @@
       --text-faint: #64748B;
 
       /* Brand Colors */
-      --accent: #3B82F6;     
+      --accent: #3B82F6;
       --accent-soft: rgba(59, 130, 246, 0.15);
-      
+
       /* Status Colors */
-      --success: #14B8A6;    
-      --warning: #F59E0B;    
-      --danger: #F43F5E;     
+      --success: #14B8A6;
+      --warning: #F59E0B;
+      --danger: #F43F5E;
       --offline: #64748B;
 
       --r-6: 6px; --r-10: 10px; --r-pill: 999px;
@@ -44,7 +44,7 @@
       margin:0; font-family: var(--font-sans); background: var(--bg); color: var(--text);
       height: 100vh; overflow: hidden; font-size: 14px;
     }
-    
+
     .app{ height: 100%; display:flex; flex-direction: column; }
 
     /* Topbar */
@@ -66,16 +66,16 @@
 
     /* Registry Grid Layout */
     .registry-workspace{
-      display: grid; grid-template-columns: 1fr 400px; 
+      display: grid; grid-template-columns: 1fr 400px;
       width: 100%; height: 100%;
     }
 
     /* Main Content Area */
     .main-area { padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 30px; }
-    
+
     /* Inspector/Detail Panel */
-    .inspector-panel { 
-      background: var(--bg-elev); border-left: 1px solid var(--border); 
+    .inspector-panel {
+      background: var(--bg-elev); border-left: 1px solid var(--border);
       display: flex; flex-direction: column; overflow-y: hidden;
     }
     .panel-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
@@ -97,21 +97,21 @@
 
     /* Node Cards Grid */
     .nodes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
-    .node-card { 
-      background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--r-10); 
+    .node-card {
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--r-10);
       padding: 15px; cursor: pointer; transition: all 0.2s; position: relative;
     }
     .node-card:hover { border-color: var(--accent); transform: translateY(-2px); }
     .node-card.active { border-color: var(--accent); background: var(--accent-soft); }
-    
+
     .nc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
     .nc-title { font-weight: 600; font-size: 1rem; color: var(--text); }
     .nc-sub { font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); }
-    
+
     .nc-metrics { display: flex; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
     .metric { font-size: 0.8rem; color: var(--text-muted); }
     .metric i { margin-right: 5px; }
-    
+
     /* Status Indicators */
     .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px currentColor; }
     .status-dot.online { color: var(--success); }
@@ -119,8 +119,8 @@
     .status-dot.offline { color: var(--danger); box-shadow: none; opacity: 0.6; }
 
     /* Components */
-    .btn { 
-      padding: 8px 16px; border-radius: var(--r-6); border: 1px solid var(--border); 
+    .btn {
+      padding: 8px 16px; border-radius: var(--r-6); border: 1px solid var(--border);
       background: var(--bg-elev); color: var(--text); cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px;
     }
     .btn:hover { background: var(--bg-inset); border-color: var(--text-muted); }
@@ -133,16 +133,16 @@
     /* Forms & Inputs */
     .form-group { margin-bottom: 15px; }
     .form-label { display: block; font-size: 0.75rem; color: var(--text-faint); margin-bottom: 5px; text-transform: uppercase; }
-    .input { 
-      width: 100%; background: var(--bg-inset); border: 1px solid var(--border); color: var(--text); 
-      padding: 10px; border-radius: var(--r-6); outline: none; font-family: var(--font-mono); font-size: 0.85rem; 
+    .input {
+      width: 100%; background: var(--bg-inset); border: 1px solid var(--border); color: var(--text);
+      padding: 10px; border-radius: var(--r-6); outline: none; font-family: var(--font-mono); font-size: 0.85rem;
     }
     .input:focus { border-color: var(--accent); }
 
     /* Logs/Diagnostics */
-    .log-terminal { 
-      background: #000; padding: 15px; border-radius: var(--r-6); border: 1px solid var(--border); 
-      font-family: var(--font-mono); font-size: 0.75rem; color: #aaa; max-height: 150px; overflow-y: auto; 
+    .log-terminal {
+      background: #000; padding: 15px; border-radius: var(--r-6); border: 1px solid var(--border);
+      font-family: var(--font-mono); font-size: 0.75rem; color: #aaa; max-height: 150px; overflow-y: auto;
     }
     .log-entry { margin-bottom: 4px; }
     .log-entry.err { color: var(--danger); }
@@ -163,28 +163,28 @@
   <header class="topbar">
     <div class="brand">
       <i class="fa-solid fa-circle-nodes" style="color:var(--accent)"></i>
-      <span>FJORDLAB DATA PORTAL</span>
+      <span>OceanSense DATA PORTAL</span>
     </div>
     <nav class="nav">
       <button onclick="window.location.href='index.html'">Explorer</button>
       <button onclick="window.location.href='datadoc.html'">Data Documentation</button>
       <button class="active">Node Registry</button>
       <button onclick="window.location.href='api_view.html'">Data Access & API</button>
-      
+
     </nav>
   </header>
 
   <div class="page">
     <div class="registry-workspace">
-      
+
       <!-- MAIN AREA: Overview & Grid -->
       <main class="main-area">
-        
+
         <!-- Header & Stats -->
         <div>
             <h1>Node Registry</h1>
             <p>
-                Configure the federated data layer. Each "Node" represents an external OGC SensorThings endpoint. 
+                Configure the federated data layer. Each "Node" represents an external OGC SensorThings endpoint.
                 The orchestrator queries these nodes in parallel to fulfill user requests.
             </p>
 
@@ -223,12 +223,12 @@
 
         <!-- Node Grid -->
         <div class="nodes-grid">
-            
+
             <!-- Node 1: Aalesund -->
             <div class="node-card active" onclick="loadNode('aalesund')">
                 <div class="nc-header">
                     <div>
-                        <div class="nc-title">fjordlab_data@aalesund</div>
+                        <div class="nc-title">OceanSense_data@aalesund</div>
                         <div class="nc-sub">Aalesund, NO</div>
                     </div>
                     <div class="status-dot online" title="Online"></div>
@@ -237,7 +237,7 @@
                     <span class="tag">HTTP</span>
                     <span class="tag">MQTT</span>
                 </div>
-                <div class="nc-sub">https://fjordlab.ntnu.no/api/v1</div>
+                <div class="nc-sub">https://OceanSense.ntnu.no/api/v1</div>
                 <div class="nc-metrics">
                     <span class="metric" style="color:var(--success)"><i class="fa-solid fa-heart-pulse"></i> 24ms</span>
                     <span class="metric"><i class="fa-solid fa-database"></i> 142Mb</span>
@@ -311,11 +311,11 @@
 
       <!-- RIGHT SIDEBAR: Inspector Panel -->
       <aside class="inspector-panel" id="inspector">
-        
+
         <!-- Header -->
         <div class="panel-header">
             <div>
-                <h2 style="margin:0; font-size:1.1rem;">fjordlab_data@aalesund</h2>
+                <h2 style="margin:0; font-size:1.1rem;">OceanSense_data@aalesund</h2>
                 <span style="font-size:0.8rem; color:var(--success);"><i class="fa-solid fa-circle"></i> Operational</span>
             </div>
             <div style="display:flex; gap:5px;">
@@ -326,7 +326,7 @@
 
         <!-- Body -->
         <div class="panel-content">
-            
+
             <div class="tabs">
                 <div class="tab active" onclick="switchTab('config')">Configuration</div>
                 <div class="tab" onclick="switchTab('health')">Health & Logs</div>
@@ -336,18 +336,18 @@
             <div id="tab-config">
                 <div class="form-group">
                     <label class="form-label">Display Name</label>
-                    <input class="input" value="fjordlab_data@aalesund"/>
+                    <input class="input" value="OceanSense_data@aalesund"/>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Base HTTP URL</label>
-                    <input class="input" value="https://fjordlab.ntnu.no/api/v1"/>
+                    <input class="input" value="https://OceanSense.ntnu.no/api/v1"/>
                     <div style="margin-top:5px; font-size:0.7rem; color:var(--success);"><i class="fa-solid fa-check"></i> Valid OGC Endpoint</div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">MQTT Broker URL</label>
-                    <input class="input" value="mqtt://fjordlab.ntnu.no"/>
+                    <input class="input" value="mqtt://OceanSense.ntnu.no"/>
                 </div>
 
                 <div class="form-group">
@@ -370,7 +370,7 @@
             <div id="tab-health" style="display:none;">
                 <div style="background:var(--bg-inset); padding:15px; border-radius:var(--r-6); margin-bottom:20px;">
                     <label class="form-label">Capabilities Detected</label>
-                    <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:5px;">                        
+                    <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:5px;">
                         <span class="tag">Datastreams</span>
                         <span class="tag">PSQL-API</span>
                         <span class="tag">TimescaleDB-API</span>
@@ -411,7 +411,7 @@
     function switchTab(tabName) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         event.target.classList.add('active');
-        
+
         document.getElementById('tab-config').style.display = tabName === 'config' ? 'block' : 'none';
         document.getElementById('tab-health').style.display = tabName === 'health' ? 'block' : 'none';
     }
@@ -420,10 +420,10 @@
         // Visual toggle for prototype
         document.querySelectorAll('.node-card').forEach(c => c.classList.remove('active'));
         event.currentTarget.classList.add('active');
-        
+
         // In a real app, this would fetch data. Here we just update the title for context.
         const titleMap = {
-            'aalesund': 'fjordlab_data@aalesund',
+            'aalesund': 'OceanSense_data@aalesund',
             'sintef': 'data@sintef',
             'remote03': 'remote-node-03'
         };

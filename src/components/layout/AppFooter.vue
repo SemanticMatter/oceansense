@@ -38,7 +38,7 @@
       </div>
 
       <p class="footer-text">
-        This mockup was developed with the use of AI. The main purpose of the mockup to discuss the functionality of the Fjordlab WP7 federated layer
+        This mockup was developed with the use of AI. The main purpose of the mockup to discuss the functionality of the OceanSense platform, its user interface,
         and its connections to data nodes.
       </p>
     </div>

@@ -13,7 +13,7 @@ describe('useAuth', () => {
 
   it('restores authentication state from localStorage', async () => {
     localStorage.setItem(
-      'fjordlab.mockAuth',
+      'OceanSense.mockAuth',
       JSON.stringify({
         isAuthenticated: true,
         user: { name: 'Test User', avatarUrl: 'avatar.png' }
@@ -36,7 +36,7 @@ describe('useAuth', () => {
     expect(isAuthenticated.value).toBe(true);
     expect(user.value?.name).toBe('Storm Fjord');
 
-    const stored = JSON.parse(localStorage.getItem('fjordlab.mockAuth'));
+    const stored = JSON.parse(localStorage.getItem('OceanSense.mockAuth'));
     expect(stored.isAuthenticated).toBe(true);
     expect(stored.user?.name).toBe('Storm Fjord');
 
@@ -46,7 +46,7 @@ describe('useAuth', () => {
   });
 
   it('clears state when stored data is invalid', async () => {
-    localStorage.setItem('fjordlab.mockAuth', 'not-json');
+    localStorage.setItem('OceanSense.mockAuth', 'not-json');
 
     const useAuth = await loadAuth();
     const { isAuthenticated, user } = useAuth();

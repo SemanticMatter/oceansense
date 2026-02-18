@@ -62,6 +62,7 @@
                 id="dataset-prev"
                 class="btn ghost"
                 style="padding:2px 8px; font-size:0.7rem;"
+                aria-label="Previous dataset page"
                 onclick="ui.prevDatasetPage()"
               >
                 <i class="fa-solid fa-chevron-left"></i>
@@ -70,6 +71,7 @@
                 id="dataset-next"
                 class="btn ghost"
                 style="padding:2px 8px; font-size:0.7rem;"
+                aria-label="Next dataset page"
                 onclick="ui.nextDatasetPage()"
               >
                 <i class="fa-solid fa-chevron-right"></i>
@@ -80,6 +82,8 @@
           <div
             id="dataset-list"
             class="panel-body"
+            tabindex="0"
+            aria-label="Data documentation dataset list"
           ></div>
         </aside>
 

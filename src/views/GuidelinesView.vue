@@ -3,10 +3,10 @@
     <main class="guidelines-main">
       <section class="hero">
         <div class="hero-content">
-          <span class="pill info">Fjordlab Data Nodes</span>
-          <h1>Connect your Pilot to Fjordlab Guidelines</h1>
+          <span class="pill info">OceanSense Data Nodes</span>
+          <h1>Connect your Pilot to OceanSense Guidelines</h1>
           <p>
-            Ingest telemetry, files, and workflows into a Fjordlab Data Node, then enrich your datasets through the
+            Ingest telemetry, files, and workflows into a OceanSense Data Node, then enrich your datasets through the
             federated layer with metadata, ontologies, notes, and associations.
           </p>
           <div class="hero-actions">
@@ -805,7 +805,7 @@ flush.onConnection = true</pre>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import '../assets/styles/pages/guidelines.css';
-import { datasets } from '../assets/data/fjordlab-datasets';
+import { datasets } from '../assets/data/OceanSense-datasets';
 
 const router = useRouter();
 const selectedDatasetId = ref('');

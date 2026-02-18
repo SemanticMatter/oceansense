@@ -1,6 +1,6 @@
 import { computed, reactive } from 'vue';
 
-const STORAGE_KEY = 'fjordlab.mockAuth';
+const STORAGE_KEY = 'OceanSense.mockAuth';
 
 const state = reactive({
   initialized: false,

@@ -12,13 +12,13 @@
               style="color:var(--text-muted); margin-right:10px;"
             ></i>
             <input
-              placeholder="Filter: &quot;Gunnerus&quot; AND &quot;Engine&quot; AND &quot;Motion&quot;..."
-              value="R/V Gunnerus Data Streams"
+              placeholder="Filter: &quot;OceanLab&quot; AND &quot;CTD&quot; AND &quot;CF&quot;..."
+              value="OceanSense Federated Dataset Explorer"
             />
           </div>
           <div style="display:flex; gap:8px;">
-            <span class="chip">Platform: R/V Gunnerus <i class="fa-solid fa-xmark"></i></span>
-            <span class="chip">Node: data@sintef <i class="fa-solid fa-xmark"></i></span>
+            <span class="chip">Nodes: oceanlab_no | pml_apics_uk | tara_polar <i class="fa-solid fa-xmark"></i></span>
+            <span class="chip">Status: Live + Published <i class="fa-solid fa-xmark"></i></span>
           </div>
         </div>
 
@@ -27,82 +27,38 @@
             <h2 id="datasets-title">
               Datasets
             </h2>
-            <span class="pill status">Node Online</span>
+            <span class="pill status">Federated Nodes</span>
           </div>
-          <div class="panel-body">
+          <div
+            id="explorer-dataset-list"
+            class="panel-body"
+            tabindex="0"
+            aria-label="Explorer dataset list"
+          >
             <article
+              v-for="dataset in explorerDatasets"
+              :key="dataset.id"
               class="dataset-card"
-              onclick="selectDataset(this, 'wind')"
+              :class="{ active: selectedDatasetId === dataset.id }"
+              role="button"
+              tabindex="0"
+              :aria-label="`Select dataset ${dataset.title}`"
+              @click="selectDataset(dataset.id)"
+              @keydown.enter.prevent="selectDataset(dataset.id)"
+              @keydown.space.prevent="selectDataset(dataset.id)"
             >
               <div class="dataset-title">
-                <div style="display:flex; justify-content:space-between;">
-                  <h3>Gunnerus_MetStation_Wind</h3>
-                  <span class="pill hz">1 Hz</span>
+                <div style="display:flex; justify-content:space-between; gap:10px;">
+                  <h3>{{ dataset.title }}</h3>
+                  <span class="pill hz">{{ dataset.temporal.updateFrequency || dataset.temporal.resolution }}</span>
                 </div>
               </div>
               <div class="mini-bars">
-                <span class="pill">Type: <strong>Time Series</strong></span>
-                <span class="pill">Sensor: <strong>Gill WindObserver</strong></span>
+                <span class="pill">Node: <strong>{{ dataset.nodeId }}</strong></span>
+                <span class="pill">Modality: <strong>{{ dataset.modalities[0] || 'multimodal' }}</strong></span>
               </div>
               <p class="desc">
-                Real-time wind speed and direction (True/Apparent) corrected for vessel motion.
-              </p>
-            </article>
-
-            <article
-              class="dataset-card"
-              onclick="selectDataset(this, 'engine')"
-            >
-              <div class="dataset-title">
-                <div style="display:flex; justify-content:space-between;">
-                  <h3>Gunnerus_Propulsion_Telemetry</h3>
-                  <span class="pill hz">10 Hz</span>
-                </div>
-              </div>
-              <div class="mini-bars">
-                <span class="pill">Type: <strong>Engineering</strong></span>
-                <span class="pill">Source: <strong>ECU/Modbus</strong></span>
-              </div>
-              <p class="desc">
-                Telemetry from 3x Main Scania DI16 engines. RPM, Oil Temp, Exhaust Temp, Fuel Rate.
-              </p>
-            </article>
-
-            <article
-              class="dataset-card"
-              onclick="selectDataset(this, 'motion')"
-            >
-              <div class="dataset-title">
-                <div style="display:flex; justify-content:space-between;">
-                  <h3>Gunnerus_MRU_Motion</h3>
-                  <span class="pill hz">100 Hz</span>
-                </div>
-              </div>
-              <div class="mini-bars">
-                <span class="pill">Type: <strong>High-Freq</strong></span>
-                <span class="pill">Sensor: <strong>Seapath 380</strong></span>
-              </div>
-              <p class="desc">
-                Precision positioning (Lat/Lon), Heave, Pitch, Roll, Velocity, and Acceleration vectors.
-              </p>
-            </article>
-
-            <article
-              class="dataset-card"
-              onclick="selectDataset(this, 'media')"
-            >
-              <div class="dataset-title">
-                <div style="display:flex; justify-content:space-between;">
-                  <h3>Gunnerus_Campaign_Media_2025</h3>
-                  <span class="pill">Unstructured</span>
-                </div>
-              </div>
-              <div class="mini-bars">
-                <span class="pill">Type: <strong>Image/Video</strong></span>
-                <span class="pill">Source: <strong>CCTV/Deck</strong></span>
-              </div>
-              <p class="desc">
-                Synchronized imagery from deck cameras, ROV feeds, and event logs.
+                {{ dataset.description }}
               </p>
             </article>
           </div>
@@ -123,7 +79,7 @@
               <div style="position:absolute; left:20%; top:-4px; width:12px; height:12px; background:white; border-radius:50%;"></div>
               <div style="position:absolute; left:50%; top:-4px; width:12px; height:12px; background:white; border-radius:50%;"></div>
             </div>
-            <span class="pill">2024-01-01 -> Now</span>
+            <span class="pill">2024-06-01 -> 2026-02-18</span>
           </div>
         </section>
 
@@ -133,17 +89,19 @@
             <span>
               <button
                 id="btn-inspector-form"
-                class="btn active"
+                class="btn"
+                :class="inspectorMode === 'form' ? 'active' : 'ghost'"
                 style="padding:2px 8px; font-size:0.7rem;"
-                onclick="setInspectorMode('form')"
+                @click="setInspectorMode('form')"
               >
                 Form View
               </button>
               <button
                 id="btn-inspector-json"
-                class="btn ghost"
-                style="padding:2px 8px; font-size:0.7rem; margin-left: 5px;"
-                onclick="setInspectorMode('json')"
+                class="btn"
+                :class="inspectorMode === 'json' ? 'active' : 'ghost'"
+                style="padding:2px 8px; font-size:0.7rem; margin-left:5px;"
+                @click="setInspectorMode('json')"
               >
                 JSON View
               </button>
@@ -168,255 +126,469 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { datasets as sourceDatasets } from '../assets/data/OceanSense-datasets';
 import '../assets/styles/pages/index.css';
 
-onMounted(() => {
-  const L = window.L;
-  if (!L) {
+const nodeMetadata = {
+  oceanlab_no: {
+    label: 'oceanlab@sensor-things',
+    locationName: 'OceanLab (Norway)',
+    lat: 63.44,
+    lon: 10.39,
+    endpoint: 'https://oceanlab.example.no/sensorthings/v1.0'
+  },
+  pml_apics_uk: {
+    label: 'apics@pml',
+    locationName: 'PML-APICS (UK)',
+    lat: 50.25,
+    lon: -4.14,
+    endpoint: 'https://apics.example.uk/sensorthings/v1.0'
+  },
+  tara_polar: {
+    label: 'tara-polar@drift',
+    locationName: 'Tara Polar Station (Arctic Drift)',
+    lat: 79.8,
+    lon: -10.2,
+    endpoint: 'https://tara-polar.example.org/sensorthings/v1.0'
+  }
+};
+
+const coreStandards = [
+  'OGC SensorThings API',
+  'OGC O&M',
+  'SOSA/SSN',
+  'PROV-O',
+  'DCAT',
+  'ISO 19115-1/19139',
+  'CF Conventions',
+  'NERC/BODC P01/P06',
+  'Ocean Best Practices',
+  'ISO 8601 UTC',
+  'WGS84 EPSG:4326'
+];
+
+const bioStandards = [...coreStandards, 'Darwin Core', 'WoRMS', 'OBIS'];
+
+const explorerOverrides = {
+  ds1: {
+    nodeId: 'oceanlab_no',
+    locationName: 'OceanLab (Norway)',
+    modalities: ['imaging', 'optics'],
+    instruments: ['SilCam', 'UVP-6'],
+    parameters: [
+      { name: 'particle_size_distribution', unit: 'um bins' },
+      { name: 'particle_count', unit: 'count/L' },
+      { name: 'abundance_indicator', unit: 'count/L' }
+    ],
+    formats: ['Parquet', 'SensorThings-JSON'],
+    distributions: [
+      { format: 'SensorThings API', url: 'https://oceanlab.example.no/sensorthings/v1.0/Datastreams/imaging-optics' },
+      { format: 'Parquet', url: 'https://oceanlab.example.no/data/oceanlab_imaging_optics_2025_ongoing.parquet' }
+    ],
+    quality: { protocol: 'Ocean Best Practices + imaging QA/QC', summary: 'Image blur/exposure QA and classifier drift checks before publishing minute summaries.' },
+    standards: bioStandards,
+    updatedAt: '2026-02-18T08:15:00Z',
+    size: '2.1 GB',
+    sampleVariables: ['particle_size_distribution', 'particle_count_per_L', 'classification_confidence'],
+    exampleObservation: {
+      timestamp: '2026-02-18T08:15:00Z',
+      particle_count_per_L: 1840,
+      dominant_size_bin_um: '160-250',
+      classification_confidence: 0.91
+    }
+  },
+  ds2: {
+    nodeId: 'oceanlab_no',
+    locationName: 'OceanLab (Norway)',
+    modalities: ['water_column'],
+    instruments: ['CTD package', 'DO optode', 'PAR sensor', 'CDOM fluorometer'],
+    parameters: [
+      { name: 'sea_water_temperature', unit: 'degrees_C' },
+      { name: 'practical_salinity', unit: 'PSU' },
+      { name: 'dissolved_oxygen', unit: 'umol/kg' },
+      { name: 'photosynthetically_available_radiation', unit: 'umol photons m-2 s-1' },
+      { name: 'cdom_absorption_440nm', unit: '1/m' }
+    ],
+    formats: ['NetCDF', 'SensorThings-JSON'],
+    distributions: [
+      { format: 'NetCDF', url: 'https://oceanlab.example.no/data/oceanlab_ctd_do_par_cdom_2024.nc' }
+    ],
+    quality: { protocol: 'QARTOD', summary: 'Automated range/spike/gradient tests plus delayed-mode review at deployment boundaries.' },
+    standards: coreStandards,
+    updatedAt: '2026-01-12T10:00:00Z',
+    size: '980 MB',
+    sampleVariables: ['sea_water_temperature', 'practical_salinity', 'dissolved_oxygen', 'photosynthetically_available_radiation'],
+    exampleObservation: {
+      timestamp: '2025-12-31T23:50:00Z',
+      sea_water_temperature_degrees_C: 6.4,
+      practical_salinity_psu: 33.9,
+      dissolved_oxygen_umol_per_kg: 287,
+      par_umol_photons_m2_s: 14.2
+    }
+  },
+  ds3: {
+    nodeId: 'oceanlab_no',
+    locationName: 'OceanLab (Norway)',
+    modalities: ['dynamics'],
+    instruments: ['Wave sensor', 'ADCP/current meter'],
+    parameters: [
+      { name: 'significant_wave_height', unit: 'm' },
+      { name: 'wave_period', unit: 's' },
+      { name: 'eastward_sea_water_velocity', unit: 'm/s' },
+      { name: 'northward_sea_water_velocity', unit: 'm/s' }
+    ],
+    formats: ['Zarr', 'SensorThings-JSON'],
+    distributions: [
+      { format: 'SensorThings API', url: 'https://oceanlab.example.no/sensorthings/v1.0/Datastreams/waves-currents' },
+      { format: 'Zarr', url: 'https://oceanlab.example.no/data/oceanlab_waves_currents_2025_ongoing.zarr' }
+    ],
+    quality: { protocol: 'QARTOD', summary: 'Near-real-time velocity and wave integrity checks with latency alarms for dropped ensembles.' },
+    standards: coreStandards,
+    updatedAt: '2026-02-18T09:02:00Z',
+    size: '1.4 GB',
+    sampleVariables: ['significant_wave_height', 'wave_period', 'eastward_sea_water_velocity', 'northward_sea_water_velocity'],
+    exampleObservation: {
+      timestamp: '2026-02-18T09:00:00Z',
+      significant_wave_height_m: 1.7,
+      wave_period_s: 5.8,
+      eastward_velocity_m_per_s: 0.21,
+      northward_velocity_m_per_s: -0.09
+    }
+  },
+  ds4: {
+    nodeId: 'pml_apics_uk',
+    locationName: 'PML-APICS (UK)',
+    modalities: ['acoustics'],
+    instruments: ['Hydrophone array'],
+    parameters: [
+      { name: 'sound_pressure_level', unit: 'dB re 1 uPa' },
+      { name: 'power_spectral_density_bands', unit: 'dB re 1 uPa^2/Hz' },
+      { name: 'soundscape_index', unit: 'unitless' }
+    ],
+    formats: ['Parquet', 'SensorThings-JSON'],
+    distributions: [
+      { format: 'SensorThings API', url: 'https://apics.example.uk/sensorthings/v1.0/Datastreams/passive-acoustics' },
+      { format: 'Parquet', url: 'https://apics.example.uk/data/pml_passive_acoustics_soundscape_2025_ongoing.parquet' }
+    ],
+    quality: { protocol: 'Hydrophone QA/QC + Ocean Best Practices', summary: 'Clock drift correction, clipping flags, and PSD validation per processing burst.' },
+    standards: coreStandards,
+    updatedAt: '2026-02-18T07:55:00Z',
+    size: '3.0 GB',
+    sampleVariables: ['sound_pressure_level', 'psd_63_125hz', 'psd_1_2khz', 'biophony_index'],
+    exampleObservation: {
+      timestamp: '2026-02-18T07:55:00Z',
+      spl_db_re_1uPa: 96.3,
+      psd_63_125hz_db: 78.2,
+      psd_1_2khz_db: 64.1,
+      biophony_index: 0.58
+    }
+  },
+  ds5: {
+    nodeId: 'pml_apics_uk',
+    locationName: 'PML-APICS (UK)',
+    modalities: ['acoustics'],
+    instruments: ['EK80'],
+    parameters: [
+      { name: 'volume_backscattering_strength_Sv_38kHz', unit: 'dB re 1 m-1' },
+      { name: 'volume_backscattering_strength_Sv_120kHz', unit: 'dB re 1 m-1' },
+      { name: 'biomass_proxy_index', unit: 'unitless' }
+    ],
+    formats: ['Zarr'],
+    distributions: [
+      { format: 'Zarr', url: 'https://apics.example.uk/data/pml_ek80_backscatter_2025.zarr' }
+    ],
+    quality: { protocol: 'EK80 calibration + acoustic QC', summary: 'Sphere calibration metadata and transient-noise masking applied to Sv products.' },
+    standards: coreStandards,
+    updatedAt: '2026-01-30T12:30:00Z',
+    size: '4.7 GB',
+    sampleVariables: ['sv_38khz', 'sv_120khz', 'biomass_proxy_index'],
+    exampleObservation: {
+      timestamp: '2025-11-15T12:30:00Z',
+      sv_38khz_db_re_1m_minus1: -71.2,
+      sv_120khz_db_re_1m_minus1: -66.4,
+      biomass_proxy_index: 0.47
+    }
+  },
+  ds6: {
+    nodeId: 'pml_apics_uk',
+    locationName: 'PML-APICS (UK)',
+    modalities: ['cytometry'],
+    instruments: ['Cytosub'],
+    parameters: [
+      { name: 'cell_count', unit: 'cells/mL' },
+      { name: 'chlorophyll_fluorescence_red_channel', unit: 'relative_units' },
+      { name: 'orange_fluorescence_channel', unit: 'relative_units' },
+      { name: 'forward_scatter_proxy', unit: 'relative_units' }
+    ],
+    formats: ['NetCDF', 'SensorThings-JSON'],
+    distributions: [
+      { format: 'SensorThings API', url: 'https://apics.example.uk/sensorthings/v1.0/Datastreams/cytosub' },
+      { format: 'NetCDF', url: 'https://apics.example.uk/data/pml_cytosub_cells_2025_ongoing.nc' }
+    ],
+    quality: { protocol: 'Cytosub acquisition QC', summary: 'Flow-rate checks, pulse-shape filtering, and bead normalization performed per run.' },
+    standards: bioStandards,
+    updatedAt: '2026-02-18T08:42:00Z',
+    size: '820 MB',
+    sampleVariables: ['cell_count', 'chlorophyll_fluorescence_red_channel', 'orange_fluorescence_channel'],
+    exampleObservation: {
+      timestamp: '2026-02-18T08:40:00Z',
+      cell_count_cells_per_mL: 18200,
+      red_fluorescence_ru: 0.68,
+      orange_fluorescence_ru: 0.23
+    }
+  },
+  ds7: {
+    nodeId: 'tara_polar',
+    locationName: 'Tara Polar Station (Arctic Drift)',
+    modalities: ['met/ice', 'water_column', 'imaging'],
+    instruments: ['Polar met package', 'Sea-ice condition sensor', 'CTD package', 'DO optode', 'UVP-6'],
+    parameters: [
+      { name: 'air_temperature', unit: 'degrees_C' },
+      { name: 'sea_ice_fraction', unit: '0-1' },
+      { name: 'ice_thickness', unit: 'm' },
+      { name: 'sea_water_temperature', unit: 'degrees_C' },
+      { name: 'practical_salinity', unit: 'PSU' },
+      { name: 'dissolved_oxygen', unit: 'umol/kg' },
+      { name: 'classified_plankton_objects', unit: 'count/L' }
+    ],
+    formats: ['NetCDF', 'Parquet', 'SensorThings-JSON'],
+    distributions: [
+      { format: 'SensorThings API', url: 'https://tara-polar.example.org/sensorthings/v1.0/Datastreams/drift-sentinels' },
+      { format: 'NetCDF', url: 'https://tara-polar.example.org/data/tara_polar_sentinels_2024_ongoing.nc' },
+      { format: 'Parquet', url: 'https://tara-polar.example.org/data/tara_drifting_track_2024_2026.parquet' }
+    ],
+    quality: { protocol: 'QARTOD + Polar observatory SOP', summary: 'UTC normalization, track-position QA, and stream-specific quality flags for met/ice/ocean signals.' },
+    standards: bioStandards,
+    updatedAt: '2026-02-18T06:30:00Z',
+    size: '5.2 GB',
+    sampleVariables: ['sea_ice_fraction', 'air_temperature', 'sea_water_temperature', 'dissolved_oxygen', 'classified_plankton_objects'],
+    exampleObservation: {
+      timestamp: '2026-02-18T06:00:00Z',
+      latitude: 81.7,
+      longitude: -8.9,
+      sea_ice_fraction: 0.86,
+      air_temperature_degrees_C: -18.4,
+      sea_water_temperature_degrees_C: -1.2,
+      dissolved_oxygen_umol_per_kg: 334
+    }
+  },
+  ds8: {
+    nodeId: 'tara_polar',
+    locationName: 'Tara Polar Station (Arctic Drift)',
+    modalities: ['biodiversity', 'water_column'],
+    instruments: ['UVP-6', 'CTD package', 'Nutrient bottle workflow'],
+    parameters: [
+      { name: 'taxon_classification_outputs', unit: 'DarwinCore terms' },
+      { name: 'nitrate', unit: 'umol/L' },
+      { name: 'phosphate', unit: 'umol/L' },
+      { name: 'silicate', unit: 'umol/L' }
+    ],
+    formats: ['Parquet', 'CSV'],
+    distributions: [
+      { format: 'Parquet', url: 'https://tara-polar.example.org/data/tara_drifting_track_2024_2026.parquet' },
+      { format: 'CSV', url: 'https://tara-polar.example.org/data/tara_biodiversity_nutrients_2024_2026.csv' }
+    ],
+    quality: { protocol: 'WoRMS/OBIS validation + nutrient laboratory QA', summary: 'Taxonomy harmonization and nutrient QA records linked via PROV-O lineage notes.' },
+    standards: bioStandards,
+    updatedAt: '2026-01-31T18:00:00Z',
+    size: '1.1 GB',
+    sampleVariables: ['taxon_id_worms', 'occurrence_confidence_score', 'nitrate', 'phosphate', 'silicate'],
+    exampleObservation: {
+      timestamp: '2026-01-31T12:00:00Z',
+      taxon_id_worms: 104464,
+      occurrence_confidence_score: 0.88,
+      nitrate_umol_per_L: 4.2,
+      phosphate_umol_per_L: 0.41
+    }
+  }
+};
+
+const inferFormats = (access) => {
+  const link = String(access || '').toLowerCase();
+  if (link.includes('/sensorthings/')) return ['SensorThings-JSON'];
+  if (link.endsWith('.nc')) return ['NetCDF'];
+  if (link.endsWith('.zarr')) return ['Zarr'];
+  if (link.endsWith('.parquet')) return ['Parquet'];
+  if (link.endsWith('.csv')) return ['CSV'];
+  return ['JSON'];
+};
+
+const explorerDatasets = sourceDatasets.map((dataset) => {
+  const override = explorerOverrides[dataset.id] || {};
+  const nodeId = override.nodeId || dataset.nodeId || 'oceanlab_no';
+  const node = nodeMetadata[nodeId] || nodeMetadata.oceanlab_no;
+  const formats = override.formats || inferFormats(dataset.access);
+
+  return {
+    ...dataset,
+    nodeId,
+    sourceNode: nodeId,
+    locationName: override.locationName || node.locationName,
+    modalities: override.modalities || [],
+    instruments: override.instruments || (dataset.sensors || []).map((sensor) => sensor.model),
+    parameters: override.parameters || [],
+    formats,
+    distributions: override.distributions || formats.map((format) => ({ format, url: dataset.access })),
+    quality: override.quality || {
+      protocol: dataset.provenance?.qc?.protocol || 'QARTOD',
+      summary: dataset.provenance?.qc?.summary || 'QC summary pending.'
+    },
+    standards: override.standards || coreStandards,
+    owner: dataset.organization,
+    category: (override.modalities || []).join(', ') || 'multimodal',
+    updatedAt: override.updatedAt || '2026-02-18T08:00:00Z',
+    thumbnail: override.thumbnail || '',
+    size: override.size || 'n/a',
+    accessLevel: override.accessLevel || 'Open',
+    sampleVariables: override.sampleVariables || [],
+    exampleObservation: override.exampleObservation || {},
+    temporal: {
+      ...dataset.temporal,
+      updateFrequency: dataset.temporal?.resolution || ''
+    }
+  };
+});
+
+const datasetById = Object.fromEntries(explorerDatasets.map((dataset) => [dataset.id, dataset]));
+
+const selectedDatasetId = ref(null);
+const inspectorMode = ref('form');
+
+const escapeHtml = (value) =>
+  String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+
+const formatSpatial = (dataset) => {
+  if (dataset.spatial?.type === 'point' && dataset.spatial?.point) {
+    return `${dataset.locationName} (${dataset.spatial.point.lat}, ${dataset.spatial.point.lon})`;
+  }
+  if (dataset.spatial?.type === 'bbox' && Array.isArray(dataset.spatial?.bbox)) {
+    return `${dataset.locationName} bbox=${dataset.spatial.bbox.join(', ')}`;
+  }
+  return dataset.locationName;
+};
+
+const renderInspector = (datasetId) => {
+  const container = document.getElementById('inspector-content');
+  if (!container) return;
+
+  const dataset = datasetById[datasetId];
+  if (!dataset) return;
+
+  if (inspectorMode.value === 'json') {
+    const json = escapeHtml(JSON.stringify(dataset, null, 2));
+    container.innerHTML = `<pre class="json-view">${json}</pre>
+      <div style="margin-top:20px; padding-top:15px; border-top:1px solid var(--border); display:flex; gap:10px;">
+        <button class="btn primary" style="flex:1; justify-content:center;"><i class="fa-solid fa-download"></i> Download</button>
+        <button class="btn" style="flex:1; justify-content:center;"><i class="fa-solid fa-bell"></i> Subscribe</button>
+      </div>`;
     return;
   }
 
-  const map = L.map('map').setView([63.45, 10.4], 10);
+  const parameterRows = dataset.parameters
+    .map((parameter) => `<div class="kv-row"><span>${escapeHtml(parameter.name)}</span> <span>${escapeHtml(parameter.unit)}</span></div>`)
+    .join('');
+
+  const distributionRows = dataset.distributions
+    .map((distribution) => `<div class="kv-row"><span>${escapeHtml(distribution.format)}</span> <span>${escapeHtml(distribution.url)}</span></div>`)
+    .join('');
+
+  const sampleRows = dataset.sampleVariables
+    .map((item) => `<span class="pill">${escapeHtml(item)}</span>`)
+    .join('');
+
+  const observationRows = Object.entries(dataset.exampleObservation || {})
+    .map(([key, value]) => `<div class="kv-row"><span>${escapeHtml(key)}</span> <span>${escapeHtml(String(value))}</span></div>`)
+    .join('');
+
+  const standards = dataset.standards.map((standard) => `<span class="pill">${escapeHtml(standard)}</span>`).join('');
+
+  container.innerHTML = `
+      <div class="kv"><span class="k">Dataset</span><span class="v">${escapeHtml(dataset.title)}</span></div>
+      <div class="kv"><span class="k">Node / Origin</span><span class="v">${escapeHtml(dataset.nodeId)} (${escapeHtml(nodeMetadata[dataset.nodeId]?.label || dataset.nodeId)})</span></div>
+      <div class="kv"><span class="k">Location</span><span class="v">${escapeHtml(formatSpatial(dataset))}</span></div>
+      <div class="kv"><span class="k">Last updated</span><span class="v">${escapeHtml(dataset.updatedAt)}</span></div>
+
+      <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">OVERVIEW</h3>
+      <div class="kv">
+        <div class="kv-row"><span>Status</span> <span>${escapeHtml(dataset.status)}</span></div>
+        <div class="kv-row"><span>License</span> <span>${escapeHtml(dataset.license)}</span></div>
+        <div class="kv-row"><span>Owner</span> <span>${escapeHtml(dataset.owner)}</span></div>
+        <div class="kv-row"><span>Access</span> <span>${escapeHtml(dataset.accessLevel)}</span></div>
+        <div class="kv-row"><span>Temporal</span> <span>${escapeHtml(`${dataset.temporal.start} -> ${dataset.temporal.end} (${dataset.temporal.updateFrequency})`)}</span></div>
+      </div>
+
+      <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">MODALITIES / INSTRUMENTS</h3>
+      <div class="kv">
+        <div class="kv-row"><span>Modalities</span> <span>${escapeHtml(dataset.modalities.join(', '))}</span></div>
+        <div class="kv-row"><span>Instruments</span> <span>${escapeHtml(dataset.instruments.join(', '))}</span></div>
+      </div>
+
+      <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">PARAMETERS</h3>
+      <div class="kv">${parameterRows}</div>
+
+      <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">FORMATS / DISTRIBUTIONS</h3>
+      <div class="kv">${distributionRows}</div>
+
+      <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">QUALITY / STANDARDS</h3>
+      <div class="kv">
+        <div class="kv-row"><span>QC protocol</span> <span>${escapeHtml(dataset.quality.protocol)}</span></div>
+        <div class="kv-row"><span>QC summary</span> <span>${escapeHtml(dataset.quality.summary)}</span></div>
+      </div>
+      <div class="topic-row" style="margin-top:8px;">${standards}</div>
+
+      <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">PREVIEW</h3>
+      <div class="topic-row">${sampleRows}</div>
+      <div class="kv" style="margin-top:8px;">${observationRows}</div>
+
+      <div style="margin-top:20px; padding-top:15px; border-top:1px solid var(--border); display:flex; gap:10px;">
+        <button class="btn primary" style="flex:1; justify-content:center;">Download</button>
+        <button class="btn" style="flex:1; justify-content:center;">Subscribe</button>
+      </div>
+    `;
+};
+
+const setInspectorMode = (mode) => {
+  inspectorMode.value = mode;
+  if (selectedDatasetId.value) {
+    renderInspector(selectedDatasetId.value);
+  }
+};
+
+const selectDataset = (datasetId) => {
+  selectedDatasetId.value = datasetId;
+  renderInspector(datasetId);
+};
+
+onMounted(() => {
+  const L = window.L;
+  if (!L) return;
+
+  const map = L.map('map').setView([67.0, 2.0], 4);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap'
   }).addTo(map);
 
-  const shipIcon = L.divIcon({
-    className: 'ship-marker',
-    html: '<i class="fa-solid fa-ship"></i>',
-    iconSize: [28, 28],
-    iconAnchor: [14, 14]
+  Object.entries(nodeMetadata).forEach(([nodeId, node]) => {
+    const marker = L.circleMarker([node.lat, node.lon], {
+      radius: nodeId === 'tara_polar' ? 8 : 6,
+      weight: 2
+    }).addTo(map);
+    marker.bindPopup(`<b>${escapeHtml(node.label)}</b><br>${escapeHtml(node.locationName)}<br>${escapeHtml(node.endpoint)}`);
   });
 
-  const trackLatChords = [
-    [63.43, 10.39],
-    [63.44, 10.38],
-    [63.45, 10.35],
-    [63.46, 10.3],
-    [63.48, 10.25],
-    [63.5, 10.2],
-    [63.52, 10.15]
+  const taraTrack = [
+    [74.0, -38.0],
+    [76.2, -26.0],
+    [78.6, -18.0],
+    [81.7, -8.9],
+    [83.1, 6.2]
   ];
 
-  L.polyline(trackLatChords, { color: '#8B5CF6', weight: 3, dashArray: '5, 10' }).addTo(map);
-
-  const ship = L.marker([63.52, 10.15], { icon: shipIcon }).addTo(map);
-  ship.bindPopup('<b>R/V Gunnerus</b><br>Speed: 12.4 kn<br>Heading: 310°');
-
-  const datasetJson = {
-    wind: {
-      dataset: 'Gunnerus_MetStation_Wind',
-      node_origin: 'data@sintef / Mast Top',
-      frequency_hz: '1 Hz',
-      live_values: {
-        wind_speed_true: '8.2 m/s',
-        wind_dir_true: '245°',
-        air_temp: '4.1°C',
-        pressure: '1012 hPa'
-      },
-      chart: 'Sparkline Chart',
-    },
-    engine: {
-      dataset: 'Gunnerus_Propulsion',
-      frequency_hz: '10 Hz',
-      engines: [
-        {
-          name: 'Main Engine 1 (Scania DI16)',
-          rpm: '1,520',
-          load: '78%',
-          oil_temp: '92°C',
-          exhaust_temp: '410°C',
-          fuel_rate: '194 g/kWh'
-        },
-        {
-          name: 'Main Engine 2 (Scania DI16)',
-          rpm: '1,515',
-          load: '77%',
-          oil_temp: '91°C',
-          exhaust_temp: '390°C',
-          fuel_rate: '191 g/kWh'
-        },
-        {
-          name: 'Main Engine 3 (Scania DI16)',
-          rpm: '1,490',
-          load: '75%',
-          oil_temp: '89°C',
-          exhaust_temp: '406°C',
-          fuel_rate: '203 g/kWh'
-        }
-      ],
-
-    },
-    motion: {
-      dataset: 'Gunnerus_MRU_Motion',
-      sensor: 'Seapath 380',
-      frequency_hz: '100 Hz',
-      position_attitude: {
-        lat: '63.5201 N',
-        lon: '10.1504 E',
-        heading: '310.5°',
-        roll: '1.2°',
-        pitch: '0.4°',
-        heave: '0.15 m'
-      },
-      dynamics: {
-        sog: '12.4 kn',
-        accel_z: '9.81 m/s²'
-      },
-    },
-    media: {
-      dataset: 'Gunnerus_Campaign_Media',
-      items: '142 Images, 12 Videos',
-      latest_captures: ['Deck Cam 1', 'Aft CCTV', 'ROV Feed', 'Nav Screen'],
-      actions: ['Open Media Gallery']
-    }
-  };
-
-  let inspectorMode = 'form';
-  let selectedType = null;
-
-  const escapeHtml = (value) =>
-    String(value)
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;');
-
-  const renderInspector = (type) => {
-    const container = document.getElementById('inspector-content');
-    if (!container) {
-      return;
-    }
-
-    if (inspectorMode === 'json') {
-      const payload = datasetJson[type] || {};
-      const json = escapeHtml(JSON.stringify(payload, null, 2));
-      container.innerHTML = `<pre class="json-view">${json}</pre>
-                      <div style="margin-top:20px; padding-top:15px; border-top:1px solid var(--border); display:flex; gap:10px;">
-                  <button class="btn primary" style="flex:1; justify-content:center;"><i class="fa-solid fa-download"></i> Download</button>
-                  <button class="btn" style="flex:1; justify-content:center;"><i class="fa-solid fa-bell"></i> Subscribe</button>
-                </div>`;
-      
-      return;
-    }
-
-    let content = '';
-    if (type === 'wind') {
-      content = `
-            <div class="kv"><span class="k">Dataset</span><span class="v">Gunnerus_MetStation_Wind</span></div>
-            <div class="kv"><span class="k">Node / Origin</span><span class="v">data@sintef / Mast Top</span></div>
-
-            <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">LIVE VALUES (1 Hz)</h3>
-            <div class="kv">
-                <div class="kv-row"><span>Wind Speed (True)</span> <span>8.2 m/s</span></div>
-                <div class="kv-row"><span>Wind Dir (True)</span> <span>245°</span></div>
-                <div class="kv-row"><span>Air Temp</span> <span>4.1°C</span></div>
-                <div class="kv-row"><span>Pressure</span> <span>1012 hPa</span></div>
-            </div>
-            <div style="margin-top:15px; height:100px; border:1px solid var(--border); background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; color:var(--text-faint);">
-                [ Sparkline Chart ]
-            </div>
-        `;
-    } else if (type === 'engine') {
-      content = `
-            <div class="kv"><span class="k">Dataset</span><span class="v">Gunnerus_Propulsion</span></div>
-            <div class="kv"><span class="k">Frequency</span><span class="v" style="color:var(--freq)">10 Hz</span></div>
-
-            <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">MAIN ENGINE 1 (Scania DI16)</h3>
-            <div class="kv">
-                <div class="kv-row"><span>RPM</span> <span>1,520</span></div>
-                <div class="kv-row"><span>Load</span> <span>78%</span></div>
-                <div class="kv-row"><span>Oil Temp</span> <span>92°C</span></div>
-                <div class="kv-row"><span>Exhaust Temp</span> <span>410°C</span></div>
-                <div class="kv-row"><span>Fuel Rate</span> <span>194 g/kWh</span></div>
-            </div>
-
-            <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">MAIN ENGINE 2 (Scania DI16)</h3>
-            <div class="kv">
-                <div class="kv-row"><span>RPM</span> <span>1,515</span></div>
-                <div class="kv-row"><span>Load</span> <span>77%</span></div>
-                <div class="kv-row"><span>Oil Temp</span> <span>91°C</span></div>
-                <div class="kv-row"><span>Exhaust Temp</span> <span>390°C</span></div>
-                <div class="kv-row"><span>Fuel Rate</span> <span>191 g/kWh</span></div>
-            </div>
-
-            <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">MAIN ENGINE 3 (Scania DI16)</h3>
-            <div class="kv">
-                <div class="kv-row"><span>RPM</span> <span>1,490</span></div>
-                <div class="kv-row"><span>Load</span> <span>75%</span></div>
-                <div class="kv-row"><span>Oil Temp</span> <span>89°C</span></div>
-                <div class="kv-row"><span>Exhaust Temp</span> <span>406°C</span></div>
-                <div class="kv-row"><span>Fuel Rate</span> <span>203 g/kWh</span></div>
-            </div>
-        `;
-    } else if (type === 'motion') {
-      content = `
-            <div class="kv"><span class="k">Dataset</span><span class="v">Gunnerus_MRU_Motion</span></div>
-            <div class="kv"><span class="k">Sensor</span><span class="v">Seapath 380</span></div>
-            <div class="kv"><span class="k">Frequency</span><span class="v" style="color:var(--freq)">100 Hz</span></div>
-
-            <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">POSITION & ATTITUDE</h3>
-            <div class="kv">
-                <div class="kv-row"><span>Lat</span> <span>63.5201 N</span></div>
-                <div class="kv-row"><span>Lon</span> <span>10.1504 E</span></div>
-                <div class="kv-row"><span>Heading</span> <span>310.5°</span></div>
-                <div class="kv-row"><span>Roll</span> <span>1.2°</span></div>
-                <div class="kv-row"><span>Pitch</span> <span>0.4°</span></div>
-                <div class="kv-row"><span>Heave</span> <span>0.15 m</span></div>
-            </div>
-
-             <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">DYNAMICS</h3>
-            <div class="kv">
-                <div class="kv-row"><span>SOG</span> <span>12.4 kn</span></div>
-                <div class="kv-row"><span>Accel Z</span> <span>9.81 m/s²</span></div>
-            </div>
-        `;
-    } else if (type === 'media') {
-      content = `
-            <div class="kv"><span class="k">Dataset</span><span class="v">Gunnerus_Campaign_Media</span></div>
-            <div class="kv"><span class="k">Items</span><span class="v">142 Images, 12 Videos</span></div>
-
-            <h3 style="font-size:0.8rem; color:var(--text-muted); margin:15px 0 5px 0;">LATEST CAPTURES</h3>
-            <div class="media-grid">
-                <div class="media-item" style="background:#222;">Deck Cam 1</div>
-                <div class="media-item" style="background:#222;">Aft CCTV</div>
-                <div class="media-item" style="background:#222;">ROV Feed</div>
-                <div class="media-item" style="background:#222;">Nav Screen</div>
-            </div>
-            <button class="btn primary" style="width:100%; justify-content:center; margin-top:15px;">Open Media Gallery</button>
-        `;
-    }
-
-    content += `
-        <div style="margin-top:20px; padding-top:15px; border-top:1px solid var(--border); display:flex; gap:10px;">
-            <button class="btn primary" style="flex:1; justify-content:center;">Download</button>
-            <button class="btn" style="flex:1; justify-content:center;">Subscribe</button>
-        </div>
-    `;
-
-    container.innerHTML = content;
-  };
-
-  window.setInspectorMode = (mode) => {
-    inspectorMode = mode;
-    document.getElementById('btn-inspector-form').classList.toggle('active', mode === 'form');
-    document.getElementById('btn-inspector-json').classList.toggle('active', mode === 'json');
-    document.getElementById('btn-inspector-json').classList.toggle('ghost', mode !== 'json');
-    document.getElementById('btn-inspector-form').classList.toggle('ghost', mode !== 'form');
-    if (selectedType) {
-      renderInspector(selectedType);
-    }
-  };
-
-  window.selectDataset = (el, type) => {
-    document.querySelectorAll('.dataset-card').forEach((card) => card.classList.remove('active'));
-    el.classList.add('active');
-    selectedType = type;
-    renderInspector(type);
-  };
+  L.polyline(taraTrack, { color: '#8B5CF6', weight: 3, dashArray: '5, 10' }).addTo(map);
 });
-
-
-
 </script>

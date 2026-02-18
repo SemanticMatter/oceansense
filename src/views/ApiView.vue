@@ -72,7 +72,7 @@
           <section id="overview">
             <h1>Data Access & API</h1>
             <p>
-              The FJORDLAB DATA PORTAL exposes a unified programmatic interface based on the
+              The OceanSense DATA PORTAL exposes a unified programmatic interface based on the
               <strong>OGC SensorThings API (v1.1)</strong> standard. This open, geospatial-enabled standard allows for
               the interconnection of IoT devices, data, and applications over the Web. Our implementation aggregates
               data from distributed nodes (federation) into a single logical entity model consisting of Things,
@@ -106,7 +106,7 @@
               specific regional gateway or the central orchestrator.
             </p>
             <div class="code-block">
-              https://federation.fjordlab.no/api/v1/
+              https://federation.OceanSense.no/api/v1/
             </div>
 
             <p>

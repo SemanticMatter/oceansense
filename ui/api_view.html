@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Data Access & API | FJORDLAB DATA PORTAL</title>
-  
+  <title>Data Access & API | OceanSense DATA PORTAL</title>
+
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
@@ -29,9 +29,9 @@
       /* Brand Colors */
       --accent: #3B82F6;     /* Electric Blue */
       --accent-soft: rgba(59, 130, 246, 0.15);
-      
+
       /* Method Colors */
-      --get: #3B82F6; --post: #14B8A6; --patch: #F59E0B; --delete: #F43F5E; --mqtt: #8B5CF6; 
+      --get: #3B82F6; --post: #14B8A6; --patch: #F59E0B; --delete: #F43F5E; --mqtt: #8B5CF6;
 
       --r-6: 6px; --r-10: 10px; --r-pill: 999px;
     }
@@ -41,7 +41,7 @@
       margin:0; font-family: var(--font-sans); background: var(--bg); color: var(--text);
       height: 100vh; overflow: hidden; font-size: 14px;
     }
-    
+
     .app{ height: 100%; display:flex; flex-direction: column; }
 
     /* Topbar */
@@ -63,7 +63,7 @@
 
     /* 2-Column Layout for Documentation */
     .doc-workspace{
-      display: grid; grid-template-columns: 280px 1fr; 
+      display: grid; grid-template-columns: 280px 1fr;
       width: 100%; height: 100%;
     }
 
@@ -82,8 +82,8 @@
     /* Sidebar Nav */
     .api-nav-group { padding: 20px 20px 5px; }
     .api-nav-header { font-size: 0.75rem; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; font-weight: 700; letter-spacing: 0.05em; }
-    .api-link { 
-      display: block; padding: 8px 12px; color: var(--text-muted); text-decoration: none; 
+    .api-link {
+      display: block; padding: 8px 12px; color: var(--text-muted); text-decoration: none;
       border-radius: var(--r-6); margin-bottom: 2px; font-size: 0.9rem; transition: all 0.2s;
     }
     .api-link:hover { background: var(--bg-elev); color: var(--text); }
@@ -105,7 +105,7 @@
     .code-method { color: var(--post); font-weight: 700; margin-right: 10px; }
     .code-url { color: var(--text); }
     .code-comment { color: var(--text-faint); display: block; margin-bottom: 5px; }
-    
+
     /* Tables */
     table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; background: var(--bg-elev); border-radius: var(--r-6); overflow: hidden; }
     th { background: rgba(0,0,0,0.2); text-align: left; padding: 12px 15px; color: var(--text-faint); font-weight: 600; border-bottom: 1px solid var(--border); text-transform: uppercase; font-size: 0.75rem; }
@@ -131,11 +131,11 @@
   <header class="topbar">
     <div class="brand">
       <i class="fa-solid fa-circle-nodes" style="color:var(--accent)"></i>
-      <span>FJORDLAB DATA PORTAL</span>
+      <span>OceanSense DATA PORTAL</span>
     </div>
     <nav class="nav">
       <button onclick="window.location.href='index.html'">Explorer</button>
-      <button onclick="window.location.href='node.html'">Node Registry</button>      
+      <button onclick="window.location.href='node.html'">Node Registry</button>
       <button class="active">Data Access & API</button>
       <button onclick="window.location.href='datadoc.html'">Data Documentation</button>
     </nav>
@@ -143,7 +143,7 @@
 
   <div class="page">
     <div class="doc-workspace">
-      
+
       <!-- LEFT: Navigation -->
       <nav class="sidebar">
         <div class="api-nav-group">
@@ -175,14 +175,14 @@
 
       <!-- RIGHT: Main Content -->
       <main class="main-content">
-        
+
         <!-- 1. Overview -->
         <section id="overview">
             <h1>Data Access & API</h1>
             <p>
-                The FJORDLAB DATA PORTAL exposes a unified programmatic interface based on the <strong>OGC SensorThings API (v1.1)</strong> standard. This open, geospatial-enabled standard allows for the interconnection of IoT devices, data, and applications over the Web. Our implementation aggregates data from distributed nodes (federation) into a single logical entity model consisting of Things, Datastreams, Sensors, and Observations.
+                The OceanSense DATA PORTAL exposes a unified programmatic interface based on the <strong>OGC SensorThings API (v1.1)</strong> standard. This open, geospatial-enabled standard allows for the interconnection of IoT devices, data, and applications over the Web. Our implementation aggregates data from distributed nodes (federation) into a single logical entity model consisting of Things, Datastreams, Sensors, and Observations.
             </p>
-            
+
             <div class="info-box">
                 <div class="ib-item">
                     <label>Base URL Template</label>
@@ -208,9 +208,9 @@
             <h2>Base URL & Authentication</h2>
             <p>All API endpoints are relative to the federation entry point. Replace <code>{host}</code> with your specific regional gateway or the central orchestrator.</p>
             <div class="code-block">
-https://federation.fjordlab.no/api/v1/
+https://federation.OceanSense.no/api/v1/
             </div>
-            
+
             <p>Requests must include the <code>Authorization</code> header using a valid API Key or OAuth2 Bearer token.</p>
             <div class="code-block">
 <span class="code-comment">// Header Example</span>
@@ -222,7 +222,7 @@ Accept: application/json
         <!-- 3. Quickstart -->
         <section id="quickstart">
             <h2>Quickstart Examples</h2>
-            
+
             <h3>1. List Things</h3>
             <div class="code-block">
 <span class="code-method">GET</span> <span class="code-url">/Things</span>
@@ -321,7 +321,7 @@ Accept: application/json
         <section id="query">
             <h2>Query Options</h2>
             <p>The API supports powerful system query options to refine results.</p>
-            
+
             <div class="info-box">
                 <div class="ib-item"><label>$filter</label><span>Expression to filter results</span></div>
                 <div class="ib-item"><label>$expand</label><span>Inline related entities</span></div>
@@ -341,10 +341,10 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
         <section id="cud">
             <h2>Create, Update, Delete</h2>
             <p>Standard HTTP methods are used for entity lifecycle management.</p>
-            
+
             <h3>Create</h3>
             <p>Use <code>POST</code> to create new entities. The response will include a <code>Location</code> header to the new resource.</p>
-            
+
             <h3>Update</h3>
             <p>Use <code>PATCH</code> to partially update an entity (preferred). Use <code>PUT</code> for full replacement.</p>
             <div class="code-block">
@@ -395,7 +395,7 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
         <!-- 9. MQTT -->
         <section id="mqtt">
             <h2>MQTT (Streams / Realtime)</h2>
-            
+
             <h3>Creating Observations</h3>
             <p>Publish JSON payloads to the following topic structure to ingest data.</p>
             <div class="code-block">
@@ -414,7 +414,7 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
         <section id="conformance">
             <h2>OGC Conformance</h2>
             <p>The following table maps the standard OGC requirements classes to this API implementation.</p>
-            
+
             <table class="conf-table">
                 <thead>
                     <tr>
@@ -640,7 +640,7 @@ GET /Datastreams?$filter=name eq 'Wind Speed'&$expand=Observations($top=5;$order
             e.preventDefault();
             document.querySelectorAll('.api-link').forEach(l => l.classList.remove('active'));
             this.classList.add('active');
-            
+
             const target = document.querySelector(this.getAttribute('href'));
             if(target) target.scrollIntoView({ behavior: 'smooth' });
         });

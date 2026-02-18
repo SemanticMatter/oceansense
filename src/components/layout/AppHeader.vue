@@ -5,16 +5,16 @@
   >
     <div
       class="brand"
-      aria-label="Fjordlab"
+      aria-label="OceanSense"
     >
       <img
         class="brand-logo"
-        src="/logos/fjordlab_small.png"
-        alt="Fjordlab"
+        src="/logos/OceanSense_small.png"
+        alt="OceanSense"
       />
       <div class="brand-text">
         <div class="brand-title">
-          Fjordlab
+          OceanSense
         </div>
         <div class="brand-subtitle">
           Data Portal
