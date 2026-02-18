@@ -11,12 +11,12 @@ describe('NodeView', () => {
 
     const titleEl = wrapper.find('.inspector-panel h2');
     expect(titleEl.exists()).toBe(true);
-    expect(titleEl.element.innerText).toContain('OceanSense_data@aalesund');
+    expect(titleEl.element.innerText).toContain('oceanlab@sensor-things');
 
-    window.loadNode('sintef');
+    window.loadNode('pml_apics_uk');
     await nextTick();
 
-    expect(titleEl.element.innerText).toContain('data@sintef');
+    expect(titleEl.element.innerText).toContain('apics@pml');
 
     wrapper.unmount();
   });
